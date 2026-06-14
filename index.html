@@ -3,334 +3,483 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Edu Assist | Premium College AI</title>
+  <title>Edu Assist | Neo | AI College Guide</title>
   <style>
-  /* ===========================
-   PREMIUM UI UPGRADE V2
-   (NO LOGIC CHANGED)
-=========================== */
+    /* ---------- RESET & PREMIUM BLUE-GREEN THEME ---------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    :root {
+      --bg-deep: #071013;
+      --bg-surface: #0D1B2A;
+      --bg-card: #152436;
+      --bg-elevated: #1B2C42;
+      --accent-teal: #06D6A0;
+      --accent-cyan: #48CAE4;
+      --accent-blue: #0077B6;
+      --gradient-primary: linear-gradient(135deg, #06D6A0, #48CAE4);
+      --gradient-glow: radial-gradient(circle at 20% 30%, rgba(6,214,160,0.2), transparent);
+      --text-light: #E0F2FE;
+      --text-muted: #8D99AE;
+      --border-subtle: #2A3A4E;
+      --shadow-md: 0 12px 28px rgba(0,0,0,0.45);
+      --font-sans: 'Inter', system-ui, 'Segoe UI', 'Poppins', sans-serif;
+    }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+    body {
+      background: var(--bg-deep);
+      font-family: var(--font-sans);
+      color: var(--text-light);
+      height: 100vh;
+      overflow: hidden;
+      line-height: 1.5;
+      position: relative;
+    }
 
-:root {
-  --bg1: #070A12;
-  --bg2: #0B1020;
-  --card: rgba(255,255,255,0.06);
-  --glass: rgba(255,255,255,0.08);
-  --border: rgba(255,255,255,0.12);
-  --gold: #E4B363;
-  --gold2: #C89B3C;
-  --text: #EAF0FF;
-  --muted: #9AA4B2;
-  --shadow: 0 20px 60px rgba(0,0,0,0.5);
-  --radius: 18px;
-}
+    /* animated background (live aura) */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 70% 20%, rgba(6,214,160,0.08), transparent 50%),
+                  radial-gradient(circle at 20% 80%, rgba(72,202,228,0.06), transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+      animation: slowDrift 18s infinite alternate;
+    }
 
-body {
-  font-family: "Inter", sans-serif;
-  color: var(--text);
-  height: 100vh;
-  overflow: hidden;
-  background: radial-gradient(circle at 20% 20%, #1a1f3a, transparent 40%),
-              radial-gradient(circle at 80% 30%, #2a1b3d, transparent 40%),
-              linear-gradient(180deg, var(--bg1), var(--bg2));
-  animation: bgMove 12s ease-in-out infinite alternate;
-}
+    @keyframes slowDrift {
+      0% { opacity: 0.5; transform: scale(1); }
+      100% { opacity: 1; transform: scale(1.08); }
+    }
 
-@keyframes bgMove {
-  from { filter: hue-rotate(0deg); }
-  to { filter: hue-rotate(15deg); }
-}
+    .page {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      transition: opacity 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1), visibility 0.4s;
+      z-index: 2;
+    }
+    .page.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
 
-/* PAGE SYSTEM */
-.page {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  transition: 0.6s ease;
-}
+    /* ========== INTRO – FRESH BLUE GREEN ========== */
+    #intro {
+      background: radial-gradient(ellipse at 30% 40%, #0A1828, #030C15);
+      justify-content: center;
+      align-items: center;
+      overflow-y: auto;
+      padding: 24px;
+    }
 
-.page.hidden {
-  opacity: 0;
-  transform: scale(1.02);
-  pointer-events: none;
-}
+    .intro-wrap {
+      display: grid;
+      grid-template-columns: 1fr 0.9fr;
+      max-width: 1280px;
+      width: 100%;
+      gap: 48px;
+      align-items: center;
+      backdrop-filter: blur(2px);
+    }
 
-/* ================= INTRO ================= */
+    .badge-premium {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(6,214,160,0.12);
+      border: 1px solid rgba(6,214,160,0.4);
+      border-radius: 60px;
+      padding: 6px 18px;
+      width: fit-content;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--accent-teal);
+    }
 
-#intro {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-}
+    .intro-h1 {
+      font-size: clamp(2rem, 4.5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
 
-.intro-wrap {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  max-width: 1200px;
-  gap: 40px;
-  align-items: center;
-}
+    .gradient-text {
+      background: linear-gradient(125deg, #06D6A0, #48CAE4);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
 
-.intro-left {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
+    .intro-desc {
+      color: var(--text-muted);
+      font-size: 1rem;
+      max-width: 520px;
+      line-height: 1.6;
+    }
 
-.badge-premium {
-  background: var(--glass);
-  border: 1px solid var(--border);
-  padding: 8px 14px;
-  border-radius: 50px;
-  font-size: 12px;
-  color: var(--gold);
-  width: fit-content;
-  backdrop-filter: blur(12px);
-}
+    .pill-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 8px 0;
+    }
 
-.intro-h1 {
-  font-size: 44px;
-  font-weight: 800;
-  line-height: 1.1;
-}
+    .pill-premium {
+      background: rgba(21, 36, 54, 0.8);
+      backdrop-filter: blur(4px);
+      border: 1px solid var(--border-subtle);
+      padding: 5px 14px;
+      border-radius: 40px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
 
-.gold-text {
-  background: linear-gradient(90deg, var(--gold), var(--gold2));
-  -webkit-background-clip: text;
-  color: transparent;
-}
+    .btn-primary {
+      background: var(--gradient-primary);
+      border: none;
+      border-radius: 60px;
+      padding: 14px 34px;
+      width: fit-content;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #071013;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(6,214,160,0.25);
+      transition: all 0.2s ease;
+      margin-top: 8px;
+    }
 
-.intro-desc {
-  color: var(--muted);
-  line-height: 1.6;
-}
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(72,202,228,0.3);
+    }
 
-.pill-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
+    .stat-row {
+      display: flex;
+      gap: 36px;
+      margin-top: 12px;
+    }
+    .stat .stat-number {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--accent-teal);
+    }
 
-.pill-premium {
-  background: var(--glass);
-  border: 1px solid var(--border);
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-size: 12px;
-  color: var(--muted);
-  backdrop-filter: blur(10px);
-}
+    /* Robot illustration – recolored */
+    .robot-premium {
+      position: relative;
+      width: 280px;
+      height: 340px;
+      margin: 0 auto;
+      animation: floatRobot 3.6s ease infinite;
+    }
+    @keyframes floatRobot { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+    .robot-glow {
+      position: absolute;
+      width: 260px; height: 260px;
+      background: radial-gradient(circle, rgba(6,214,160,0.25) 0%, transparent 70%);
+      border-radius: 50%;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      animation: pulseGlow 3s infinite;
+    }
+    @keyframes pulseGlow { 0%,100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); } 50% { opacity: 0.9; transform: translate(-50%, -50%) scale(1.08); } }
+    .cap-brim { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); width: 110px; height: 10px; background: var(--gradient-primary); border-radius: 6px; }
+    .cap-top { position: absolute; top: -4px; left: 50%; transform: translateX(-50%); width: 80px; height: 28px; background: linear-gradient(135deg, #06D6A0, #2A9D8F); border-radius: 10px 10px 0 0; }
+    .head { position: absolute; top: 38px; left: 50%; transform: translateX(-50%); width: 100px; height: 94px; background: var(--bg-card); border: 1.5px solid #2A4B6E; border-radius: 24px; box-shadow: 0 6px 18px rgba(0,0,0,0.3); }
+    .face-screen { background: #0C1622; width: 72px; height: 48px; border-radius: 16px; position: absolute; top: 18px; left: 50%; transform: translateX(-50%); border: 1px solid var(--accent-cyan); box-shadow: inset 0 0 8px #48CAE430; }
+    .eye { width: 12px; height: 12px; background: var(--accent-teal); border-radius: 50%; position: absolute; top: 12px; animation: blink 4s infinite; }
+    .eye.left { left: 14px; } .eye.right { right: 14px; }
+    .mouth { width: 32px; height: 3px; background: #06D6A0; border-radius: 2px; position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); animation: talk 1.6s infinite; }
+    .body { position: absolute; top: 128px; left: 50%; transform: translateX(-50%); width: 110px; height: 100px; background: var(--bg-card); border: 1.5px solid var(--border-subtle); border-radius: 22px; }
+    .chest-screen { background: #0B1422; width: 76px; height: 48px; border-radius: 12px; position: absolute; top: 12px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; justify-content: center; gap: 4px; }
+    .bar-premium { height: 4px; background: var(--accent-cyan); width: 70%; margin: 0 auto; border-radius: 4px; opacity: 0.7; animation: barPulse 1.2s alternate infinite; }
+    @keyframes barPulse { from { width: 60%; opacity: 0.5; } to { width: 85%; opacity: 1; } }
+    .arm { background: var(--bg-card); border: 1px solid var(--border-subtle); width: 22px; height: 68px; position: absolute; top: 138px; border-radius: 14px; }
+    .arm.left { left: calc(50% - 76px); transform-origin: top; animation: waveL 2.8s infinite; }
+    .arm.right { right: calc(50% - 76px); transform-origin: top; animation: waveR 2.8s infinite; }
+    .leg { background: var(--bg-card); border: 1px solid var(--border-subtle); width: 26px; height: 66px; position: absolute; top: 226px; border-radius: 14px; }
+    .foot { background: var(--bg-card); border: 1px solid var(--border-subtle); width: 38px; height: 16px; border-radius: 12px; position: absolute; top: 290px; }
+    @keyframes blink { 0%,94%,100% { transform: scaleY(1); } 96% { transform: scaleY(0.1); } }
+    @keyframes talk { 0%,100% { width: 28px; } 50% { width: 16px; } }
+    @keyframes waveL { 0%,100% { transform: rotate(-5deg); } 50% { transform: rotate(9deg); } }
+    @keyframes waveR { 0%,100% { transform: rotate(5deg); } 50% { transform: rotate(-9deg); } }
 
-.btn-gold {
-  background: linear-gradient(135deg, var(--gold), var(--gold2));
-  border: none;
-  padding: 14px 26px;
-  border-radius: 999px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: 0.3s;
-  box-shadow: 0 10px 30px rgba(228,179,99,0.25);
-}
+    /* ========== CHAT PAGE – PERFECT SCROLL + BOTTOM INPUT ========== */
+    #chat {
+      background: var(--bg-deep);
+      height: 100%;
+      position: relative;
+    }
 
-.btn-gold:hover {
-  transform: translateY(-3px);
-}
+    nav {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+      backdrop-filter: blur(8px);
+    }
 
-/* ROBOT */
-.robot-premium {
-  transform: scale(1.05);
-  animation: float 4s ease-in-out infinite;
-}
+    .logo-premium {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .logo-icon {
+      background: var(--gradient-primary);
+      width: 36px;
+      height: 36px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-@keyframes float {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
-}
+    .mode-tabs-premium {
+      background: #0F1A24;
+      border-radius: 48px;
+      padding: 4px;
+      display: flex;
+      gap: 6px;
+    }
+    .tab-premium {
+      background: transparent;
+      border: none;
+      padding: 6px 20px;
+      border-radius: 48px;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tab-premium.on {
+      background: var(--gradient-primary);
+      color: #071013;
+      box-shadow: 0 2px 10px rgba(6,214,160,0.4);
+    }
 
-/* ================= CHAT ================= */
+    .chat-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      overflow: hidden;
+    }
 
-#chat {
-  background: transparent;
-}
+    .chips-strip {
+      display: flex;
+      gap: 8px;
+      padding: 12px 20px;
+      overflow-x: auto;
+      background: rgba(13, 27, 42, 0.75);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border-subtle);
+      flex-shrink: 0;
+    }
+    .chip, .qchip {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      padding: 6px 14px;
+      border-radius: 40px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .chip:hover, .qchip:hover {
+      border-color: var(--accent-cyan);
+      color: var(--accent-cyan);
+      background: rgba(72,202,228,0.1);
+    }
 
-/* NAV */
-nav {
-  background: rgba(10,12,20,0.6);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  padding: 14px 20px;
-}
+    .ibar {
+      background: var(--bg-elevated);
+      padding: 10px 20px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: none;
+      flex-shrink: 0;
+    }
+    .ibar.on { display: block; }
+    .track {
+      height: 5px;
+      background: #1F3A4B;
+      border-radius: 10px;
+      margin-top: 6px;
+    }
+    .fill {
+      height: 5px;
+      background: var(--gradient-primary);
+      border-radius: 10px;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
 
-.logo-premium {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 700;
-}
+    /* MESSAGES – SCROLLABLE + BOTTOM ANCHOR */
+    .msgs {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 20px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      scroll-behavior: smooth;
+    }
+    .msgs::-webkit-scrollbar { width: 5px; }
+    .msgs::-webkit-scrollbar-track { background: var(--bg-surface); }
+    .msgs::-webkit-scrollbar-thumb { background: var(--accent-cyan); border-radius: 10px; }
 
-.logo-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, var(--gold), var(--gold2));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+    .msg {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      animation: fadeSlide 0.25s ease;
+    }
+    .msg.user { flex-direction: row-reverse; }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-/* TABS */
-.mode-tabs-premium {
-  display: flex;
-  background: rgba(255,255,255,0.05);
-  padding: 4px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-}
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 1rem;
+    }
+    .avatar.bot { background: var(--gradient-primary); color: #071013; }
+    .avatar.user { background: var(--bg-card); border: 1px solid var(--border-subtle); }
 
-.tab-premium {
-  border: none;
-  padding: 8px 14px;
-  border-radius: 999px;
-  background: transparent;
-  color: var(--muted);
-  cursor: pointer;
-  transition: 0.3s;
-}
+    .bubble {
+      max-width: 78%;
+      padding: 10px 18px;
+      border-radius: 24px;
+      font-size: 0.85rem;
+      line-height: 1.55;
+      word-break: break-word;
+    }
+    .msg.bot .bubble {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-bottom-left-radius: 6px;
+    }
+    .msg.user .bubble {
+      background: var(--gradient-primary);
+      color: #071013;
+      font-weight: 500;
+      border-bottom-right-radius: 6px;
+    }
 
-.tab-premium.on {
-  background: linear-gradient(135deg, var(--gold), var(--gold2));
-  color: #111;
-}
+    .bubble table { width: 100%; border-collapse: collapse; margin: 6px 0; font-size: 0.74rem; }
+    .bubble th { text-align: left; color: var(--accent-teal); border-bottom: 1px solid #2E4A6A; }
+    .tag {
+      background: #0F1F2E;
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 30px;
+      font-size: 0.7rem;
+      border: 1px solid var(--border-subtle);
+      color: var(--accent-cyan);
+    }
+    .score-card {
+      background: var(--bg-elevated);
+      border-radius: 24px;
+      padding: 18px;
+      border: 1px solid var(--border-subtle);
+    }
+    .retry-btn {
+      background: var(--gradient-primary);
+      border: none;
+      padding: 6px 16px;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 12px;
+      color: #071013;
+    }
+    .dots span {
+      width: 8px;
+      height: 8px;
+      background: var(--accent-cyan);
+      border-radius: 50%;
+      display: inline-block;
+      animation: bounceDot 1.2s infinite;
+    }
 
-/* CHIPS */
-.chips-strip {
-  display: flex;
-  gap: 8px;
-  padding: 10px;
-  overflow-x: auto;
-  background: rgba(255,255,255,0.03);
-  border-bottom: 1px solid var(--border);
-}
+    /* INPUT – fixed at bottom visually */
+    .input-wrap {
+      padding: 12px 20px 20px;
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border-subtle);
+      flex-shrink: 0;
+    }
+    .input-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-deep);
+      border-radius: 60px;
+      padding: 4px 6px 4px 20px;
+      border: 1px solid var(--border-subtle);
+      transition: all 0.2s;
+    }
+    .input-row:focus-within { border-color: var(--accent-cyan); box-shadow: 0 0 0 2px rgba(72,202,228,0.2); }
+    #inp {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text-light);
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      resize: none;
+      outline: none;
+      padding: 10px 0;
+      max-height: 100px;
+    }
+    .send-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--gradient-primary);
+      border: none;
+      color: #071013;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .send-btn:hover { transform: scale(1.05); }
 
-.chip, .qchip {
-  background: var(--card);
-  border: 1px solid var(--border);
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-size: 12px;
-  color: var(--muted);
-  cursor: pointer;
-  transition: 0.2s;
-}
+    /* live pulse animation on send icon */
+    @keyframes bounceDot { 0%,80%,100% { transform: translateY(0); } 40% { transform: translateY(-5px); } }
 
-.chip:hover, .qchip:hover {
-  border-color: var(--gold);
-  color: var(--gold);
-}
-
-/* MESSAGES */
-.msgs {
-  flex: 1;
-  overflow-y: auto;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.msg {
-  display: flex;
-  gap: 10px;
-  animation: pop 0.25s ease;
-}
-
-@keyframes pop {
-  from { opacity: 0; transform: translateY(10px); }
-}
-
-.msg.u { flex-direction: row-reverse; }
-
-.avatar {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.avatar.bot {
-  background: linear-gradient(135deg, var(--gold), var(--gold2));
-}
-
-.avatar.user {
-  background: rgba(255,255,255,0.08);
-  border: 1px solid var(--border);
-}
-
-.bubble {
-  max-width: 75%;
-  padding: 12px 14px;
-  border-radius: 16px;
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-.msg.bot .bubble {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid var(--border);
-}
-
-.msg.user .bubble {
-  background: linear-gradient(135deg, var(--gold), var(--gold2));
-  color: #111;
-}
-
-/* INPUT */
-.input-wrap {
-  padding: 12px;
-  background: rgba(10,12,20,0.6);
-  backdrop-filter: blur(12px);
-}
-
-.input-row {
-  display: flex;
-  align-items: center;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 6px;
-}
-
-#inp {
-  flex: 1;
-  background: transparent;
-  border: none;
-  color: white;
-  padding: 10px;
-  outline: none;
-}
-
-.send-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: none;
-  background: linear-gradient(135deg, var(--gold), var(--gold2));
-  cursor: pointer;
-  font-weight: 700;
-}
+    @media (max-width: 780px) {
+      .intro-wrap { grid-template-columns: 1fr; text-align: center; gap: 32px; }
+      .intro-right { order: -1; }
+      .btn-primary { align-self: center; }
+      .bubble { max-width: 92%; }
+      .robot-premium { transform: scale(0.85); }
+    }
   </style>
 </head>
 <body>
@@ -339,21 +488,19 @@ nav {
 <div class="page" id="intro">
   <div class="intro-wrap">
     <div class="intro-left">
-      <div class="badge-premium">✨ India's Elite 4 · New-Gen</div>
-      <h1 class="intro-h1">Your AI guide to<br><span class="gold-text">Scaler · NST · Vedam · NIAT</span></h1>
-      <p class="intro-desc">Compare fees, scholarships, placements & entrance. Zero fluff, instant comparisons, mock interviews — built for future tech leaders.</p>
+      <div class="badge-premium">🌊 India's Elite 4 · New‑Gen</div>
+      <h1 class="intro-h1">AI compass to<br><span class="gradient-text">Scaler · NST · Vedam · NIAT</span></h1>
+      <p class="intro-desc">Compare fees, scholarships, placements & entrance tests. Instant comparisons, mock interviews — built for future tech leaders.</p>
       <div class="pill-group">
-        <span class="pill-premium">💰 Fee & aid</span>
-        <span class="pill-premium">⚖️ Compare two</span>
-        <span class="pill-premium">🎤 Mock interview</span>
-        <span class="pill-premium">✅ SAT accepted</span>
+        <span class="pill-premium">💰 Fee & aid</span><span class="pill-premium">⚖️ Compare two</span>
+        <span class="pill-premium">🎤 Mock interview</span><span class="pill-premium">✅ SAT accepted</span>
         <span class="pill-premium">💼 Placements</span>
       </div>
-      <div class="stat-row-premium">
+      <div class="stat-row">
         <div class="stat"><div class="stat-number">4</div><div class="stat-label">elite colleges</div></div>
         <div class="stat"><div class="stat-number">100%</div><div class="stat-label">free + no API</div></div>
       </div>
-      <button class="btn-gold" onclick="goChat()">Launch Assistant →</button>
+      <button class="btn-primary" onclick="goChat()">Launch Assistant →</button>
     </div>
     <div class="intro-right">
       <div class="robot-premium">
@@ -368,10 +515,10 @@ nav {
   </div>
 </div>
 
-<!-- CHAT PAGE -->
+<!-- CHAT PAGE (SCROLLABLE, BOTTOM INPUT FIXED) -->
 <div class="page hidden" id="chat">
   <nav>
-    <div class="logo-premium" onclick="goIntro()"><div class="logo-icon">🎓</div><span>Edu<span style="color:#E4B363">Assist</span></span></div>
+    <div class="logo-premium" onclick="goIntro()"><div class="logo-icon">🎓</div><span>Edu<span style="color:#48CAE4">Assist</span></span></div>
     <div class="mode-tabs-premium">
       <button class="tab-premium on" id="tabA" onclick="setMode('a')">🏫 College Guide</button>
       <button class="tab-premium" id="tabI" onclick="setMode('i')">🎤 Mock Interview</button>
@@ -379,12 +526,9 @@ nav {
   </nav>
   <div class="chat-body">
     <div class="chips-strip" id="chipStrip"></div>
-    <div class="ibar" id="ibar">
-      <div><span id="qlabel">Question 1/3</span> <span id="qphase"></span></div>
-      <div class="track"><div class="fill" id="fill"></div></div>
-    </div>
+    <div class="ibar" id="ibar"><div><span id="qlabel">Question 1/3</span></div><div class="track"><div class="fill" id="fill"></div></div></div>
     <div class="msgs" id="msgs">
-      <div class="empty" id="empty"><div class="e-icon">✨</div><h2>Ask about top 4 new-gen colleges</h2><p>Compare Scaler, NST, Vedam, NIAT — fees, scholarships, entrance tests & more.</p></div>
+      <div class="empty" id="empty"><div class="e-icon">✨</div><h2>Ask about top 4 new‑gen colleges</h2><p>Compare Scaler, NST, Vedam, NIAT — fees, scholarships, entrance tests & more.</p></div>
     </div>
     <div class="input-wrap">
       <div class="input-row">
@@ -396,7 +540,7 @@ nav {
 </div>
 
 <script>
-  // ---------- DATABASE: ONLY 4 COLLEGES ----------
+  // ---------- ONLY 4 COLLEGES (unchanged logic) ----------
   const COLLEGE_DATA = {
     "Scaler School of Technology (SST)": {
       short: "Scaler", location: "Bengaluru, Karnataka", program: "B.Tech in CS & AI + dual degree from BITS Pilani/IIT Madras",
@@ -423,7 +567,6 @@ nav {
   const COLLEGES = Object.keys(COLLEGE_DATA);
   const QUICK_SET = ["Cheapest colleges", "100% scholarships", "SAT accepted", "Best placements", "Compare Scaler vs NIAT", "Vedam vs NST"];
 
-  // helpers
   function normalize(s) { return s.toLowerCase().replace(/[^\w\s]/g,' '); }
   function findCollege(query) {
     let best = null, bestScore = 0;
@@ -436,42 +579,39 @@ nav {
     }
     return bestScore > 0.3 ? best : null;
   }
-
   function compareTwo(text) {
     let found = COLLEGES.filter(c => {
       let s = COLLEGE_DATA[c].short.toLowerCase();
-      let nameLower = c.toLowerCase();
       let t = normalize(text);
-      return t.includes(s) || t.includes(nameLower.split('(')[0].trim());
+      return t.includes(s) || t.includes(c.toLowerCase().split('(')[0].trim());
     });
     if (found.length >= 2) {
       let [a,b] = found;
       let dA = COLLEGE_DATA[a], dB = COLLEGE_DATA[b];
-      let rows = ['location','fee','scholarships','selection','placements'].map(f => `<tr><td style="color:#E4B363">${f}</td><td>${dA[f]}</td><td>${dB[f]}</td></tr>`).join('');
-      return `<strong>⚖️ ${dA.short} vs ${dB.short}</strong><table style="width:100%;margin-top:10px;"><tr><th>Attribute</th><th>${dA.short}</th><th>${dB.short}</th></tr>${rows}</table><span class="tag">🔍 official details vary — check recent data</span>`;
+      let rows = ['location','fee','scholarships','selection','placements'].map(f => `<tr><td style="color:#48CAE4">${f}</td><td>${dA[f]}</td><td>${dB[f]}</td>`).join('');
+      return `<strong>⚖️ ${dA.short} vs ${dB.short}</strong><table style="width:100%;margin-top:8px;"><tr><th>Attribute</th><th>${dA.short}</th><th>${dB.short}</th></tr>${rows}</table><span class="tag">🔍 official details vary</span>`;
     }
     return null;
   }
-
   function answerQuery(raw) {
     let t = raw.trim();
     if (!t) return null;
-    if (/^(hi|hello|hey|help|start)/i.test(t)) return `🤖 <strong>Premium Guide active</strong><br><br>I cover <strong>Scaler, NST, Vedam, NIAT</strong>. Ask about comparisons, fees, scholarships, placements or mock interview mode.`;
+    if (/^(hi|hello|hey|help|start)/i.test(t)) return `🤖 <strong>Neo Guide active</strong><br><br>I cover <strong>Scaler, NST, Vedam, NIAT</strong>. Ask comparisons, fees, scholarships, placements or switch to mock interview.`;
     if (/(compare|versus|vs\.?|difference between)/i.test(t)) { let cmp = compareTwo(t); if(cmp) return cmp; }
     if (/cheapest|lowest fee|budget/i.test(t)) {
       let sorted = [...COLLEGES].sort((a,b)=> parseInt(COLLEGE_DATA[a].fee.match(/\d+/)?.[0]||99) - parseInt(COLLEGE_DATA[b].fee.match(/\d+/)?.[0]||99));
-      return `💰 <strong>Fee ranking (low to high):</strong><br>${sorted.map((c,i)=>`${i+1}. ${COLLEGE_DATA[c].short} — ${COLLEGE_DATA[c].fee}`).join('<br>')}<br><span class="tag">Scholarships reduce cost further</span>`;
+      return `💰 <strong>Fee ranking (low to high):</strong><br>${sorted.map((c,i)=>`${i+1}. ${COLLEGE_DATA[c].short} — ${COLLEGE_DATA[c].fee}`).join('<br>')}<br><span class="tag">Scholarships reduce cost</span>`;
     }
     if (/100.?%|full scholarship/i.test(t)) {
       let eligible = COLLEGES.filter(c=>COLLEGE_DATA[c].scholarships.toLowerCase().includes('100%'));
-      return eligible.map(c=>`🎓 ${COLLEGE_DATA[c].short}: ${COLLEGE_DATA[c].scholarships}`).join('<br><br>') || "All 4 colleges offer merit-based scholarships up to 100% based on entrance scores.";
+      return eligible.map(c=>`🎓 ${COLLEGE_DATA[c].short}: ${COLLEGE_DATA[c].scholarships}`).join('<br><br>') || "All 4 offer merit scholarships up to 100%.";
     }
     if (/\bsat\b/i.test(t)) {
       let satList = COLLEGES.filter(c=>COLLEGE_DATA[c].selection.toLowerCase().includes('sat'));
-      return satList.length ? `✅ Colleges accepting SAT: ${satList.map(c=>COLLEGE_DATA[c].short).join(', ')} — no JEE required.` : "Scaler accepts SAT, others have own tests (NSAT, VSAT, NAT).";
+      return satList.length ? `✅ SAT accepted: ${satList.map(c=>COLLEGE_DATA[c].short).join(', ')} — no JEE required.` : "Scaler accepts SAT, others have own tests.";
     }
     if (/best placement|highest package|top recruiter/i.test(t)) {
-      return `💼 <strong>Placement highlights</strong><br>• Vedam: 1,028+ placed, Amazon/Microsoft/Adobe<br>• NIAT: Internship stipends & recruiters like Google<br>• Scaler/NST: dedicated placement support and strong alumni network.<br><span class="tag">Check official reports for exact CTC.</span>`;
+      return `💼 <strong>Placement highlights</strong><br>• Vedam: 1,028+ placed, Amazon/Microsoft/Adobe<br>• NIAT: internship stipends & recruiters like Google<br>• Scaler/NST: dedicated placement support.`;
     }
     let college = findCollege(t);
     if (college) {
@@ -483,10 +623,10 @@ nav {
     return `I specialize in <strong>Scaler, NST, Vedam, NIAT</strong>. Try: "Tell me about Vedam scholarships" or "Compare NIAT vs NST".`;
   }
 
-  // ---------- INTERVIEW MODULE ----------
+  // INTERVIEW MODULE (preserved)
   let mode = 'a';
   let iStep = 0, iScores = [], iQs = [], awaiting = false;
-  const qBank = { hr: ["Tell us about yourself and why tech?", "Describe a challenging project you solved."], tech: ["Difference between array and linked list?", "What is Big O? give example"], aptitude: ["If 5 workers complete in 10 days, how days for 10 workers?", "Probability of rolling a 6 twice?"] };
+  const qBank = { hr: ["Tell us about yourself and why tech?", "Describe a challenging project you solved."], tech: ["Difference between array and linked list?", "What is Big O? give example"], aptitude: ["If 5 workers complete in 10 days, days for 10 workers?", "Probability of rolling a 6 twice?"] };
   function updateInterviewBar() {
     let bar = document.getElementById('ibar');
     if (mode !== 'i') { bar.classList.remove('on'); return; }
@@ -497,21 +637,18 @@ nav {
     document.getElementById('qlabel').innerText = iStep >= 3 ? "Complete" : `Question ${iStep}/3`;
   }
   async function startInterview() {
-    iStep = 0; iScores = []; iQs = []; awaiting = false;
-    updateInterviewBar();
-    addBotMsg(`🎤 <strong>Mock interview — premium simulation</strong><br><br>I'll ask 3 questions (HR, Tech, Problem Solving). Answer naturally.`);
-    await delay(600);
-    askNext();
+    iStep = 0; iScores = []; iQs = []; awaiting = false; updateInterviewBar();
+    addBotMsg(`🎤 <strong>Mock interview — premium simulation</strong><br><br>3 questions (HR, Tech, Problem Solving). Answer naturally.`);
+    await delay(600); askNext();
   }
   function askNext() {
     if (iStep >= 3) { finishInterview(); return; }
-    iStep++;
-    updateInterviewBar();
+    iStep++; updateInterviewBar();
     let type = iStep === 1 ? 'HR' : (iStep === 2 ? 'Technical' : 'Problem Solving');
     let bank = iStep === 1 ? qBank.hr : (iStep === 2 ? qBank.tech : qBank.aptitude);
     let question = bank[Math.floor(Math.random() * bank.length)];
     iQs.push({ type, question });
-    addBotMsg(`<span style="color:#E4B363">Q${iStep}/3 · ${type}</span><br><br>${question}`);
+    addBotMsg(`<span style="color:#48CAE4">Q${iStep}/3 · ${type}</span><br><br>${question}`);
     awaiting = true;
   }
   function evaluate(ans, type) {
@@ -534,11 +671,11 @@ nav {
   async function finishInterview() {
     let avg = (iScores.reduce((a,b)=>a+b,0)/3).toFixed(1);
     let grade = avg >= 8 ? "🌟 Elite" : avg >= 6 ? "👍 Solid" : "📈 Keep practicing";
-    addBotMsg(`<div class="score-card"><h3>🏆 Interview Complete</h3><div style="font-size:2.2rem;font-weight:800;color:#E4B363">${avg}/10</div><p>${grade}</p><button class="retry-btn" onclick="setMode('i')">Try Again</button></div>`);
+    addBotMsg(`<div class="score-card"><h3>🏆 Interview Complete</h3><div style="font-size:2rem;font-weight:800;color:#48CAE4">${avg}/10</div><p>${grade}</p><button class="retry-btn" onclick="setMode('i')">Try Again</button></div>`);
     iStep = 4; updateInterviewBar();
   }
 
-  // ui & messaging
+  // UI Helpers
   let typingDiv = null;
   function showTyping() { if(typingDiv) hideTyping(); let el = document.createElement('div'); el.className = 'msg bot'; el.id='typingMsg'; el.innerHTML='<div class="avatar bot">🤖</div><div class="bubble"><div class="dots"><span></span><span></span><span></span></div></div>'; document.getElementById('msgs').appendChild(el); typingDiv=el; document.getElementById('msgs').scrollTop = document.getElementById('msgs').scrollHeight; }
   function hideTyping() { if(typingDiv) { typingDiv.remove(); typingDiv=null; } }
@@ -577,7 +714,7 @@ nav {
   function buildChips() {
     let strip = document.getElementById('chipStrip');
     COLLEGES.forEach(n => { let btn = document.createElement('button'); btn.className='chip'; btn.innerText=COLLEGE_DATA[n].short; btn.onclick=()=>{ document.getElementById('inp').value=`Tell me about ${n}`; send(); }; strip.appendChild(btn); });
-    let sep = document.createElement('span'); sep.style.width='1px'; sep.style.background='#2A2F3F'; sep.style.margin='0 6px'; strip.appendChild(sep);
+    let sep = document.createElement('span'); sep.style.width='1px'; sep.style.background='#2A3A4E'; sep.style.margin='0 6px'; strip.appendChild(sep);
     QUICK_SET.forEach(q => { let btn = document.createElement('button'); btn.className='qchip'; btn.innerText=q; btn.onclick=()=>{ document.getElementById('inp').value=q; send(); }; strip.appendChild(btn); });
   }
   function goChat() { document.getElementById('intro').classList.add('hidden'); document.getElementById('chat').classList.remove('hidden'); }

@@ -1,1329 +1,941 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Edu Assist – India's New-Gen College Guide & Mock Interview Coach</title>
-  <meta name="description" content="Edu Assist helps students explore new-generation colleges in India and practice mock interviews with AI-powered coaching powered by Google Gemini." />
-  <style>
-    /* ===== DESIGN TOKENS ===== */
-    :root {
-      --primary: #6c63ff;
-      --primary-dark: #4d44d4;
-      --primary-glow: rgba(108,99,255,0.25);
-      --secondary: #00d2ff;
-      --accent: #ff6584;
-      --bg-base: #0f0f1a;
-      --bg-card: #1a1a2e;
-      --bg-card2: #16213e;
-      --bg-input: #1e1e35;
-      --border: rgba(108,99,255,0.25);
-      --text-primary: #e8e8ff;
-      --text-secondary: #9090b8;
-      --text-muted: #5a5a80;
-      --bot-bubble: #1e2048;
-      --user-bubble: linear-gradient(135deg, #6c63ff, #4d44d4);
-      --success: #00e676;
-      --warning: #ffab40;
-      --error: #ff5252;
-      --radius: 18px;
-      --radius-sm: 10px;
-      --shadow: 0 8px 32px rgba(0,0,0,0.4);
-      --shadow-glow: 0 0 30px rgba(108,99,255,0.2);
-      --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-    }
-    /* ===== RESET & BASE ===== */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: var(--font);
-      background: var(--bg-base);
-      color: var(--text-primary);
-      height: 100dvh;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-    /* ===== ANIMATED BACKGROUND ===== */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 80% 50% at 20% 10%, rgba(108,99,255,0.12) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 40% at 80% 90%, rgba(0,210,255,0.08) 0%, transparent 60%);
-      pointer-events: none;
-      z-index: 0;
-    }
-    /* ===== API KEY MODAL ===== */
-    #api-modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.8);
-      backdrop-filter: blur(12px);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-    }
-    #api-modal.open { display: flex; }
-    .modal-box {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 40px 36px;
-      max-width: 460px;
-      width: 100%;
-      box-shadow: var(--shadow), var(--shadow-glow);
-      animation: slideUp 0.4s cubic-bezier(0.34,1.56,0.64,1);
-    }
-    @keyframes slideUp {
-      from { transform: translateY(40px) scale(0.95); opacity: 0; }
-      to   { transform: translateY(0) scale(1); opacity: 1; }
-    }
-    .modal-logo {
-      text-align: center;
-      margin-bottom: 24px;
-    }
-    .modal-logo .logo-icon {
-      font-size: 52px;
-      display: block;
-      margin-bottom: 8px;
-      filter: drop-shadow(0 0 16px var(--primary));
-    }
-    .modal-logo h1 {
-      font-size: 26px;
-      font-weight: 800;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .modal-logo p {
-      color: var(--text-secondary);
-      font-size: 13px;
-      margin-top: 4px;
-    }
-    .modal-box label {
-      display: block;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-secondary);
-      margin-bottom: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-    .modal-box input[type="password"],
-    .modal-box input[type="text"] {
-      width: 100%;
-      padding: 14px 16px;
-      background: var(--bg-input);
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius-sm);
-      color: var(--text-primary);
-      font-size: 14px;
-      outline: none;
-      transition: var(--transition);
-    }
-    .modal-box input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px var(--primary-glow);
-    }
-    .modal-hint {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-top: 8px;
-      line-height: 1.5;
-    }
-    .modal-hint a { color: var(--secondary); text-decoration: none; }
-    .modal-hint a:hover { text-decoration: underline; }
-    .btn-primary {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      width: 100%;
-      padding: 14px;
-      margin-top: 20px;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: #fff;
-      font-size: 15px;
-      font-weight: 700;
-      border: none;
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      transition: var(--transition);
-      letter-spacing: 0.03em;
-    }
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(108,99,255,0.45);
-    }
-    .btn-primary:active { transform: translateY(0); }
-    /* ===== HEADER ===== */
-    #app-header {
-      position: relative;
-      z-index: 10;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 20px;
-      background: rgba(26,26,46,0.9);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
-    }
-    .header-brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .brand-icon { font-size: 28px; filter: drop-shadow(0 0 8px var(--primary)); }
-    .brand-text {
-      font-size: 20px;
-      font-weight: 800;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      letter-spacing: -0.5px;
-    }
-    .header-actions { display: flex; align-items: center; gap: 10px; }
-    .btn-icon {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text-secondary);
-      padding: 7px 12px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: 600;
-      transition: var(--transition);
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-    .btn-icon:hover {
-      border-color: var(--primary);
-      color: var(--primary);
-      background: var(--primary-glow);
-    }
-    /* ===== MODE TABS ===== */
-    #mode-tabs {
-      position: relative;
-      z-index: 10;
-      display: flex;
-      gap: 8px;
-      padding: 12px 20px;
-      background: rgba(15,15,26,0.95);
-      border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
-    }
-    .tab-btn {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 11px 16px;
-      border-radius: 12px;
-      border: 1.5px solid var(--border);
-      background: transparent;
-      color: var(--text-secondary);
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: var(--transition);
-      position: relative;
-      overflow: hidden;
-    }
-    .tab-btn::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-    .tab-btn.active {
-      border-color: var(--primary);
-      color: #fff;
-    }
-    .tab-btn.active::before { opacity: 1; }
-    .tab-btn span { position: relative; z-index: 1; }
-    .tab-btn .tab-emoji { font-size: 18px; position: relative; z-index: 1; }
-    .tab-btn:hover:not(.active) {
-      border-color: var(--primary);
-      color: var(--text-primary);
-      background: var(--primary-glow);
-    }
-    /* ===== INTERVIEW PROGRESS ===== */
-    #interview-progress {
-      display: none;
-      position: relative;
-      z-index: 10;
-      padding: 10px 20px;
-      background: rgba(26,26,46,0.8);
-      border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
-    }
-    #interview-progress.visible { display: block; }
-    .progress-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 6px;
-    }
-    .progress-label {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-    .progress-count {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--primary);
-    }
-    .progress-bar-track {
-      width: 100%;
-      height: 6px;
-      background: rgba(108,99,255,0.15);
-      border-radius: 999px;
-      overflow: hidden;
-    }
-    .progress-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
-      border-radius: 999px;
-      transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
-      box-shadow: 0 0 8px var(--primary);
-    }
-    .progress-dots {
-      display: flex;
-      gap: 6px;
-      margin-top: 8px;
-      justify-content: center;
-    }
-    .progress-dot {
-      width: 28px;
-      height: 6px;
-      border-radius: 999px;
-      background: rgba(108,99,255,0.2);
-      transition: var(--transition);
-    }
-    .progress-dot.done { background: var(--primary); }
-    .progress-dot.current { background: linear-gradient(90deg, var(--primary), var(--secondary)); box-shadow: 0 0 8px var(--primary); }
-    /* ===== CHAT AREA ===== */
-    #chat-wrapper {
-      flex: 1;
-      overflow: hidden;
-      position: relative;
-      z-index: 5;
-    }
-    #chat-messages {
-      height: 100%;
-      overflow-y: auto;
-      padding: 20px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      scroll-behavior: smooth;
-    }
-    #chat-messages::-webkit-scrollbar { width: 4px; }
-    #chat-messages::-webkit-scrollbar-track { background: transparent; }
-    #chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-    /* ===== WELCOME BANNER ===== */
-    .welcome-banner {
-      background: linear-gradient(135deg, rgba(108,99,255,0.1), rgba(0,210,255,0.05));
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 24px;
-      text-align: center;
-      animation: fadeInUp 0.5s ease;
-    }
-    .welcome-banner h2 {
-      font-size: 22px;
-      font-weight: 800;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 8px;
-    }
-    .welcome-banner p {
-      font-size: 13px;
-      color: var(--text-secondary);
-      line-height: 1.6;
-      margin-bottom: 16px;
-    }
-    .college-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px;
-      justify-content: center;
-    }
-    .chip {
-      background: rgba(108,99,255,0.12);
-      border: 1px solid rgba(108,99,255,0.25);
-      color: var(--text-secondary);
-      padding: 5px 12px;
-      border-radius: 999px;
-      font-size: 11.5px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: var(--transition);
-      white-space: nowrap;
-    }
-    .chip:hover {
-      background: rgba(108,99,255,0.25);
-      color: var(--text-primary);
-      border-color: var(--primary);
-      transform: translateY(-1px);
-    }
-    /* ===== MESSAGE BUBBLES ===== */
-    .msg-row {
-      display: flex;
-      align-items: flex-end;
-      gap: 10px;
-      animation: fadeInUp 0.35s ease;
-    }
-    .msg-row.user { flex-direction: row-reverse; }
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(14px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .avatar {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      flex-shrink: 0;
-      border: 2px solid var(--border);
-    }
-    .avatar.bot {
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      border-color: var(--primary);
-    }
-    .avatar.user-av {
-      background: linear-gradient(135deg, #ff6584, #ff8e53);
-      border-color: #ff6584;
-    }
-    .bubble {
-      max-width: min(75%, 520px);
-      padding: 13px 16px;
-      border-radius: var(--radius);
-      font-size: 14px;
-      line-height: 1.65;
-      word-break: break-word;
-    }
-    .bubble.bot {
-      background: var(--bot-bubble);
-      border: 1px solid var(--border);
-      border-bottom-left-radius: 4px;
-      color: var(--text-primary);
-    }
-    .bubble.bot strong { color: var(--secondary); }
-    .bubble.user {
-      background: var(--user-bubble);
-      border-bottom-right-radius: 4px;
-      color: #fff;
-      box-shadow: 0 4px 16px rgba(108,99,255,0.3);
-    }
-    .msg-meta {
-      font-size: 10px;
-      color: var(--text-muted);
-      margin-top: 5px;
-      text-align: right;
-    }
-    .msg-row.user .msg-meta { text-align: left; }
-    /* Score card */
-    .score-card {
-      background: linear-gradient(135deg, rgba(108,99,255,0.15), rgba(0,210,255,0.08));
-      border: 1px solid var(--primary);
-      border-radius: 16px;
-      padding: 18px;
-      margin-top: 10px;
-    }
-    .score-number {
-      font-size: 42px;
-      font-weight: 900;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      text-align: center;
-      display: block;
-    }
-    .score-label { text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
-    .score-breakdown { margin-top: 14px; display: flex; flex-direction: column; gap: 6px; }
-    .score-row { display: flex; justify-content: space-between; font-size: 13px; }
-    .score-row .s-key { color: var(--text-secondary); }
-    .score-row .s-val { font-weight: 700; color: var(--text-primary); }
-    /* feedback badges */
-    .feedback-badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 8px;
-    }
-    .badge {
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 11.5px;
-      font-weight: 600;
-    }
-    .badge.strength { background: rgba(0,230,118,0.15); color: var(--success); border: 1px solid rgba(0,230,118,0.3); }
-    .badge.improve  { background: rgba(255,171,64,0.15); color: var(--warning); border: 1px solid rgba(255,171,64,0.3); }
-    /* typing indicator */
-    .typing-indicator {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      animation: fadeInUp 0.35s ease;
-    }
-    .typing-bubble {
-      background: var(--bot-bubble);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      border-bottom-left-radius: 4px;
-      padding: 13px 18px;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-    .typing-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--primary);
-      animation: bounce 1.2s infinite ease-in-out;
-    }
-    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes bounce {
-      0%, 60%, 100% { transform: translateY(0); opacity: 0.6; }
-      30% { transform: translateY(-8px); opacity: 1; }
-    }
-    .typing-text { font-size: 12px; color: var(--text-muted); }
-    /* ===== INPUT AREA ===== */
-    #input-area {
-      position: relative;
-      z-index: 10;
-      padding: 12px 16px 16px;
-      background: rgba(15,15,26,0.97);
-      border-top: 1px solid var(--border);
-      flex-shrink: 0;
-    }
-    .input-row {
-      display: flex;
-      gap: 10px;
-      align-items: flex-end;
-      background: var(--bg-input);
-      border: 1.5px solid var(--border);
-      border-radius: 16px;
-      padding: 6px 6px 6px 16px;
-      transition: var(--transition);
-    }
-    .input-row:focus-within {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px var(--primary-glow);
-    }
-    #user-input {
-      flex: 1;
-      background: transparent;
-      border: none;
-      outline: none;
-      color: var(--text-primary);
-      font-size: 14px;
-      font-family: var(--font);
-      resize: none;
-      max-height: 120px;
-      line-height: 1.6;
-      padding: 7px 0;
-    }
-    #user-input::placeholder { color: var(--text-muted); }
-    #send-btn {
-      width: 42px;
-      height: 42px;
-      flex-shrink: 0;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      border: none;
-      border-radius: 12px;
-      color: #fff;
-      font-size: 18px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: var(--transition);
-    }
-    #send-btn:hover {
-      transform: scale(1.08);
-      box-shadow: 0 6px 20px rgba(108,99,255,0.45);
-    }
-    #send-btn:active { transform: scale(0.96); }
-    #send-btn:disabled {
-      opacity: 0.5;
-      transform: none;
-      box-shadow: none;
-      cursor: not-allowed;
-    }
-    .input-footer {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-top: 8px;
-      font-size: 11px;
-      color: var(--text-muted);
-      gap: 4px;
-    }
-    .input-footer span.dot { opacity: 0.4; }
-    /* ===== INTERVIEW WELCOME ===== */
-    .interview-banner {
-      background: linear-gradient(135deg, rgba(108,99,255,0.1), rgba(255,101,132,0.05));
-      border: 1px solid rgba(108,99,255,0.3);
-      border-radius: 20px;
-      padding: 24px;
-      text-align: center;
-      animation: fadeInUp 0.5s ease;
-    }
-    .interview-banner .ib-icon { font-size: 48px; margin-bottom: 10px; display: block; }
-    .interview-banner h2 {
-      font-size: 20px;
-      font-weight: 800;
-      color: var(--text-primary);
-      margin-bottom: 8px;
-    }
-    .interview-banner p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 16px; }
-    .start-interview-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px 28px;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      color: #fff;
-      border: none;
-      border-radius: 12px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-    .start-interview-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(108,99,255,0.45);
-    }
-    .interview-rules {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-bottom: 16px;
-      text-align: left;
-    }
-    .rule-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 12.5px;
-      color: var(--text-secondary);
-    }
-    .rule-icon { font-size: 16px; flex-shrink: 0; }
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 480px) {
-      #app-header { padding: 10px 14px; }
-      .brand-text { font-size: 17px; }
-      #mode-tabs { padding: 10px 12px; gap: 6px; }
-      .tab-btn { font-size: 12px; padding: 10px 10px; }
-      #chat-messages { padding: 14px 10px; }
-      .bubble { font-size: 13px; }
-      #input-area { padding: 10px 12px 14px; }
-    }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Edu Assist – New-Gen College Guide</title>
+<style>
+/* ─── Reset & Tokens ─────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07080f;
+  --surface:#10121d;
+  --surface2:#181b2e;
+  --card:#1e2135;
+  --accent:#7c6dff;
+  --accent2:#b39dff;
+  --glow:#7c6dff44;
+  --green:#3dd68c;
+  --text:#eef0f8;
+  --muted:#7a84a0;
+  --border:#252a45;
+  --font:'Segoe UI',system-ui,-apple-system,sans-serif;
+}
+html,body{height:100%;overflow:hidden}
+body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex;flex-direction:column}
+
+/* ─── PAGES ─────────────────────────────────────────────────── */
+.page{position:absolute;inset:0;display:flex;flex-direction:column;transition:opacity .45s ease,transform .45s ease}
+.page.hidden{opacity:0;pointer-events:none;transform:translateY(18px)}
+
+/* ══════════════════════════════════════════════════════════════
+   INTRO PAGE
+══════════════════════════════════════════════════════════════ */
+#intro{background:var(--bg);justify-content:center;align-items:center;overflow:auto}
+
+/* starfield */
+#intro::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(1px 1px at 12% 18%, #ffffff55 0%, transparent 100%),
+    radial-gradient(1px 1px at 34% 72%, #ffffff44 0%, transparent 100%),
+    radial-gradient(1px 1px at 56% 9%,  #ffffff55 0%, transparent 100%),
+    radial-gradient(1px 1px at 78% 55%, #ffffff33 0%, transparent 100%),
+    radial-gradient(1px 1px at 92% 28%, #ffffff44 0%, transparent 100%),
+    radial-gradient(1px 1px at 23% 91%, #ffffff33 0%, transparent 100%),
+    radial-gradient(1px 1px at 67% 83%, #ffffff44 0%, transparent 100%),
+    radial-gradient(1px 1px at 45% 45%, #ffffff22 0%, transparent 100%);
+  pointer-events:none;
+}
+
+.intro-wrap{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:60px;
+  max-width:1100px;
+  width:100%;
+  padding:60px 40px;
+  align-items:center;
+}
+
+/* LEFT — text */
+.intro-left{display:flex;flex-direction:column;gap:24px}
+
+.intro-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 14px;border-radius:20px;
+  border:1px solid var(--accent);
+  background:rgba(124,109,255,.1);
+  color:var(--accent2);font-size:.78rem;font-weight:600;
+  width:fit-content;letter-spacing:.4px;
+}
+
+.intro-h1{
+  font-size:clamp(2rem,4vw,3.2rem);
+  font-weight:800;line-height:1.15;
+  letter-spacing:-1px;
+}
+.intro-h1 .hl{
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+
+.intro-desc{
+  font-size:1rem;color:var(--muted);line-height:1.75;max-width:480px;
+}
+
+.intro-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.pill{
+  font-size:.76rem;padding:5px 12px;border-radius:20px;
+  background:var(--surface2);border:1px solid var(--border);
+  color:var(--muted);
+}
+.pill span{margin-right:5px}
+
+.start-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  margin-top:8px;padding:16px 34px;
+  border-radius:50px;border:none;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#fff;font-size:1rem;font-weight:700;
+  cursor:pointer;width:fit-content;
+  box-shadow:0 6px 30px var(--glow);
+  transition:transform .2s,box-shadow .2s;
+  letter-spacing:.2px;
+}
+.start-btn:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 10px 40px #7c6dff66}
+.start-btn .arrow{font-size:1.2rem;transition:transform .2s}
+.start-btn:hover .arrow{transform:translateX(4px)}
+
+.intro-stat-row{display:flex;gap:24px;margin-top:4px}
+.stat{text-align:center}
+.stat-n{font-size:1.5rem;font-weight:800;color:var(--accent2)}
+.stat-l{font-size:.72rem;color:var(--muted);margin-top:2px}
+
+/* RIGHT — robot */
+.intro-right{display:flex;justify-content:center;align-items:center;position:relative}
+
+.robot-scene{
+  width:300px;height:360px;position:relative;
+  animation:float 3.2s ease-in-out infinite;
+}
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-16px)}
+}
+
+/* Glow circle behind robot */
+.robot-glow{
+  position:absolute;width:220px;height:220px;
+  left:50%;top:50%;transform:translate(-50%,-50%);
+  background:radial-gradient(circle,#7c6dff33 0%,transparent 70%);
+  border-radius:50%;animation:pulse 3.2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:.5;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.12)}}
+
+/* ROBOT SVG drawn inline via CSS shapes */
+.robot{width:100%;height:100%;position:relative}
+
+/* grad cap */
+.cap-brim{
+  position:absolute;top:6px;left:50%;transform:translateX(-50%);
+  width:130px;height:12px;
+  background:linear-gradient(135deg,#5e55d4,#8075e8);
+  border-radius:3px;
+}
+.cap-top{
+  position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:90px;height:32px;
+  background:linear-gradient(135deg,#4c45c0,#6f68d4);
+  border-radius:6px 6px 0 0;
+}
+.cap-tassel{
+  position:absolute;top:0;right:calc(50% - 48px);
+  width:3px;height:30px;
+  background:var(--green);border-radius:2px;
+}
+.cap-tassel::after{
+  content:'';position:absolute;bottom:0;left:-4px;
+  width:10px;height:10px;border-radius:50%;background:var(--green);
+}
+.cap-board{
+  position:absolute;top:14px;left:50%;transform:translateX(-50%);
+  width:8px;height:8px;background:var(--accent2);border-radius:50%;
+}
+
+/* head */
+.head{
+  position:absolute;top:38px;left:50%;transform:translateX(-50%);
+  width:110px;height:100px;
+  background:linear-gradient(160deg,var(--surface2),var(--card));
+  border:2px solid var(--border);border-radius:20px;
+  box-shadow:0 0 20px #7c6dff22;
+}
+/* face screen on head */
+.face-screen{
+  position:absolute;top:18px;left:50%;transform:translateX(-50%);
+  width:80px;height:50px;
+  background:#0a0c18;border-radius:10px;
+  border:1px solid var(--accent);
+  box-shadow:inset 0 0 12px #7c6dff44;
+  overflow:hidden;
+}
+/* eyes */
+.eye{
+  position:absolute;top:12px;width:18px;height:18px;
+  background:var(--accent2);border-radius:50%;
+  animation:blink 4s ease-in-out infinite;
+  box-shadow:0 0 8px var(--accent2);
+}
+.eye.left{left:12px}
+.eye.right{right:12px}
+@keyframes blink{0%,90%,100%{transform:scaleY(1)}95%{transform:scaleY(.08)}}
+/* mouth bar */
+.mouth{
+  position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
+  width:40px;height:6px;
+  background:linear-gradient(90deg,var(--accent),var(--green));
+  border-radius:3px;animation:talk 1.8s ease-in-out infinite;
+}
+@keyframes talk{0%,100%{width:40px}50%{width:22px}}
+
+/* antennas */
+.antenna{
+  position:absolute;top:38px;width:3px;height:20px;
+  background:var(--border);border-radius:2px;
+}
+.antenna.left{left:calc(50% - 54px)}
+.antenna.right{left:calc(50% + 51px)}
+.antenna::after{
+  content:'';position:absolute;top:-5px;left:-3px;
+  width:9px;height:9px;border-radius:50%;
+  background:var(--accent2);
+  animation:antpulse 2s ease-in-out infinite alternate;
+}
+.antenna.right::after{animation-delay:.5s}
+@keyframes antpulse{from{opacity:.4;box-shadow:none}to{opacity:1;box-shadow:0 0 8px var(--accent2)}}
+
+/* body */
+.body{
+  position:absolute;top:136px;left:50%;transform:translateX(-50%);
+  width:120px;height:110px;
+  background:linear-gradient(160deg,var(--surface2),var(--card));
+  border:2px solid var(--border);border-radius:14px;
+}
+/* chest screen */
+.chest-screen{
+  position:absolute;top:12px;left:50%;transform:translateX(-50%);
+  width:80px;height:55px;background:#0a0c18;
+  border-radius:8px;border:1px solid #2d3360;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:4px;
+}
+.bar{
+  height:5px;background:var(--accent);border-radius:3px;opacity:.7;
+  animation:bars .9s ease-in-out infinite alternate;
+}
+.bar:nth-child(1){width:60%;animation-delay:0s}
+.bar:nth-child(2){width:80%;animation-delay:.15s}
+.bar:nth-child(3){width:45%;animation-delay:.3s}
+@keyframes bars{from{opacity:.3}to{opacity:.9}}
+
+/* arms */
+.arm{
+  position:absolute;top:142px;width:28px;height:80px;
+  background:linear-gradient(160deg,var(--surface2),var(--card));
+  border:2px solid var(--border);border-radius:10px;
+}
+.arm.left{left:calc(50% - 84px);transform-origin:top center;animation:waveL 3s ease-in-out infinite}
+.arm.right{right:calc(50% - 84px);transform-origin:top center;animation:waveR 3s ease-in-out infinite}
+@keyframes waveL{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+@keyframes waveR{0%,100%{transform:rotate(8deg)}50%{transform:rotate(-8deg)}}
+
+/* legs */
+.leg{
+  position:absolute;top:242px;width:30px;height:70px;
+  background:linear-gradient(160deg,var(--surface2),var(--card));
+  border:2px solid var(--border);border-radius:8px;
+}
+.leg.left{left:calc(50% - 40px)}
+.leg.right{right:calc(50% - 40px)}
+/* feet */
+.foot{
+  position:absolute;top:308px;width:42px;height:18px;
+  background:var(--card);border:2px solid var(--border);border-radius:8px;
+}
+.foot.left{left:calc(50% - 46px)}
+.foot.right{right:calc(50% - 46px)}
+
+/* orbit ring */
+.orbit{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:260px;height:260px;border-radius:50%;
+  border:1px dashed #2d3360;
+  animation:spin 12s linear infinite;
+}
+.orbit-dot{
+  position:absolute;top:-5px;left:50%;
+  width:10px;height:10px;border-radius:50%;
+  background:var(--accent2);margin-left:-5px;
+  box-shadow:0 0 8px var(--accent2);
+}
+@keyframes spin{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+
+/* ══════════════════════════════════════════════════════════════
+   CHAT PAGE
+══════════════════════════════════════════════════════════════ */
+#chat{flex-direction:column;overflow:hidden}
+
+/* nav */
+nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 20px;
+  background:var(--surface);border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.nav-logo{display:flex;align-items:center;gap:9px;font-size:1rem;font-weight:700;cursor:pointer}
+.nav-logo-icon{
+  width:32px;height:32px;border-radius:9px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  display:flex;align-items:center;justify-content:center;font-size:.9rem;
+}
+.nav-logo span{color:var(--accent2)}
+
+.mode-tabs{display:flex;gap:5px;background:var(--bg);border:1px solid var(--border);border-radius:40px;padding:3px}
+.tab{padding:6px 14px;border-radius:40px;border:none;background:transparent;color:var(--muted);cursor:pointer;font-size:.8rem;font-weight:600;transition:all .2s;white-space:nowrap}
+.tab.on{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
+
+/* chat body */
+.chat-body{flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden}
+
+/* college chips strip */
+.chips-strip{
+  padding:8px 16px;display:flex;flex-wrap:wrap;gap:5px;
+  background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;
+}
+.chip{font-size:.71rem;padding:4px 10px;border-radius:20px;border:1px solid var(--border);background:var(--surface2);color:var(--muted);cursor:pointer;transition:all .16s;white-space:nowrap}
+.chip:hover{border-color:var(--accent);color:var(--accent2)}
+.qchip{font-size:.71rem;padding:4px 10px;border-radius:20px;border:1px solid var(--border);background:var(--surface2);color:var(--accent2);cursor:pointer;transition:all .16s;white-space:nowrap}
+.qchip:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* interview progress */
+.ibar{display:none;padding:8px 16px 6px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0}
+.ibar.on{display:block}
+.ibar-top{display:flex;justify-content:space-between;font-size:.74rem;color:var(--muted);margin-bottom:5px}
+.track{height:4px;background:var(--surface2);border-radius:10px;overflow:hidden}
+.fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--green));transition:width .4s ease;border-radius:10px}
+
+/* messages */
+.msgs{flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:14px;scroll-behavior:smooth}
+.msgs::-webkit-scrollbar{width:4px}
+.msgs::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+
+.msg{display:flex;gap:9px;align-items:flex-end;animation:up .22s ease}
+.msg.u{flex-direction:row-reverse}
+@keyframes up{from{opacity:0;transform:translateY(7px)}to{opacity:1}}
+
+.av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;margin-bottom:2px}
+.av.b{background:linear-gradient(135deg,var(--accent),var(--accent2))}
+.av.u{background:var(--surface2);border:1px solid var(--border)}
+
+.bub{max-width:72%;padding:11px 14px;border-radius:14px;font-size:.87rem;line-height:1.65;word-break:break-word}
+.msg.b .bub{background:var(--card);border:1px solid var(--border);border-bottom-left-radius:4px}
+.msg.u .bub{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border-bottom-right-radius:4px}
+
+.bub table{width:100%;border-collapse:collapse;margin-top:8px;font-size:.82rem}
+.bub th{text-align:left;padding:6px 8px;color:var(--accent2);border-bottom:1px solid var(--border);font-weight:600}
+.bub td{padding:5px 8px;border-bottom:1px solid #1a1e38;vertical-align:top}
+.bub tr:last-child td{border-bottom:none}
+.bub .tag{display:inline-block;padding:2px 8px;border-radius:20px;background:var(--surface2);border:1px solid var(--border);font-size:.71rem;color:var(--accent2);margin:2px 2px 2px 0}
+
+.dots{display:flex;gap:4px;padding:4px 0}
+.dots span{width:7px;height:7px;border-radius:50%;background:var(--muted);animation:blink2 1.2s infinite}
+.dots span:nth-child(2){animation-delay:.2s}
+.dots span:nth-child(3){animation-delay:.4s}
+@keyframes blink2{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-7px)}}
+
+/* empty state */
+.empty{text-align:center;padding:34px 20px;color:var(--muted);margin-top:20px}
+.empty .e-icon{font-size:2.4rem;margin-bottom:10px}
+.empty h2{font-size:1rem;color:var(--text);margin-bottom:6px}
+.empty p{font-size:.82rem;max-width:320px;margin:0 auto;line-height:1.6}
+
+/* score card */
+.score-card{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:18px;margin-top:4px}
+.score-card h3{font-size:.95rem;color:var(--accent2);margin-bottom:10px}
+.score-num{font-size:2.6rem;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.retry-btn{margin-top:12px;padding:8px 18px;border-radius:20px;border:none;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;cursor:pointer;font-size:.82rem;font-weight:600}
+
+/* input bar */
+.input-wrap{padding:10px 16px 14px;background:var(--surface);border-top:1px solid var(--border);flex-shrink:0}
+.input-row{display:flex;gap:7px;background:var(--bg);border:1px solid var(--border);border-radius:40px;padding:5px 5px 5px 16px;transition:border-color .2s}
+.input-row:focus-within{border-color:var(--accent)}
+#inp{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-size:.87rem;font-family:var(--font);resize:none;min-height:22px;max-height:100px;line-height:1.5;padding:4px 0}
+#inp::placeholder{color:var(--muted)}
+.send{width:36px;height:36px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:.95rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .15s;box-shadow:0 2px 10px var(--glow)}
+.send:hover{transform:scale(1.08)}
+
+/* ─── Responsive ─────────────────────────────────────────────── */
+@media(max-width:750px){
+  .intro-wrap{grid-template-columns:1fr;gap:30px;text-align:center;padding:30px 22px}
+  .intro-right{order:-1}
+  .robot-scene{width:210px;height:250px;transform:scale(.85)}
+  .intro-left .intro-pills{justify-content:center}
+  .intro-stat-row{justify-content:center}
+  .intro-h1{font-size:2rem}
+  .start-btn{align-self:center}
+  .intro-desc{font-size:.9rem}
+  .intro-badge{align-self:center}
+  .bub{max-width:88%;font-size:.83rem}
+}
+@media(max-width:450px){
+  .tab{padding:5px 9px;font-size:.74rem}
+  .nav-logo{font-size:.9rem}
+  nav{padding:9px 12px}
+}
+</style>
 </head>
 <body>
-<!-- ===== API KEY MODAL ===== -->
-<div id="api-modal" class="open" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-  <div class="modal-box">
-    <div class="modal-logo">
-      <span class="logo-icon">🎓</span>
-      <h1 id="modal-title">Edu Assist</h1>
-      <p>Your AI guide to new-gen colleges in India</p>
-    </div>
-    <label for="api-key-input">Google Gemini API Key</label>
-    <input type="password" id="api-key-input" placeholder="AIza..." autocomplete="off" spellcheck="false" />
-    <p class="modal-hint">
-      Your key is stored only in this browser's localStorage. 
-      Get a free key at <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">Google AI Studio</a>.
-    </p>
-    <button class="btn-primary" id="save-key-btn">
-      <span>🚀</span> Launch Edu Assist
-    </button>
-  </div>
-</div>
-<!-- ===== APP HEADER ===== -->
-<header id="app-header">
-  <div class="header-brand">
-    <span class="brand-icon">🎓</span>
-    <span class="brand-text">Edu Assist</span>
-  </div>
-  <div class="header-actions">
-    <button class="btn-icon" id="reset-key-btn" title="Reset API Key">🔑 Reset Key</button>
-  </div>
-</header>
-<!-- ===== MODE TABS ===== -->
-<div id="mode-tabs">
-  <button class="tab-btn active" id="tab-assistant" data-mode="assistant">
-    <span class="tab-emoji">🏫</span>
-    <span>College Assistant</span>
-  </button>
-  <button class="tab-btn" id="tab-interview" data-mode="interview">
-    <span class="tab-emoji">🎤</span>
-    <span>Mock Interview</span>
-  </button>
-</div>
-<!-- ===== INTERVIEW PROGRESS ===== -->
-<div id="interview-progress">
-  <div class="progress-header">
-    <span class="progress-label">Interview Progress</span>
-    <span class="progress-count" id="q-count">Question 1 of 3</span>
-  </div>
-  <div class="progress-bar-track">
-    <div class="progress-bar-fill" id="progress-fill" style="width: 0%"></div>
-  </div>
-  <div class="progress-dots">
-    <div class="progress-dot" id="dot-1"></div>
-    <div class="progress-dot" id="dot-2"></div>
-    <div class="progress-dot" id="dot-3"></div>
-  </div>
-</div>
-<!-- ===== CHAT MESSAGES ===== -->
-<div id="chat-wrapper">
-  <div id="chat-messages" role="log" aria-live="polite" aria-label="Chat messages"></div>
-</div>
-<!-- ===== INPUT AREA ===== -->
-<div id="input-area">
-  <div class="input-row">
-    <textarea
-      id="user-input"
-      placeholder="Ask about any college or admissions..."
-      rows="1"
-      aria-label="Message input"
-    ></textarea>
-    <button id="send-btn" aria-label="Send message">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="22" y1="2" x2="11" y2="13"></line>
-        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-      </svg>
-    </button>
-  </div>
-  <div class="input-footer">
-    <span>Powered by Google Gemini</span>
-    <span class="dot">·</span>
-    <span>Data sourced from public college info</span>
-  </div>
-</div>
-<script>
-/* ============================================================
-   COLLEGE KNOWLEDGE BASE
-   ============================================================ */
-const collegeData = {
-  "Scaler School of Technology": {
-    location: "Bengaluru, Karnataka",
-    program: "4-year B.Tech in CS & AI (residential)",
-    fee: "₹28 lakh (full program)",
-    scholarships: "Merit-based scholarships available",
-    selection: "NSET entrance exam; SAT accepted (alternative to JEE)",
-    highlights: "Project-based learning, mentor-heavy pedagogy. Option to earn parallel B.Sc. from BITS Pilani or IIT Madras.",
-    placements: "Strong industry ties; average package data not publicly disclosed."
-  },
-  "Newton School of Technology": {
-    location: "Sonipat (NCR), Pune, Bengaluru, Hyderabad",
-    program: "B.Tech in CS & AI (in partnership with Rishihood University, Ajeenkya DY Patil University, etc.)",
-    fee: "₹23 lakh (residential)",
-    scholarships: "Merit-based available",
-    selection: "NSAT entrance test",
-    highlights: "Code from week one; paired with mentors from Google & Meta. Industry-aligned curriculum.",
-    placements: "Placement assistance provided; specific averages not disclosed."
-  },
-  "Vedam School of Technology": {
-    location: "Pune, Maharashtra & Gurugram, Haryana",
-    program: "4-year B.Tech in CS & AI",
-    fee: "₹18 lakh (full program)",
-    scholarships: "Merit, women-in-tech, need-based up to 100%",
-    selection: "VSAT (Vedam Scholastic Aptitude Test); Top 5% applicants. JEE 90%+ percentile can skip VSAT.",
-    highlights: "AI-first curriculum. Faculty from Google, Microsoft, Amazon. Personalized MacBook on joining.",
-    placements: "1,028 students placed last year. Founding cohort secured LFX mentorship and 8+ internships. Stipends up to ₹2.8 lakh."
-  },
-  "Masters' Union School of Emerging Technologies": {
-    location: "Gurugram, Haryana",
-    program: "UG program in technology & business",
-    fee: "Information not publicly available",
-    scholarships: "Merit-based available",
-    selection: "Entrance exam + interview",
-    highlights: "Industry-integrated curriculum with live projects. Strong focus on entrepreneurship.",
-    placements: "Not publicly disclosed."
-  },
-  "NIAT (NxtWave Institute of Advanced Technologies)": {
-    location: "Multiple campuses (partner universities in Pune, Vijayawada)",
-    program: "B.Tech in CSE, CSE with AI/ML, CSE with Data Science",
-    fee: "₹18 lakh (total at NRI University); ₹2-4.5 lakh/year elsewhere",
-    scholarships: "Not specified",
-    selection: "10+2 (PCM) with 60% + NAT (NxtWave Admission Test)",
-    highlights: "AI-enabled learning, 50+ real-world projects, corporate network of 3,000+ companies.",
-    placements: "No official placement data published."
-  },
-  "100x Engineers (100xDevs)": {
-    location: "Online / Bootcamp (no physical campus)",
-    program: "Skill-based coding bootcamp (not a degree program)",
-    fee: "₹50,000 (for offline training program)",
-    scholarships: "Not specified",
-    selection: "Entrance test / interview",
-    highlights: "Practical, project-based learning by industry experts. Focus on full-stack development.",
-    placements: "80% of first batch got multiple job offers; one student landed ₹2 crore/year remote job."
-  },
-  "ALTA School of Technology (Sunstone)": {
-    location: "Multiple cities (partner campuses)",
-    program: "AI-First Computer Science program",
-    fee: "₹3.4 lakh (first year)",
-    scholarships: "Up to 100% tuition support based on A-SAT score",
-    selection: "ALTA Scholastic Aptitude Test (A-SAT)",
-    highlights: "Learn from MAANG mentors; free access to GPT/Claude; build 20+ projects; 6-month internship; MacBook on day one.",
-    placements: "Over 1000+ recruiting partners including Amazon, Flipkart, Wipro, TCS, Uber, Zeta."
-  },
-  "Mirai School of Technology": {
-    location: "Not publicly disclosed (online-first with hybrid model)",
-    program: "B.Tech in Artificial Intelligence & Machine Learning",
-    fee: "₹10.8-13 lakh total (approx ₹2.5-3 lakh/year)",
-    scholarships: "Up to 100% based on merit + interview",
-    selection: "M.A.I.N.S (Mirai National Screening Test) + Personal Interview",
-    highlights: "AI-first curriculum; certifications from Google, Nvidia; mentors from MAANG. Selects only top 20% applicants.",
-    placements: "Highest reported package ₹20 LPA; 100% placement support with paid internships."
-  },
-  "Plaksha University": {
-    location: "Mohali, Punjab",
-    program: "B.Tech in Computer Science & AI, Data Science, Robotics",
-    fee: "₹44-48 lakh (4-year total)",
-    scholarships: "Yes, merit-cum-need based",
-    selection: "SAT accepted (alternative to JEE) + personal interview",
-    highlights: "Deep tech focus, research-oriented. Interdisciplinary curriculum with industry partnerships.",
-    placements: "Average ₹20 LPA, highest ₹60 LPA (as of 2024 reports)."
-  },
-  "Ashoka University": {
-    location: "Sonipat, Haryana",
-    program: "BA (Hons) in Liberal Arts & Social Sciences",
-    fee: "₹52-55 lakh (4-year total)",
-    scholarships: "Generous financial aid; 10 full four-year scholarships for specific programs",
-    selection: "Holistic review; SAT accepted (≥1100 exempts from entrance test)",
-    highlights: "Pioneer in liberal arts education in India. Interdisciplinary curriculum, study abroad opportunities.",
-    placements: "Average ₹11.6 LPA; 100% placement rate reported."
-  },
-  "Krea University": {
-    location: "Sri City, Andhra Pradesh",
-    program: "Interdisciplinary programs across humanities, sciences, management",
-    fee: "Information not publicly available",
-    scholarships: "Need-based and merit-based available",
-    selection: "Krea Aptitude Test (KAT) + interview; SAT accepted",
-    highlights: "Focus on applied thinking and problem-solving. Flexible curriculum with 'clusters' instead of rigid departments.",
-    placements: "Strong outcomes depend on student initiative; placement cell active."
-  },
-  "O.P. Jindal Global University (JGU)": {
-    location: "Sonipat, Haryana",
-    program: "Strongest in law (BA LLB, BBA LLB), business (BBA), liberal arts",
-    fee: "₹35-60 lakh (varies by program)",
-    scholarships: "Merit-based; SAT ≥1100 exempts from JSAT",
-    selection: "JSAT or SAT scores + interview",
-    highlights: "Global focus; law school is top-ranked in India. Collaborations with international universities.",
-    placements: "Strong placement record for law and business graduates – top law firms and MNCs."
-  },
-  "Shiv Nadar University (SNU)": {
-    location: "Greater Noida, Delhi-NCR",
-    program: "B.Tech, B.A. (Research), B.Sc., etc.",
-    fee: "₹6 lakh tuition + ₹2 lakh hostel per year",
-    scholarships: "Yes; 10 full four-year scholarships for specific program",
-    selection: "SAT accepted; SNU entrance test available",
-    highlights: "Compulsory 3-year AI module across all disciplines. Experiential learning with CII tie-ups.",
-    placements: "Access to industry through NCR location; live projects with top companies."
-  },
-  "Mahindra University": {
-    location: "Hyderabad, Telangana",
-    program: "Engineering (B.Tech), Law (BA LLB), Business (BBA), Liberal Arts",
-    fee: "Approx ₹20-25 lakh/year for engineering (please verify)",
-    scholarships: "Merit scholarships available",
-    selection: "SAT accepted for B.Tech; MU entrance test also available",
-    highlights: "Part of the Mahindra Group ecosystem. Strong emphasis on innovation and entrepreneurship.",
-    placements: "Not publicly disclosed; but industry connections are strong due to Mahindra brand."
-  }
-};
-const COLLEGE_JSON = JSON.stringify(collegeData, null, 2);
-/* ============================================================
-   STATE
-   ============================================================ */
-let GEMINI_API_KEY = null;
-let currentMode = 'assistant';   // 'assistant' | 'interview'
-let interviewState = {
-  active: false,
-  questionIndex: 0,    // 0-based
-  questions: [],
-  answers: [],
-  scores: []
-};
-let isWaiting = false;
-/* ============================================================
-   DOM REFS
-   ============================================================ */
-const $modal      = document.getElementById('api-modal');
-const $apiInput   = document.getElementById('api-key-input');
-const $saveKeyBtn = document.getElementById('save-key-btn');
-const $resetKeyBtn= document.getElementById('reset-key-btn');
-const $tabAssist  = document.getElementById('tab-assistant');
-const $tabIntvw   = document.getElementById('tab-interview');
-const $messages   = document.getElementById('chat-messages');
-const $userInput  = document.getElementById('user-input');
-const $sendBtn    = document.getElementById('send-btn');
-const $progress   = document.getElementById('interview-progress');
-const $qCount     = document.getElementById('q-count');
-const $pFill      = document.getElementById('progress-fill');
-const $dot1       = document.getElementById('dot-1');
-const $dot2       = document.getElementById('dot-2');
-const $dot3       = document.getElementById('dot-3');
-/* ============================================================
-   API KEY MANAGEMENT
-   ============================================================ */
-function loadKey() {
-  const saved = localStorage.getItem('edu_assist_gemini_key');
-  if (saved) {
-    GEMINI_API_KEY = saved;
-    $modal.classList.remove('open');
-    initAssistantMode();
-  }
-}
-$saveKeyBtn.addEventListener('click', () => {
-  const key = $apiInput.value.trim();
-  if (!key || key.length < 10) {
-    shake($apiInput);
-    return;
-  }
-  GEMINI_API_KEY = key;
-  localStorage.setItem('edu_assist_gemini_key', key);
-  $modal.classList.remove('open');
-  initAssistantMode();
-});
-$apiInput.addEventListener('keydown', e => {
-  if (e.key === 'Enter') $saveKeyBtn.click();
-});
-$resetKeyBtn.addEventListener('click', () => {
-  localStorage.removeItem('edu_assist_gemini_key');
-  GEMINI_API_KEY = null;
-  $apiInput.value = '';
-  $modal.classList.add('open');
-});
-function shake(el) {
-  el.style.animation = 'none';
-  el.getBoundingClientRect();
-  el.style.animation = 'shake 0.4s ease';
-  setTimeout(() => el.style.animation = '', 500);
-}
-/* ============================================================
-   MODE SWITCHING
-   ============================================================ */
-$tabAssist.addEventListener('click', () => switchMode('assistant'));
-$tabIntvw.addEventListener('click',  () => switchMode('interview'));
-function switchMode(mode) {
-  if (isWaiting) return;
-  currentMode = mode;
-  $tabAssist.classList.toggle('active', mode === 'assistant');
-  $tabIntvw.classList.toggle('active',  mode === 'interview');
-  // Reset interview state when switching
-  if (mode === 'interview') {
-    resetInterview();
-    interviewState.active = false;
-    clearMessages();
-    showInterviewWelcome();
-    $progress.classList.remove('visible');
-  } else {
-    clearMessages();
-    initAssistantMode();
-    $progress.classList.remove('visible');
-  }
-  $userInput.placeholder = mode === 'assistant'
-    ? 'Ask about any college or admissions...'
-    : 'Type your answer here...';
-}
-/* ============================================================
-   ASSISTANT MODE INIT
-   ============================================================ */
-function initAssistantMode() {
-  clearMessages();
-  const colleges = Object.keys(collegeData);
-  const chips = colleges.map(c =>
-    `<span class="chip" tabindex="0" role="button" onclick="quickAsk('${c.replace(/'/g,"\\'")}')">📍 ${c}</span>`
-  ).join('');
-  const banner = `
-    <div class="welcome-banner">
-      <h2>👋 Welcome to Edu Assist!</h2>
-      <p>I can answer your questions about <strong>14 new-generation colleges in India</strong> — fees, programs, scholarships, placements, and more. Click a college below or type your question!</p>
-      <div class="college-chips">${chips}</div>
-    </div>`;
-  appendRaw(banner);
-}
-function quickAsk(college) {
-  if (isWaiting) return;
-  setInput(`Tell me about ${college}`);
-  sendMessage();
-}
-/* ============================================================
-   INTERVIEW MODE
-   ============================================================ */
-function showInterviewWelcome() {
-  const banner = `
-    <div class="interview-banner">
-      <span class="ib-icon">🎤</span>
-      <h2>Mock Interview Simulator</h2>
-      <p>Practice for campus placements with AI-powered feedback. You'll answer 3 questions and receive a detailed score.</p>
-      <div class="interview-rules">
-        <div class="rule-item"><span class="rule-icon">📋</span><span>3 technical & HR questions</span></div>
-        <div class="rule-item"><span class="rule-icon">💬</span><span>Instant feedback after each answer</span></div>
-        <div class="rule-item"><span class="rule-icon">🏆</span><span>Final score out of 10 with summary</span></div>
+
+<!-- ══════════════════════════════════════════════════════
+     INTRO PAGE
+══════════════════════════════════════════════════════ -->
+<div class="page" id="intro">
+  <div class="intro-wrap">
+
+    <!-- LEFT -->
+    <div class="intro-left">
+      <div class="intro-badge">🎓 New-Gen College Guide · India 2026</div>
+
+      <h1 class="intro-h1">
+        Your AI guide to<br>
+        <span class="hl">new-gen colleges</span><br>
+        in India
+      </h1>
+
+      <p class="intro-desc">
+        Confused between Scaler, NST, NIAT, ALTA, Plaksha and more?
+        Edu Assist knows every college inside-out — fees, programs, scholarships,
+        entrance tests, and placements. Ask anything, get instant honest answers.
+        No fluff, no API key needed.
+      </p>
+
+      <div class="intro-pills">
+        <span class="pill"><span>💰</span>Fees &amp; Scholarships</span>
+        <span class="pill"><span>🎤</span>Mock Interviews</span>
+        <span class="pill"><span>📍</span>Locations</span>
+        <span class="pill"><span>✅</span>Entrance Exams</span>
+        <span class="pill"><span>💼</span>Placements</span>
+        <span class="pill"><span>⚡</span>Zero API key</span>
       </div>
-      <button class="start-interview-btn" id="start-interview-btn">
-        <span>🚀</span> Start Interview
+
+      <div class="intro-stat-row">
+        <div class="stat"><div class="stat-n">10</div><div class="stat-l">New-gen colleges</div></div>
+        <div class="stat"><div class="stat-n">100%</div><div class="stat-l">Free to use</div></div>
+        <div class="stat"><div class="stat-n">0</div><div class="stat-l">API keys needed</div></div>
+      </div>
+
+      <button class="start-btn" onclick="goChat()">
+        Start Talking <span class="arrow">→</span>
       </button>
-    </div>`;
-  appendRaw(banner);
-  setTimeout(() => {
-    const btn = document.getElementById('start-interview-btn');
-    if (btn) btn.addEventListener('click', startInterview);
-  }, 100);
-}
-function resetInterview() {
-  interviewState = {
-    active: false,
-    questionIndex: 0,
-    questions: [],
-    answers: [],
-    scores: []
-  };
-  updateProgressBar(0);
-}
-function startInterview() {
-  if (isWaiting) return;
-  clearMessages();
-  interviewState.active = true;
-  interviewState.questionIndex = 0;
-  interviewState.answers = [];
-  interviewState.scores = [];
-  $progress.classList.add('visible');
-  updateProgressBar(0);
-  askInterviewQuestion(0);
-}
-async function askInterviewQuestion(idx) {
-  const questionTypes = [
-    'Ask a fundamental programming or CS concept question (e.g., about data structures, algorithms, OOP, time complexity, or basic programming logic). Keep it concise — one clear question.',
-    'Ask a problem-solving or coding scenario question (e.g., describe a coding scenario or ask to explain an approach to solving a problem). Keep it concise — one clear question.',
-    'Ask a behavioural / HR question suitable for campus placements (e.g., "Tell me about yourself", "Why should we hire you?", "Describe a challenge you faced"). Keep it concise — one clear question.'
-  ];
-  const systemPrompt = `You are a professional campus placement interviewer. 
-Generate exactly ONE interview question of the following type: ${questionTypes[idx]}
-Do NOT provide any answer or hints. Output only the question itself, no preamble.`;
-  try {
-    showTyping();
-    const question = await callGemini([{ role: 'user', parts: [{ text: 'Generate the interview question now.' }] }], systemPrompt);
-    removeTyping();
-    interviewState.questions[idx] = question;
-    updateProgressBar(idx);
-    const meta = `<div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Question ${idx+1} of 3</div>`;
-    appendMessage('bot', question + meta);
-  } catch (err) {
-    removeTyping();
-    appendMessage('bot', `⚠️ Error generating question: ${err.message}. Please check your API key.`);
-  }
-}
-async function submitInterviewAnswer(answer) {
-  const idx = interviewState.questionIndex;
-  interviewState.answers[idx] = answer;
-  const systemPrompt = `You are a professional campus placement interviewer evaluating a candidate's answer.
-Question asked: "${interviewState.questions[idx]}"
-Candidate's answer: "${answer}"
-Provide BRIEF feedback (under 3 sentences total) in this EXACT format:
-✅ STRENGTH: [one specific strength of this answer]
-💡 IMPROVE: [one specific improvement suggestion]
-SCORE: [integer from 1 to 10]
-Be honest, constructive, and specific. Output only the three lines above.`;
-  try {
-    showTyping();
-    const feedback = await callGemini([{ role: 'user', parts: [{ text: 'Evaluate the answer now.' }] }], systemPrompt);
-    removeTyping();
-    // Parse feedback
-    const strengthMatch = feedback.match(/✅\s*STRENGTH:\s*(.+)/i) || feedback.match(/STRENGTH:\s*(.+)/i);
-    const improveMatch  = feedback.match(/💡\s*IMPROVE:\s*(.+)/i)  || feedback.match(/IMPROVE:\s*(.+)/i);
-    const scoreMatch    = feedback.match(/SCORE:\s*(\d+)/i);
-    const strength = strengthMatch ? strengthMatch[1].trim() : 'Good attempt';
-    const improve  = improveMatch  ? improveMatch[1].trim()  : 'Keep practising';
-    const score    = scoreMatch    ? parseInt(scoreMatch[1]) : 5;
-    interviewState.scores[idx] = Math.min(10, Math.max(1, score));
-    const feedbackHtml = `
-      <strong>Feedback for Q${idx+1}:</strong>
-      <div class="feedback-badges" style="margin-top:8px;">
-        <span class="badge strength">✅ ${strength}</span>
-        <span class="badge improve">💡 ${improve}</span>
-      </div>`;
-    appendMessage('bot', feedbackHtml);
-    interviewState.questionIndex++;
-    if (interviewState.questionIndex < 3) {
-      setTimeout(() => askInterviewQuestion(interviewState.questionIndex), 800);
-    } else {
-      setTimeout(() => showFinalScore(), 800);
-    }
-  } catch (err) {
-    removeTyping();
-    appendMessage('bot', `⚠️ Error: ${err.message}`);
-  }
-}
-async function showFinalScore() {
-  updateProgressBar(3);
-  const total = interviewState.scores.reduce((a,b) => a+b, 0);
-  const avg = (total / 3).toFixed(1);
-  const summaryPrompt = `You are a career coach. A student just completed a mock campus placement interview with 3 questions.
-Scores per question: Q1=${interviewState.scores[0]}/10, Q2=${interviewState.scores[1]}/10, Q3=${interviewState.scores[2]}/10. Average: ${avg}/10.
-Write a 2-sentence encouraging summary of their performance and one key tip to improve. Be warm and motivating.`;
-  try {
-    showTyping();
-    const summary = await callGemini([{ role: 'user', parts: [{ text: 'Write the performance summary.' }] }], summaryPrompt);
-    removeTyping();
-    const grade = parseFloat(avg) >= 8 ? '🏆 Excellent' : parseFloat(avg) >= 6 ? '👍 Good' : parseFloat(avg) >= 4 ? '📈 Developing' : '💪 Keep Practising';
-    const scoreHtml = `
-      <strong>Interview Complete!</strong>
-      <div class="score-card">
-        <span class="score-number">${avg}</span>
-        <span class="score-label">Average Score out of 10 &nbsp;·&nbsp; ${grade}</span>
-        <div class="score-breakdown">
-          <div class="score-row"><span class="s-key">Q1 – Programming/CS:</span><span class="s-val">${interviewState.scores[0]}/10</span></div>
-          <div class="score-row"><span class="s-key">Q2 – Problem Solving:</span><span class="s-val">${interviewState.scores[1]}/10</span></div>
-          <div class="score-row"><span class="s-key">Q3 – HR/Behavioural:</span><span class="s-val">${interviewState.scores[2]}/10</span></div>
+    </div>
+
+    <!-- RIGHT — Robot -->
+    <div class="intro-right">
+      <div class="robot-scene">
+        <div class="orbit"><div class="orbit-dot"></div></div>
+        <div class="robot">
+          <!-- graduation cap -->
+          <div class="cap-brim"></div>
+          <div class="cap-top"></div>
+          <div class="cap-tassel"></div>
+          <div class="cap-board"></div>
+          <!-- antennas -->
+          <div class="antenna left"></div>
+          <div class="antenna right"></div>
+          <!-- head -->
+          <div class="head">
+            <div class="face-screen">
+              <div class="eye left"></div>
+              <div class="eye right"></div>
+              <div class="mouth"></div>
+            </div>
+          </div>
+          <!-- arms -->
+          <div class="arm left"></div>
+          <div class="arm right"></div>
+          <!-- body -->
+          <div class="body">
+            <div class="chest-screen">
+              <div class="bar"></div>
+              <div class="bar"></div>
+              <div class="bar"></div>
+            </div>
+          </div>
+          <!-- legs -->
+          <div class="leg left"></div>
+          <div class="leg right"></div>
+          <!-- feet -->
+          <div class="foot left"></div>
+          <div class="foot right"></div>
+          <!-- glow -->
+          <div class="robot-glow"></div>
         </div>
       </div>
-      <div style="margin-top:12px;font-size:13px;color:var(--text-secondary);line-height:1.6;">${summary}</div>
-      <div style="margin-top:14px;text-align:center;">
-        <button class="start-interview-btn" onclick="switchMode('interview')">
-          <span>🔄</span> Try Again
-        </button>
-      </div>`;
-    appendMessage('bot', scoreHtml);
-    $progress.classList.remove('visible');
-    interviewState.active = false;
-  } catch (err) {
-    removeTyping();
-    appendMessage('bot', `⚠️ Error generating summary: ${err.message}`);
-  }
-}
-function updateProgressBar(completedQuestions) {
-  const pct = (completedQuestions / 3) * 100;
-  $pFill.style.width = pct + '%';
-  const nextQ = Math.min(completedQuestions + 1, 3);
-  $qCount.textContent = completedQuestions >= 3 ? 'Completed!' : `Question ${nextQ} of 3`;
-  [$dot1, $dot2, $dot3].forEach((dot, i) => {
-    dot.classList.remove('done','current');
-    if (i < completedQuestions) dot.classList.add('done');
-    else if (i === completedQuestions && completedQuestions < 3) dot.classList.add('current');
-  });
-}
-/* ============================================================
-   SEND MESSAGE HANDLER
-   ============================================================ */
-$sendBtn.addEventListener('click', sendMessage);
-$userInput.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault();
-    sendMessage();
-  }
-});
-// Auto-resize textarea
-$userInput.addEventListener('input', () => {
-  $userInput.style.height = 'auto';
-  $userInput.style.height = Math.min($userInput.scrollHeight, 120) + 'px';
-});
-function setInput(text) {
-  $userInput.value = text;
-  $userInput.style.height = 'auto';
-}
-async function sendMessage() {
-  if (isWaiting || !GEMINI_API_KEY) return;
-  const text = $userInput.value.trim();
-  if (!text) return;
-  appendMessage('user', escapeHtml(text));
-  $userInput.value = '';
-  $userInput.style.height = 'auto';
-  if (currentMode === 'interview') {
-    if (!interviewState.active) return;
-    setWaiting(true);
-    await submitInterviewAnswer(text);
-    setWaiting(false);
-  } else {
-    setWaiting(true);
-    await handleAssistantQuery(text);
-    setWaiting(false);
-  }
-}
-/* ============================================================
-   ASSISTANT QUERY
-   ============================================================ */
-async function handleAssistantQuery(userText) {
-  const systemPrompt = `You are Edu Assist, an expert college guide for students in India. 
-You ONLY have information about these 14 new-generation colleges in India. Use ONLY the following JSON data to answer questions. Do not invent facts or reference any other colleges or institutions.
-DATA:
-${COLLEGE_JSON}
-Rules:
-1. Answer ONLY questions about the colleges in the data above.
-2. If the answer is not in the data, say: "I don't have that specific information for this college."
-3. If the question is about a college NOT in your database, say: "I only have information about the colleges listed above. Please ask about fee, location, placements, scholarships, or highlights."
-4. Keep answers concise (2-4 sentences or a short bullet list).
-5. Format numbers with ₹ symbol where appropriate.
-6. Be warm, helpful, and encouraging to students.`;
-  try {
-    showTyping();
-    const response = await callGemini([
-      { role: 'user', parts: [{ text: userText }] }
-    ], systemPrompt);
-    removeTyping();
-    appendMessage('bot', formatBotResponse(response));
-  } catch (err) {
-    removeTyping();
-    let msg = `⚠️ <strong>API Error:</strong> ${escapeHtml(err.message)}`;
-    if (err.message.includes('API_KEY') || err.message.includes('401') || err.message.includes('403')) {
-      msg += '<br><br>Please check your API key and try resetting it using the "🔑 Reset Key" button.';
-    } else if (err.message.includes('429') || err.message.includes('quota')) {
-      msg += '<br><br>You\'ve hit the rate limit. Please wait a moment and try again.';
-    }
-    appendMessage('bot', msg);
-  }
-}
-/* ============================================================
-   GEMINI API CALL
-   ============================================================ */
-async function callGemini(contents, systemInstruction) {
-  const model = 'gemini-2.0-flash';
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`;
-  
-  const body = {
-    contents,
-    systemInstruction: { parts: [{ text: systemInstruction }] },
-    generationConfig: {
-      temperature: 0.7,
-      maxOutputTokens: 512
-    }
-  };
-  const resp = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
-  });
-  if (!resp.ok) {
-    const errBody = await resp.json().catch(() => ({}));
-    const errMsg = errBody?.error?.message || `HTTP ${resp.status}`;
-    throw new Error(errMsg);
-  }
-  const data = await resp.json();
-  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-  if (!text) throw new Error('Empty response from Gemini API');
-  return text.trim();
-}
-/* ============================================================
-   UI HELPERS
-   ============================================================ */
-function appendMessage(role, htmlContent) {
-  const avatarClass = role === 'bot' ? 'bot' : 'user-av';
-  const emoji = role === 'bot' ? '🤖' : '👤';
-  const bubbleClass = role === 'bot' ? 'bot' : 'user';
-  const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  const row = document.createElement('div');
-  row.className = `msg-row ${role}`;
-  row.innerHTML = `
-    <div class="avatar ${avatarClass}">${emoji}</div>
-    <div>
-      <div class="bubble ${bubbleClass}">${htmlContent}</div>
-      <div class="msg-meta">${now}</div>
-    </div>`;
-  $messages.appendChild(row);
-  scrollToBottom();
-}
-function appendRaw(html) {
-  const div = document.createElement('div');
-  div.innerHTML = html;
-  $messages.appendChild(div);
-  scrollToBottom();
-}
-function showTyping() {
-  const el = document.createElement('div');
-  el.className = 'typing-indicator';
-  el.id = 'typing-indicator';
-  el.innerHTML = `
-    <div class="avatar bot">🤖</div>
-    <div>
-      <div class="typing-bubble">
-        <div class="typing-dot"></div>
-        <div class="typing-dot"></div>
-        <div class="typing-dot"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     CHAT PAGE
+══════════════════════════════════════════════════════ -->
+<div class="page hidden" id="chat">
+
+  <nav>
+    <div class="nav-logo" onclick="goIntro()">
+      <div class="nav-logo-icon">🎓</div>
+      Edu<span>Assist</span>
+    </div>
+    <div class="mode-tabs">
+      <button class="tab on" id="tabA" onclick="setMode('a')">🏫 College Guide</button>
+      <button class="tab" id="tabI" onclick="setMode('i')">🎤 Mock Interview</button>
+    </div>
+  </nav>
+
+  <div class="chat-body">
+    <!-- chips -->
+    <div class="chips-strip" id="chipStrip"></div>
+
+    <!-- interview bar -->
+    <div class="ibar" id="ibar">
+      <div class="ibar-top"><span id="qlabel">Question 1 of 3</span><span id="qphase"></span></div>
+      <div class="track"><div class="fill" id="fill" style="width:0%"></div></div>
+    </div>
+
+    <!-- messages -->
+    <div class="msgs" id="msgs">
+      <div class="empty" id="empty">
+        <div class="e-icon">🎓</div>
+        <h2>Ask me anything</h2>
+        <p>College fees, programs, scholarships, entrance exams, placements — or click a chip above!</p>
       </div>
-      <div class="typing-text">Edu Assist is thinking…</div>
-    </div>`;
-  $messages.appendChild(el);
-  scrollToBottom();
+    </div>
+
+    <!-- input -->
+    <div class="input-wrap">
+      <div class="input-row">
+        <textarea id="inp" rows="1" placeholder="Ask about colleges, fees, placements…" onkeydown="hk(event)" oninput="ar(this)"></textarea>
+        <button class="send" onclick="send()" title="Send">➤</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ══════════════════════════ DATA ══════════════════════════════ */
+const DB = {
+  "Newton School of Technology (NST)":{
+    short:"NST",
+    location:"Sonipat (NCR), Pune, Bengaluru, Hyderabad",
+    program:"B.Tech in CS & AI — in partnership with Rishihood University and other UGC-approved universities",
+    fee:"₹23 lakh total (residential)",
+    scholarships:"Merit-based scholarships available; check NSAT score-based waivers",
+    selection:"NSAT (Newton Scholastic Aptitude Test) — online entrance exam",
+    highlights:"Code from week one. Mentors from Google & Meta. Industry-aligned curriculum with strong peer culture.",
+    placements:"Placement assistance provided; specific package averages not publicly disclosed.",
+    link:"https://newton.school/"
+  },
+  "Scaler School of Technology (SST)":{
+    short:"Scaler / SST",
+    location:"Bengaluru, Karnataka",
+    program:"4-year B.Tech in CS & AI (residential) — dual degree option with BITS Pilani / IIT Madras",
+    fee:"₹28 lakh total (full program)",
+    scholarships:"Merit-based scholarships available via NSET score",
+    selection:"NSET (Newton School Entrance Test) — SAT scores also accepted as alternative to JEE",
+    highlights:"Project-based 'Learn by Building' philosophy. Mentor-heavy pedagogy. Dual B.Sc. option from BITS Pilani or IIT Madras.",
+    placements:"Strong industry ties via Scaler alumni network; average package not publicly disclosed.",
+    link:"https://www.scaler.com/school-of-technology/"
+  },
+  "Vedam School of Technology":{
+    short:"Vedam",
+    location:"Pune, Maharashtra & Gurugram, Haryana",
+    program:"4-year B.Tech in CS & AI",
+    fee:"₹18 lakh total (full program)",
+    scholarships:"Merit, women-in-tech, need-based — up to 100% waiver available",
+    selection:"VSAT (Vedam Scholastic Aptitude Test). Top 5% of applicants selected. JEE 90th+ percentile can skip VSAT.",
+    highlights:"AI-first curriculum. Faculty from Google, Microsoft, Amazon. MacBook provided on Day 1.",
+    placements:"1,028+ students placed. Founding cohort secured LFX mentorships and 8+ internships. Stipends up to ₹2.8 lakh.",
+    link:"https://vedamschool.com/"
+  },
+  "NIAT (NxtWave Institute of Advanced Technologies)":{
+    short:"NIAT",
+    location:"20+ partner university campuses across India (Hyderabad, Pune, Bengaluru, Chennai, Delhi NCR, Andhra Pradesh and more)",
+    program:"B.Tech in CSE / CSE with AI & ML / CSE with Data Science — degree from partner university + IRC from NIAT",
+    fee:"₹2–4.5 lakh/year depending on campus (₹8–18 lakh total); application fee ₹1,200",
+    scholarships:"Scholarship-cum-admission test on rolling basis; merit waivers available",
+    selection:"NAT (NxtWave Assessment Test) — online, 90 min; Psychometric + Aptitude + Mathematics. JEE not required.",
+    highlights:"Backed by NSDC, NASSCOM, Startup India. 50+ real-world projects. 3,000+ corporate network. Internship stipends of ₹30k/month from Year 1.",
+    placements:"Top recruiters: Microsoft, Google, Amazon. No aggregate CTC data published yet.",
+    link:"https://niat.edu.in/"
+  },
+  "100x School of Technology":{
+    short:"100x School",
+    location:"Offline campus (exact city not disclosed publicly); strong online community layer",
+    program:"4-year undergraduate CS program — community & open-source driven; verify degree-awarding university",
+    fee:"₹50,000 (bootcamp/offline program fee); full program fee — verify on official site",
+    scholarships:"Not publicly specified",
+    selection:"Entrance test / interview — check official site for current cohort",
+    highlights:"By 100xDevs (Harkirat Singh). Hands-on projects from Day 1. Open-source, peer and community learning. Modern software engineering focus.",
+    placements:"80% of early batches reported multiple job offers. One student landed ₹2 Cr/year remote role. Verify current cohort data.",
+    link:"https://school.100xdevs.com/"
+  },
+  "LeapStart School of Technology":{
+    short:"LeapStart",
+    location:"Hyderabad (primary campus)",
+    program:"4-year on-campus B.Tech in CS with specialisation in Data Science & AI",
+    fee:"Verify on official site — positions as experiential learning program",
+    scholarships:"Check official site for current merit scholarships",
+    selection:"Entrance test + interview; check leapstart.in for active batches",
+    highlights:"India's first experiential learning tech school. Curriculum reverse-engineered from industry demands. Real-world tools from Day 1. Faculty from industry + academia.",
+    placements:"Early stage — verify placement data directly with current students.",
+    link:"https://leapstart.in/"
+  },
+  "ALTA School of Technology (Sunstone)":{
+    short:"ALTA",
+    location:"Multiple cities via Sunstone partner campuses across India",
+    program:"AI-First Computer Science undergraduate program",
+    fee:"₹3.4 lakh (first year); verify total cost on official site",
+    scholarships:"Up to 100% tuition support based on A-SAT score",
+    selection:"A-SAT (ALTA Scholastic Aptitude Test)",
+    highlights:"MAANG mentors. Free GPT/Claude access. Build 20+ projects. 6-month internship guaranteed. MacBook on Day 1. 1,000+ recruiting partners.",
+    placements:"Recruiting partners include Amazon, Flipkart, Wipro, TCS, Uber, Zeta.",
+    link:"https://altaschool.in/"
+  },
+  "Mirai School of Technology":{
+    short:"Mirai",
+    location:"Online-first with hybrid model (campus location not publicly disclosed)",
+    program:"B.Tech in Artificial Intelligence & Machine Learning",
+    fee:"₹10.8–13 lakh total (approx ₹2.5–3 lakh/year)",
+    scholarships:"Up to 100% scholarship based on merit + interview performance",
+    selection:"M.A.I.N.S (Mirai National Screening Test) + Personal Interview. Accepts only top 20% of applicants.",
+    highlights:"AI-first curriculum. Google & Nvidia certifications. Mentors from MAANG companies. Highly selective — <20% acceptance.",
+    placements:"Highest reported package ₹20 LPA. 100% placement support with paid internships guaranteed.",
+    link:"https://miraiindia.com/"
+  },
+  "Plaksha University":{
+    short:"Plaksha",
+    location:"Mohali, Punjab (50-acre campus; 61 full-time faculty)",
+    program:"B.Tech in CS & AI / Data Science, Economics & Business / Robotics & Autonomous Systems / Biological Systems Engineering",
+    fee:"₹11.72 lakh (Year 1 all-in: tuition + hostel + mess + admission fee). ~₹44–48 lakh total.",
+    scholarships:"85% of enrolled students receive scholarships or financial aid. Merit-cum-need based.",
+    selection:"SAT accepted (alternative to JEE) + personal interview. Holistic review process.",
+    highlights:"Research-oriented deep-tech focus. 43+ cities represented. 35% female students. Faculty who left international roles to join.",
+    placements:"Avg CTC ₹20 LPA, Median ₹17 LPA, Highest ₹65 LPA (2025–26 batch). Range: ₹8–65 LPA.",
+    link:"https://plaksha.edu.in/"
+  },
+  "Polaris School of Technology":{
+    short:"Polaris",
+    location:"Bengaluru (DivyaSree Technopark, EPIP Zone, Brookfield)",
+    program:"CSE — three tracks: Applied AI Engineering / Product Management & Engineering / Cloud & Big Data Engineering",
+    fee:"Verify on official site — new institution, fees not widely published",
+    scholarships:"Check polariscampus.com for cohort-specific scholarships",
+    selection:"Cohort-based deadlines — check official site; no JEE requirement confirmed",
+    highlights:"Real product work inside connected tech ecosystems. AI, product, cloud and big data tracks. Bengaluru tech ecosystem exposure.",
+    placements:"Early-stage institution — talk to current students via Campus Connect before deciding.",
+    link:"https://polariscampus.com/"
+  }
+};
+
+const colleges = Object.keys(DB);
+
+/* ══════════════════════════ QUICK QUESTIONS ════════════════════ */
+const QUICK = [
+  "Cheapest colleges","100% scholarships","SAT accepted","Best placements","Compare NST vs NIAT","Which is AI-focused?"
+];
+
+/* ══════════════════════════ PAGES ══════════════════════════════ */
+function goChat(){
+  document.getElementById('intro').classList.add('hidden');
+  document.getElementById('chat').classList.remove('hidden');
 }
-function removeTyping() {
-  const el = document.getElementById('typing-indicator');
-  if (el) el.remove();
+function goIntro(){
+  document.getElementById('chat').classList.add('hidden');
+  document.getElementById('intro').classList.remove('hidden');
 }
-function clearMessages() {
-  $messages.innerHTML = '';
+
+/* ══════════════════════════ PATTERN ENGINE ═════════════════════ */
+function norm(s){return s.toLowerCase().replace(/[^\w\s]/g,' ')}
+
+function findCollege(text){
+  const t=norm(text);
+  let best=null,bs=0;
+  for(const name of colleges){
+    const d=DB[name];
+    // check short alias
+    if(t.includes(norm(d.short))) return name;
+    // word overlap
+    const words=norm(name).split(/\s+/).filter(w=>w.length>3);
+    const score=words.filter(w=>t.includes(w)).length/words.length;
+    if(score>bs){bs=score;best=name;}
+  }
+  return bs>=0.35?best:null;
 }
-function scrollToBottom() {
-  requestAnimationFrame(() => {
-    $messages.scrollTop = $messages.scrollHeight;
+
+function findIntent(text){
+  const t=norm(text);
+  const map={
+    fee:['fee','fees','cost','price','tuition','lakh','affordable','cheap','expensive','rupee','money'],
+    location:['location','where','city','state','campus','place','situated','based','address'],
+    program:['program','course','degree','btech','curriculum','branch','specialization','subject'],
+    scholarships:['scholarship','financial','aid','waiver','discount','free','grant','support'],
+    selection:['admission','entrance','exam','eligibility','apply','sat','jee','test','nsat','nset','nat','vsat'],
+    placements:['placement','job','salary','package','lpa','recruit','hire','career','ctc','offer'],
+    highlights:['highlight','special','unique','feature','about','overview','tell','best','review']
+  };
+  for(const[i,kws]of Object.entries(map)) if(kws.some(w=>t.includes(w))) return i;
+  return 'highlights';
+}
+
+function buildReply(text){
+  const t=text.trim();
+  if(!t) return null;
+
+  // Greeting
+  if(/^(hi|hello|hey|hii|good\s*(morning|evening|afternoon)|what'?s up)/i.test(t))
+    return `Hey! 👋 I'm <strong>Edu Assist</strong> — your guide to India's top new-gen tech colleges.<br><br>I cover <strong>10 colleges</strong> featured on <a href="https://campus-connect.co.in/colleges" target="_blank" style="color:var(--accent2)">Campus Connect</a>: NST, Scaler, Vedam, NIAT, 100x School, LeapStart, ALTA, Mirai, Plaksha and Polaris.<br><br>Ask me about fees, placements, scholarships, entrance exams — or switch to <strong>Mock Interview</strong> mode!`;
+
+  // Thanks
+  if(/thank|thanks|great|awesome|helpful|nice/i.test(t))
+    return `You're welcome! 😊 Ask anything else about colleges or switch to Mock Interview mode to practice!`;
+
+  // List all
+  if(/list|all college|show me|how many|which college/i.test(t)){
+    const rows=colleges.map(n=>`<tr><td><strong>${DB[n].short}</strong></td><td>${DB[n].location.split(',')[0]}</td><td>${DB[n].fee.split(';')[0]}</td></tr>`).join('');
+    return `Here are all <strong>10 new-gen colleges</strong> on Campus Connect:<br><br><table><tr><th>College</th><th>Location</th><th>Fee (approx)</th></tr>${rows}</table><br>Click a chip above or ask about any college for full details!`;
+  }
+
+  // Cheapest
+  if(/cheap|lowest fee|most affordable|budget|least expensive/i.test(t))
+    return `Most affordable new-gen colleges:<br><br>🥇 <strong>ALTA School of Technology</strong> — ₹3.4 lakh (Year 1)<br><span class="tag">Up to 100% scholarship via A-SAT</span><br><br>🥈 <strong>NIAT</strong> — ₹2–4.5 lakh/year<br><span class="tag">20+ campus options across India</span><br><br>🥉 <strong>Mirai School of Technology</strong> — ₹2.5–3 lakh/year<br><span class="tag">Up to 100% merit scholarship</span><br><br>Want details on any of these?`;
+
+  // 100% scholarship
+  if(/100.?%|full scholarship|completely free|zero fee/i.test(t)){
+    const full=colleges.filter(n=>DB[n].scholarships.includes('100%'));
+    return `Colleges offering <strong>up to 100% scholarships</strong>:<br><br>${full.map(n=>`• <strong>${DB[n].short}</strong> — ${DB[n].scholarships}`).join('<br><br>')}<br><br>Scholarships are merit-based — score well on their entrance tests!`;
+  }
+
+  // SAT
+  if(/\bsat\b/i.test(t)){
+    const sat=colleges.filter(n=>DB[n].selection.toLowerCase().includes('sat'));
+    return `Colleges accepting <strong>SAT scores</strong> (no JEE needed):<br><br>${sat.map(n=>`• <strong>${DB[n].short}</strong><br><span style="color:var(--muted);font-size:.82rem">${DB[n].selection}</span>`).join('<br><br>')}`;
+  }
+
+  // Best placements
+  if(/best placement|highest package|top package|highest ctc|most salary/i.test(t))
+    return `Colleges with strongest publicly disclosed placement data:<br><br>🏆 <strong>Plaksha University</strong> — Avg ₹20 LPA, Highest ₹65 LPA (2025–26)<br>🥈 <strong>Mirai School of Technology</strong> — Highest ₹20 LPA, 100% placement support<br>🥉 <strong>ALTA School</strong> — 1,000+ recruiting partners incl. Amazon, Flipkart, Uber<br><br>Most other colleges don't publicly disclose package averages yet.`;
+
+  // AI focused
+  if(/ai.?focus|artificial intel|best for ai|which.*ai/i.test(t))
+    return `Most <strong>AI-focused</strong> new-gen colleges:<br><br>• <strong>Scaler SST</strong> — B.Tech in CS & AI + dual degree from BITS/IIT Madras<br>• <strong>Vedam</strong> — AI-first curriculum, Google/Microsoft/Amazon faculty<br>• <strong>Mirai</strong> — B.Tech specifically in AI & ML; Google + Nvidia certifications<br>• <strong>ALTA</strong> — AI-First CS program with MAANG mentors<br>• <strong>Plaksha</strong> — CS & AI, Data Science, Robotics tracks<br><br>All 10 colleges have some AI component — the degree name varies!`;
+
+  // Compare
+  if(/compar|vs\b|versus|better.*than|difference between/i.test(t)){
+    const found=colleges.filter(n=>{
+      const s=norm(DB[n].short);const nm=norm(n);
+      return norm(t).includes(s.split(' ')[0])||nm.split(' ').some(w=>w.length>3&&norm(t).includes(w));
+    });
+    if(found.length>=2){
+      const [a,b]=found;
+      const fields=['location','fee','program','scholarships','selection','placements'];
+      const icons={location:'📍',fee:'💰',program:'📚',scholarships:'🎓',selection:'✅',placements:'💼'};
+      const rows=fields.map(f=>`<tr><td style="color:var(--muted);font-size:.78rem">${icons[f]} ${f}</td><td>${DB[a][f]}</td><td>${DB[b][f]}</td></tr>`).join('');
+      return `<table><tr><th>📊</th><th>${DB[a].short}</th><th>${DB[b].short}</th></tr>${rows}</table>`;
+    }
+    return `Please name two colleges to compare! E.g. "Compare NST vs NIAT" or "Scaler vs Plaksha".`;
+  }
+
+  // Single college
+  const college=findCollege(t);
+  if(college){
+    const d=DB[college];
+    const intent=findIntent(t);
+    const icons={fee:'💰',location:'📍',program:'📚',scholarships:'🎓',selection:'✅',placements:'💼',highlights:'🌟'};
+    if(intent!=='highlights'){
+      return `<strong>${college}</strong><br><br>${icons[intent]} <strong>${intent.charAt(0).toUpperCase()+intent.slice(1)}:</strong><br>${d[intent]}<br><br><span class="tag">📍 ${d.location.split(',')[0]}</span><span class="tag">💰 ${d.fee.split(';')[0]}</span>`;
+    }
+    return `<strong>${college}</strong><br><br><table>
+<tr><th>Field</th><th>Details</th></tr>
+<tr><td>📍 Location</td><td>${d.location}</td></tr>
+<tr><td>📚 Program</td><td>${d.program}</td></tr>
+<tr><td>💰 Fee</td><td>${d.fee}</td></tr>
+<tr><td>🎓 Scholarships</td><td>${d.scholarships}</td></tr>
+<tr><td>✅ Selection</td><td>${d.selection}</td></tr>
+<tr><td>🌟 Highlights</td><td>${d.highlights}</td></tr>
+<tr><td>💼 Placements</td><td>${d.placements}</td></tr>
+</table><br><a href="${d.link}" target="_blank" style="color:var(--accent2);font-size:.8rem">🔗 Official site →</a>`;
+  }
+
+  return `I have data on <strong>10 new-gen colleges</strong> from <a href="https://campus-connect.co.in/colleges" target="_blank" style="color:var(--accent2)">Campus Connect</a>.<br><br><span class="tag">💰 Fees</span><span class="tag">📍 Locations</span><span class="tag">🎓 Scholarships</span><span class="tag">✅ Entrance exams</span><span class="tag">💼 Placements</span><br><br>Try: <em>"Tell me about ALTA"</em> or <em>"Which colleges accept SAT?"</em>`;
+}
+
+/* ══════════════════════════ INTERVIEW ENGINE ════════════════════ */
+const IQS={
+  hr:["Tell me about yourself and why you chose tech as a career.","Where do you see yourself in 5 years?","Describe a challenge you faced and how you overcame it.","What is your greatest strength, and one area you're actively improving?","Why should we hire you over other candidates?"],
+  tech:["Explain the difference between an array and a linked list. When would you prefer each?","What is Big O notation? Give examples of O(n) and O(n²).","What is the difference between a stack and a queue? Give a real-world use case for each.","What is a recursive function? Write pseudocode for factorial(n).","Explain object-oriented programming and its four core principles.","What is a hash table and why is average lookup O(1)?","What is the difference between process and thread?","Explain what REST API is and how HTTP methods are used."],
+  aptitude:["A train covers 300 km in 5 hours. Another covers the same in 3 hours. What is the difference in their speeds?","You have 9 balls — one is heavier. Using a balance scale only twice, find the heavy ball.","A snail climbs 3 m up a wall during the day and slides 1 m back at night. How many days to climb 10 m?","Two coders finish a module in 6 days. How many days would 3 coders of equal ability take?","If you flip a fair coin 3 times, what is the probability of getting at least 2 heads?"]
+};
+
+let mode='a';
+let is=0; let iscores=[]; let iqs=[]; let await_ans=false;
+
+function pickQ(t){return IQS[t][Math.floor(Math.random()*IQS[t].length)]}
+function getQ(n){
+  if(n===1)return{q:pickQ('hr'),type:'HR'};
+  if(n===2)return{q:pickQ('tech'),type:'Technical'};
+  return{q:pickQ('aptitude'),type:'Problem Solving'};
+}
+function scoreAns(ans,type){
+  let s=5;const l=ans.trim().length;
+  if(l>200)s+=2;else if(l>100)s+=1;else if(l<30)s-=2;
+  const kw={tech:['time complexity','big o','array','linked list','recursive','algorithm','stack','queue','pointer','oop'],hr:['team','challenge','learn','achieve','goal','project','skill','passion','experience'],aptitude:['speed','total','per day','balance','days','result','answer','probability']};
+  s+=Math.min(2,(kw[type.toLowerCase().replace(' ','')]||[]).filter(w=>ans.toLowerCase().includes(w)).length);
+  s=Math.max(1,Math.min(10,s));
+  const str={tech:['Good technical awareness.','Shows CS fundamentals.','Solid foundational knowledge.'],hr:['Clear confident delivery.','Good self-awareness.','Well-structured answer.'],aptitude:['Logical approach shown.','Good analytical thinking.','Methodical problem breakdown.']}[type.toLowerCase().replace(' ','')] || ['Good attempt.'];
+  const imp={tech:['Add time/space complexity analysis.','Include a concrete code example.','Mention edge cases for depth.'],hr:['Use the STAR method for impact.','Back claims with a specific example.','Keep it under 90 seconds.'],aptitude:['Show step-by-step working.','State your assumptions upfront.','Double-check the arithmetic.']}[type.toLowerCase().replace(' ','')] || ['Keep practising!'];
+  return{s,fb:`✅ <strong>Strength:</strong> ${str[Math.floor(Math.random()*str.length)]}<br>💡 <strong>Improve:</strong> ${imp[Math.floor(Math.random()*imp.length)]}`};
+}
+
+/* ══════════════════════════ UI HELPERS ══════════════════════════ */
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')}
+function addMsg(role,html){
+  const c=document.getElementById('msgs');
+  const e=c.querySelector('.empty');if(e)e.remove();
+  const d=document.createElement('div');
+  d.className=`msg ${role}`;
+  d.innerHTML=`<div class="av ${role}">${role==='b'?'🤖':'👤'}</div><div class="bub">${html}</div>`;
+  c.appendChild(d);c.scrollTop=c.scrollHeight;
+}
+function addUserMsg(t){addMsg('u',esc(t))}
+
+let typEl=null;
+function showTyping(){
+  const c=document.getElementById('msgs');
+  const d=document.createElement('div');d.className='msg b';d.id='typing';
+  d.innerHTML=`<div class="av b">🤖</div><div class="bub"><div class="dots"><span></span><span></span><span></span></div></div>`;
+  c.appendChild(d);c.scrollTop=c.scrollHeight;typEl=d;
+}
+function hideTyping(){if(typEl){typEl.remove();typEl=null;}}
+
+function delay(ms){return new Promise(r=>setTimeout(r,ms))}
+
+function updBar(){
+  const bar=document.getElementById('ibar');
+  if(mode!=='i'){bar.classList.remove('on');return;}
+  bar.classList.add('on');
+  document.getElementById('fill').style.width=is<=0?'0%':is>=4?'100%':((is-1)/3*100)+'%';
+  document.getElementById('qlabel').textContent=is<=0?'Starting…':is>=4?'Complete':`Question ${is} of 3`;
+  document.getElementById('qphase').textContent=is>=4?'✅':await_ans?'Your turn →':'';
+}
+
+/* ══════════════════════════ MODES ═══════════════════════════════ */
+function setMode(m){
+  mode=m;
+  document.getElementById('tabA').classList.toggle('on',m==='a');
+  document.getElementById('tabI').classList.toggle('on',m==='i');
+  document.getElementById('chipStrip').style.display=m==='a'?'flex':'none';
+  document.getElementById('msgs').innerHTML='';
+  is=0;iscores=[];iqs=[];await_ans=false;updBar();
+  if(m==='a'){
+    document.getElementById('inp').placeholder='Ask about colleges, fees, placements…';
+    document.getElementById('msgs').innerHTML=`<div class="empty" id="empty"><div class="e-icon">🎓</div><h2>Ask me anything</h2><p>Click a college chip or ask about fees, placements, scholarships, entrance exams and more.</p></div>`;
+  } else {
+    document.getElementById('inp').placeholder='Type your answer here…';
+    startInterview();
+  }
+}
+
+/* ══════════════════════════ SEND ════════════════════════════════ */
+async function send(){
+  const inp=document.getElementById('inp');
+  const t=inp.value.trim();if(!t)return;
+  inp.value='';inp.style.height='auto';
+  addUserMsg(t);
+  showTyping();
+  await delay(380+Math.random()*280);
+  if(mode==='a'){
+    hideTyping();addMsg('b',buildReply(t));
+  } else {
+    await handleInterview(t);
+  }
+}
+
+/* ══════════════════════════ INTERVIEW ═══════════════════════════ */
+async function startInterview(){
+  is=0;iscores=[];iqs=[];await_ans=false;updBar();
+  showTyping();await delay(550);hideTyping();
+  addMsg('b',`<strong>Welcome to Mock Interview! 🎤</strong><br><br>I'll ask you <strong>3 questions</strong> — HR, Technical, and Problem Solving.<br>You'll get instant feedback after each answer, then a final score out of 10.<br><br>Answer as if it's a real placement interview. Let's go! 🚀`);
+  await delay(700);await askQ();
+}
+async function askQ(){
+  is++;updBar();
+  const{q,type}=getQ(is);
+  iqs.push({q,type:type.toLowerCase().replace(' ','')});
+  showTyping();await delay(650);hideTyping();
+  addMsg('b',`<span style="color:var(--accent2);font-size:.74rem;font-weight:600">Q${is} OF 3 — ${type}</span><br><br>${q}`);
+  await_ans=true;updBar();
+}
+async function handleInterview(t){
+  if(!await_ans){hideTyping();addMsg('b','Please wait for the next question. 😊');return;}
+  await_ans=false;
+  const q=iqs[is-1];
+  const{s,fb}=scoreAns(t,q.type);
+  iscores.push(s);
+  await delay(250);hideTyping();
+  addMsg('b',`<span style="color:var(--green);font-size:.74rem;font-weight:600">FEEDBACK — Q${is}</span><br><br>${fb}`);
+  if(is<3){await delay(800);await askQ();}
+  else{await delay(800);await finishInterview();}
+}
+async function finishInterview(){
+  is=4;updBar();showTyping();await delay(700);hideTyping();
+  const avg=(iscores.reduce((a,b)=>a+b,0)/3).toFixed(1);
+  const grade=avg>=8?'Excellent 🌟':avg>=6?'Good 👍':avg>=4?'Keep practising 💪':'Room to grow — don\'t stop! 🔥';
+  const c=document.getElementById('msgs');const e=c.querySelector('.empty');if(e)e.remove();
+  const d=document.createElement('div');d.className='msg b';
+  d.innerHTML=`<div class="av b">🤖</div><div class="bub"><div class="score-card">
+    <h3>🏆 Interview Complete!</h3>
+    <div class="score-num">${avg}<span style="font-size:1.1rem;background:none;-webkit-text-fill-color:var(--muted);color:var(--muted)">/10</span></div>
+    <p style="margin-top:8px;color:var(--muted);font-size:.83rem;line-height:1.55"><strong>Verdict:</strong> ${grade}</p>
+    <p style="margin-top:8px;color:var(--muted);font-size:.8rem;line-height:1.6">${iqs.map((q,i)=>`Q${i+1} (${q.type}): <strong>${iscores[i]}/10</strong>`).join(' &nbsp;·&nbsp; ')}</p>
+    <button class="retry-btn" onclick="setMode('i')">🔄 Try Again</button>
+  </div></div>`;
+  c.appendChild(d);c.scrollTop=c.scrollHeight;
+}
+
+/* ══════════════════════════ CHIPS ═══════════════════════════════ */
+function buildChips(){
+  const strip=document.getElementById('chipStrip');
+  // college chips
+  colleges.forEach(name=>{
+    const b=document.createElement('button');b.className='chip';
+    b.textContent=DB[name].short;b.title=name;
+    b.onclick=()=>{document.getElementById('inp').value=`Tell me about ${name}`;send();};
+    strip.appendChild(b);
+  });
+  // divider
+  const sep=document.createElement('span');sep.style='width:1px;background:var(--border);margin:0 4px';strip.appendChild(sep);
+  // quick questions
+  QUICK.forEach(q=>{
+    const b=document.createElement('button');b.className='qchip';b.textContent=q;
+    b.onclick=()=>{document.getElementById('inp').value=q;send();};
+    strip.appendChild(b);
   });
 }
-function setWaiting(v) {
-  isWaiting = v;
-  $sendBtn.disabled = v;
-  $userInput.disabled = v;
-  $tabAssist.style.pointerEvents = v ? 'none' : '';
-  $tabIntvw.style.pointerEvents  = v ? 'none' : '';
-}
-function escapeHtml(str) {
-  const d = document.createElement('div');
-  d.appendChild(document.createTextNode(str));
-  return d.innerHTML;
-}
-function formatBotResponse(text) {
-  // Convert markdown-like syntax to HTML
-  return text
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    .replace(/`(.+?)`/g, '<code style="background:rgba(108,99,255,0.15);padding:1px 6px;border-radius:4px;font-size:12px;">$1</code>')
-    .replace(/^[-•]\s+(.+)$/gm, '• $1')
-    .replace(/\n\n/g, '<br><br>')
-    .replace(/\n/g, '<br>');
-}
-/* ============================================================
-   SHAKE KEYFRAME (injected)
-   ============================================================ */
-(function injectShake() {
-  const style = document.createElement('style');
-  style.textContent = `@keyframes shake {
-    0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-6px)} 80%{transform:translateX(6px)}
-  }`;
-  document.head.appendChild(style);
-})();
-/* ============================================================
-   INIT
-   ============================================================ */
-loadKey();
+
+function hk(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}}
+function ar(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px';}
+
+buildChips();
 </script>
 </body>
 </html>

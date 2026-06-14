@@ -333,6 +333,41 @@ nav{
 .dots span:nth-child(3){animation-delay:0.4s;}
 @keyframes bounce{0%,80%,100%{transform:translateY(0);}40%{transform:translateY(-6px);}}
 
+/* ─── SUGGESTION CARDS ─── */
+.sugg-wrap{
+  display:flex;gap:10px;padding:12px 20px 8px;
+  background:rgba(250,247,240,0.95);backdrop-filter:blur(12px);
+  border-top:1px solid var(--border2);
+  transition:opacity 0.4s ease, transform 0.4s ease, max-height 0.5s cubic-bezier(0.4,0,0.2,1);
+  max-height:120px;overflow:hidden;
+}
+.sugg-wrap.gone{
+  opacity:0;pointer-events:none;max-height:0;padding-top:0;padding-bottom:0;border:none;
+  transform:translateY(10px);
+}
+.sugg-card{
+  flex:1;min-width:0;
+  display:flex;align-items:center;gap:10px;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:14px;padding:11px 14px;
+  cursor:pointer;transition:all 0.22s cubic-bezier(0.34,1.56,0.64,1);
+  position:relative;overflow:hidden;
+}
+.sugg-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(201,151,43,0.1),rgba(232,184,75,0.05));
+  opacity:0;transition:opacity 0.2s;
+}
+.sugg-card:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 8px 24px rgba(201,151,43,0.15);}
+.sugg-card:hover::before{opacity:1;}
+.sugg-card:hover .sugg-arrow{transform:translateX(4px);color:var(--gold);}
+.sugg-card:active{transform:scale(0.97);}
+.sugg-icon{font-size:1.4rem;flex-shrink:0;line-height:1;}
+.sugg-text{flex:1;min-width:0;}
+.sugg-title{font-size:0.78rem;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sugg-desc{font-size:0.68rem;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sugg-arrow{font-size:0.9rem;color:var(--muted);flex-shrink:0;transition:all 0.2s;}
+
 /* input */
 .input-wrap{
   padding:12px 20px 20px;
@@ -369,6 +404,8 @@ nav{
   .pill-row,.stats-row{justify-content:center;}
   .btn-cta{align-self:center;}
   .bubble{max-width:90%;}
+  .sugg-wrap{flex-direction:column;max-height:260px;}
+  .sugg-card{flex-direction:row;}
 }
 </style>
 </head>
@@ -519,6 +556,34 @@ nav{
         <div class="welcome-icon">✨</div>
         <h2>Ask about top 4 new-gen colleges</h2>
         <p>Compare Scaler, NST, Vedam, NIAT — fees, scholarships, placements & more.</p>
+      </div>
+    </div>
+
+    <!-- 3 SUGGESTION CARDS above input -->
+    <div class="sugg-wrap" id="suggWrap">
+      <div class="sugg-card" onclick="firesugg(this)" data-q="Compare Scaler vs Vedam — fees, placements & scholarships">
+        <div class="sugg-icon">⚖️</div>
+        <div class="sugg-text">
+          <div class="sugg-title">Compare colleges</div>
+          <div class="sugg-desc">Scaler vs Vedam — fees & placements</div>
+        </div>
+        <div class="sugg-arrow">→</div>
+      </div>
+      <div class="sugg-card" onclick="firesugg(this)" data-q="Which colleges offer 100% scholarships and how to apply?">
+        <div class="sugg-icon">🎓</div>
+        <div class="sugg-text">
+          <div class="sugg-title">100% scholarships</div>
+          <div class="sugg-desc">Who offers full fee waivers?</div>
+        </div>
+        <div class="sugg-arrow">→</div>
+      </div>
+      <div class="sugg-card" onclick="firesugg(this)" data-q="Best placements among Scaler, NST, Vedam and NIAT — top recruiters?">
+        <div class="sugg-icon">💼</div>
+        <div class="sugg-text">
+          <div class="sugg-title">Best placements</div>
+          <div class="sugg-desc">Top recruiters across all 4 colleges</div>
+        </div>
+        <div class="sugg-arrow">→</div>
       </div>
     </div>
 
@@ -722,9 +787,21 @@ function scroll(){let c=document.getElementById('msgs');c.scrollTop=c.scrollHeig
 function pause(ms){return new Promise(r=>setTimeout(r,ms));}
 function esc(s){return s.replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));}
 
+function firesugg(card){
+  let q=card.getAttribute('data-q');
+  hideSugg();
+  document.getElementById('inp').value=q;
+  send();
+}
+function hideSugg(){
+  let w=document.getElementById('suggWrap');
+  if(w) w.classList.add('gone');
+}
+
 async function send(){
   let inp=document.getElementById('inp');
   let txt=inp.value.trim();if(!txt) return;
+  hideSugg();
   inp.value='';inp.style.height='auto';
   addMsg('user',esc(txt));
   showTyping();await pause(450);hideTyping();
@@ -740,8 +817,9 @@ function setMode(m){
   let msgs=document.getElementById('msgs');
   msgs.innerHTML='';
   if(m==='a'){
+    let sw=document.getElementById('suggWrap');if(sw) sw.classList.remove('gone');
     msgs.innerHTML='<div class="welcome" id="welcome"><div class="welcome-icon">🎓</div><h2>College Guide Mode</h2><p>Compare Scaler, NST, Vedam, NIAT on fees, scholarships & placements.</p></div>';
-  } else startInterview();
+  } else { let sw=document.getElementById('suggWrap');if(sw) sw.classList.add('gone'); startInterview(); }
 }
 
 function buildChips(){

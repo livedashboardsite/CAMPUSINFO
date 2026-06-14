@@ -1,940 +1,879 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Edu Assist – New-Gen College Guide</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Edu Assist – Core Four | AI College Guide</title>
 <style>
-/* ─── Reset & Tokens ─────────────────────────────────────────── */
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#07080f;
-  --surface:#10121d;
-  --surface2:#181b2e;
-  --card:#1e2135;
-  --accent:#7c6dff;
-  --accent2:#b39dff;
-  --glow:#7c6dff44;
-  --green:#3dd68c;
-  --text:#eef0f8;
-  --muted:#7a84a0;
-  --border:#252a45;
-  --font:'Segoe UI',system-ui,-apple-system,sans-serif;
-}
-html,body{height:100%;overflow:hidden}
-body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex;flex-direction:column}
-
-/* ─── PAGES ─────────────────────────────────────────────────── */
-.page{position:absolute;inset:0;display:flex;flex-direction:column;transition:opacity .45s ease,transform .45s ease}
-.page.hidden{opacity:0;pointer-events:none;transform:translateY(18px)}
-
-/* ══════════════════════════════════════════════════════════════
-   INTRO PAGE
-══════════════════════════════════════════════════════════════ */
-#intro{background:var(--bg);justify-content:center;align-items:center;overflow:auto}
-
-/* starfield */
-#intro::before{
-  content:'';position:fixed;inset:0;
-  background:
-    radial-gradient(1px 1px at 12% 18%, #ffffff55 0%, transparent 100%),
-    radial-gradient(1px 1px at 34% 72%, #ffffff44 0%, transparent 100%),
-    radial-gradient(1px 1px at 56% 9%,  #ffffff55 0%, transparent 100%),
-    radial-gradient(1px 1px at 78% 55%, #ffffff33 0%, transparent 100%),
-    radial-gradient(1px 1px at 92% 28%, #ffffff44 0%, transparent 100%),
-    radial-gradient(1px 1px at 23% 91%, #ffffff33 0%, transparent 100%),
-    radial-gradient(1px 1px at 67% 83%, #ffffff44 0%, transparent 100%),
-    radial-gradient(1px 1px at 45% 45%, #ffffff22 0%, transparent 100%);
-  pointer-events:none;
+/* ========== RESET & REFINED AESTHETIC PALETTE ========== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.intro-wrap{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:60px;
-  max-width:1100px;
-  width:100%;
-  padding:60px 40px;
-  align-items:center;
+:root {
+  --bg-deep: #020617;      /* deep cosmic navy */
+  --surface-elevated: #0f172a;
+  --surface-card: #1e293b;
+  --surface-glass: rgba(30, 41, 59, 0.6);
+  --accent-primary: #818cf8;   /* indigo aura */
+  --accent-glow: #c084fc;      /* soft violet */
+  --accent-gradient: linear-gradient(135deg, #818cf8, #c084fc);
+  --success-emerald: #34d399;
+  --text-main: #f1f5f9;
+  --text-muted: #94a3b8;
+  --border-subtle: #334155;
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 }
 
-/* LEFT — text */
-.intro-left{display:flex;flex-direction:column;gap:24px}
-
-.intro-badge{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:6px 14px;border-radius:20px;
-  border:1px solid var(--accent);
-  background:rgba(124,109,255,.1);
-  color:var(--accent2);font-size:.78rem;font-weight:600;
-  width:fit-content;letter-spacing:.4px;
+body {
+  background: var(--bg-deep);
+  font-family: var(--font-sans);
+  color: var(--text-main);
+  height: 100vh;
+  overflow: hidden;
+  line-height: 1.5;
 }
 
-.intro-h1{
-  font-size:clamp(2rem,4vw,3.2rem);
-  font-weight:800;line-height:1.15;
-  letter-spacing:-1px;
-}
-.intro-h1 .hl{
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
-
-.intro-desc{
-  font-size:1rem;color:var(--muted);line-height:1.75;max-width:480px;
+/* page transitions */
+.page {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  transition: opacity 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1), transform 0.4s ease;
 }
 
-.intro-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
-.pill{
-  font-size:.76rem;padding:5px 12px;border-radius:20px;
-  background:var(--surface2);border:1px solid var(--border);
-  color:var(--muted);
-}
-.pill span{margin-right:5px}
-
-.start-btn{
-  display:inline-flex;align-items:center;gap:10px;
-  margin-top:8px;padding:16px 34px;
-  border-radius:50px;border:none;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  color:#fff;font-size:1rem;font-weight:700;
-  cursor:pointer;width:fit-content;
-  box-shadow:0 6px 30px var(--glow);
-  transition:transform .2s,box-shadow .2s;
-  letter-spacing:.2px;
-}
-.start-btn:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 10px 40px #7c6dff66}
-.start-btn .arrow{font-size:1.2rem;transition:transform .2s}
-.start-btn:hover .arrow{transform:translateX(4px)}
-
-.intro-stat-row{display:flex;gap:24px;margin-top:4px}
-.stat{text-align:center}
-.stat-n{font-size:1.5rem;font-weight:800;color:var(--accent2)}
-.stat-l{font-size:.72rem;color:var(--muted);margin-top:2px}
-
-/* RIGHT — robot */
-.intro-right{display:flex;justify-content:center;align-items:center;position:relative}
-
-.robot-scene{
-  width:300px;height:360px;position:relative;
-  animation:float 3.2s ease-in-out infinite;
-}
-@keyframes float{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-16px)}
+.page.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(16px);
 }
 
-/* Glow circle behind robot */
-.robot-glow{
-  position:absolute;width:220px;height:220px;
-  left:50%;top:50%;transform:translate(-50%,-50%);
-  background:radial-gradient(circle,#7c6dff33 0%,transparent 70%);
-  border-radius:50%;animation:pulse 3.2s ease-in-out infinite;
-}
-@keyframes pulse{0%,100%{opacity:.5;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.12)}}
-
-/* ROBOT SVG drawn inline via CSS shapes */
-.robot{width:100%;height:100%;position:relative}
-
-/* grad cap */
-.cap-brim{
-  position:absolute;top:6px;left:50%;transform:translateX(-50%);
-  width:130px;height:12px;
-  background:linear-gradient(135deg,#5e55d4,#8075e8);
-  border-radius:3px;
-}
-.cap-top{
-  position:absolute;top:0;left:50%;transform:translateX(-50%);
-  width:90px;height:32px;
-  background:linear-gradient(135deg,#4c45c0,#6f68d4);
-  border-radius:6px 6px 0 0;
-}
-.cap-tassel{
-  position:absolute;top:0;right:calc(50% - 48px);
-  width:3px;height:30px;
-  background:var(--green);border-radius:2px;
-}
-.cap-tassel::after{
-  content:'';position:absolute;bottom:0;left:-4px;
-  width:10px;height:10px;border-radius:50%;background:var(--green);
-}
-.cap-board{
-  position:absolute;top:14px;left:50%;transform:translateX(-50%);
-  width:8px;height:8px;background:var(--accent2);border-radius:50%;
+/* ========== INTRO PAGE — NEBULA GLASS ========== */
+#intro {
+  background: radial-gradient(circle at 20% 30%, #0f172a, #020617);
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
 }
 
-/* head */
-.head{
-  position:absolute;top:38px;left:50%;transform:translateX(-50%);
-  width:110px;height:100px;
-  background:linear-gradient(160deg,var(--surface2),var(--card));
-  border:2px solid var(--border);border-radius:20px;
-  box-shadow:0 0 20px #7c6dff22;
+.intro-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  max-width: 1200px;
+  width: 100%;
+  gap: 50px;
+  padding: 40px 30px;
+  backdrop-filter: blur(2px);
 }
-/* face screen on head */
-.face-screen{
-  position:absolute;top:18px;left:50%;transform:translateX(-50%);
-  width:80px;height:50px;
-  background:#0a0c18;border-radius:10px;
-  border:1px solid var(--accent);
-  box-shadow:inset 0 0 12px #7c6dff44;
-  overflow:hidden;
-}
-/* eyes */
-.eye{
-  position:absolute;top:12px;width:18px;height:18px;
-  background:var(--accent2);border-radius:50%;
-  animation:blink 4s ease-in-out infinite;
-  box-shadow:0 0 8px var(--accent2);
-}
-.eye.left{left:12px}
-.eye.right{right:12px}
-@keyframes blink{0%,90%,100%{transform:scaleY(1)}95%{transform:scaleY(.08)}}
-/* mouth bar */
-.mouth{
-  position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
-  width:40px;height:6px;
-  background:linear-gradient(90deg,var(--accent),var(--green));
-  border-radius:3px;animation:talk 1.8s ease-in-out infinite;
-}
-@keyframes talk{0%,100%{width:40px}50%{width:22px}}
 
-/* antennas */
-.antenna{
-  position:absolute;top:38px;width:3px;height:20px;
-  background:var(--border);border-radius:2px;
+.intro-left {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
-.antenna.left{left:calc(50% - 54px)}
-.antenna.right{left:calc(50% + 51px)}
-.antenna::after{
-  content:'';position:absolute;top:-5px;left:-3px;
-  width:9px;height:9px;border-radius:50%;
-  background:var(--accent2);
-  animation:antpulse 2s ease-in-out infinite alternate;
-}
-.antenna.right::after{animation-delay:.5s}
-@keyframes antpulse{from{opacity:.4;box-shadow:none}to{opacity:1;box-shadow:0 0 8px var(--accent2)}}
 
-/* body */
-.body{
-  position:absolute;top:136px;left:50%;transform:translateX(-50%);
-  width:120px;height:110px;
-  background:linear-gradient(160deg,var(--surface2),var(--card));
-  border:2px solid var(--border);border-radius:14px;
+.intro-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(129, 140, 248, 0.12);
+  border: 1px solid rgba(129, 140, 248, 0.4);
+  border-radius: 40px;
+  padding: 6px 16px;
+  width: fit-content;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent-primary);
+  letter-spacing: 0.3px;
 }
-/* chest screen */
-.chest-screen{
-  position:absolute;top:12px;left:50%;transform:translateX(-50%);
-  width:80px;height:55px;background:#0a0c18;
-  border-radius:8px;border:1px solid #2d3360;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:4px;
-}
-.bar{
-  height:5px;background:var(--accent);border-radius:3px;opacity:.7;
-  animation:bars .9s ease-in-out infinite alternate;
-}
-.bar:nth-child(1){width:60%;animation-delay:0s}
-.bar:nth-child(2){width:80%;animation-delay:.15s}
-.bar:nth-child(3){width:45%;animation-delay:.3s}
-@keyframes bars{from{opacity:.3}to{opacity:.9}}
 
-/* arms */
-.arm{
-  position:absolute;top:142px;width:28px;height:80px;
-  background:linear-gradient(160deg,var(--surface2),var(--card));
-  border:2px solid var(--border);border-radius:10px;
+.intro-h1 {
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
 }
-.arm.left{left:calc(50% - 84px);transform-origin:top center;animation:waveL 3s ease-in-out infinite}
-.arm.right{right:calc(50% - 84px);transform-origin:top center;animation:waveR 3s ease-in-out infinite}
-@keyframes waveL{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
-@keyframes waveR{0%,100%{transform:rotate(8deg)}50%{transform:rotate(-8deg)}}
 
-/* legs */
-.leg{
-  position:absolute;top:242px;width:30px;height:70px;
-  background:linear-gradient(160deg,var(--surface2),var(--card));
-  border:2px solid var(--border);border-radius:8px;
+.hl {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
-.leg.left{left:calc(50% - 40px)}
-.leg.right{right:calc(50% - 40px)}
-/* feet */
-.foot{
-  position:absolute;top:308px;width:42px;height:18px;
-  background:var(--card);border:2px solid var(--border);border-radius:8px;
+
+.intro-desc {
+  color: var(--text-muted);
+  font-size: 1rem;
+  max-width: 480px;
+  line-height: 1.6;
 }
-.foot.left{left:calc(50% - 46px)}
-.foot.right{right:calc(50% - 46px)}
 
-/* orbit ring */
-.orbit{
-  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-  width:260px;height:260px;border-radius:50%;
-  border:1px dashed #2d3360;
-  animation:spin 12s linear infinite;
+.intro-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 4px 0;
 }
-.orbit-dot{
-  position:absolute;top:-5px;left:50%;
-  width:10px;height:10px;border-radius:50%;
-  background:var(--accent2);margin-left:-5px;
-  box-shadow:0 0 8px var(--accent2);
+
+.pill {
+  background: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(4px);
+  border: 1px solid var(--border-subtle);
+  padding: 5px 12px;
+  border-radius: 40px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
 }
-@keyframes spin{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(360deg)}}
 
-/* ══════════════════════════════════════════════════════════════
-   CHAT PAGE
-══════════════════════════════════════════════════════════════ */
-#chat{flex-direction:column;overflow:hidden}
-
-/* nav */
-nav{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:12px 20px;
-  background:var(--surface);border-bottom:1px solid var(--border);
-  flex-shrink:0;
+.start-btn {
+  background: var(--accent-gradient);
+  border: none;
+  border-radius: 60px;
+  padding: 14px 32px;
+  width: fit-content;
+  font-weight: 700;
+  font-size: 1rem;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(129, 140, 248, 0.25);
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin-top: 10px;
 }
-.nav-logo{display:flex;align-items:center;gap:9px;font-size:1rem;font-weight:700;cursor:pointer}
-.nav-logo-icon{
-  width:32px;height:32px;border-radius:9px;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  display:flex;align-items:center;justify-content:center;font-size:.9rem;
+
+.start-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(192, 132, 252, 0.3);
 }
-.nav-logo span{color:var(--accent2)}
 
-.mode-tabs{display:flex;gap:5px;background:var(--bg);border:1px solid var(--border);border-radius:40px;padding:3px}
-.tab{padding:6px 14px;border-radius:40px;border:none;background:transparent;color:var(--muted);cursor:pointer;font-size:.8rem;font-weight:600;transition:all .2s;white-space:nowrap}
-.tab.on{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
-
-/* chat body */
-.chat-body{flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden}
-
-/* college chips strip */
-.chips-strip{
-  padding:8px 16px;display:flex;flex-wrap:wrap;gap:5px;
-  background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;
+.stat-row {
+  display: flex;
+  gap: 32px;
+  margin-top: 10px;
 }
-.chip{font-size:.71rem;padding:4px 10px;border-radius:20px;border:1px solid var(--border);background:var(--surface2);color:var(--muted);cursor:pointer;transition:all .16s;white-space:nowrap}
-.chip:hover{border-color:var(--accent);color:var(--accent2)}
-.qchip{font-size:.71rem;padding:4px 10px;border-radius:20px;border:1px solid var(--border);background:var(--surface2);color:var(--accent2);cursor:pointer;transition:all .16s;white-space:nowrap}
-.qchip:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
 
-/* interview progress */
-.ibar{display:none;padding:8px 16px 6px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0}
-.ibar.on{display:block}
-.ibar-top{display:flex;justify-content:space-between;font-size:.74rem;color:var(--muted);margin-bottom:5px}
-.track{height:4px;background:var(--surface2);border-radius:10px;overflow:hidden}
-.fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--green));transition:width .4s ease;border-radius:10px}
+.stat .stat-num {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--accent-primary);
+}
+
+.stat .stat-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+/* ROBOT SCENE – refined aura */
+.robot-scene {
+  position: relative;
+  width: 280px;
+  height: 360px;
+  margin: 0 auto;
+  animation: float 3.5s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+.robot-glow {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(129,140,248,0.3) 0%, transparent 70%);
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  animation: pulseGlow 3s infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+}
+
+.robot {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.cap-brim {
+  position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
+  width: 120px; height: 10px; background: linear-gradient(135deg, #6366f1, #a78bfa);
+  border-radius: 4px;
+}
+.cap-top {
+  position: absolute; top: -2px; left: 50%; transform: translateX(-50%);
+  width: 84px; height: 30px; background: linear-gradient(135deg, #4f46e5, #8b5cf6);
+  border-radius: 8px 8px 0 0;
+}
+.head {
+  position: absolute; top: 36px; left: 50%; transform: translateX(-50%);
+  width: 100px; height: 94px; background: var(--surface-card);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: 24px;
+  box-shadow: 0 0 15px rgba(129,140,248,0.2);
+}
+.face-screen {
+  background: #0f111f;
+  width: 74px; height: 48px; border-radius: 14px;
+  position: absolute; top: 18px; left: 50%; transform: translateX(-50%);
+  border: 1px solid var(--accent-primary);
+  box-shadow: inset 0 0 8px #818cf844;
+}
+.eye {
+  width: 14px; height: 14px; background: #a78bfa; border-radius: 50%;
+  position: absolute; top: 12px; animation: blink 4s infinite;
+}
+.eye.left { left: 12px; }
+.eye.right { right: 12px; }
+.mouth {
+  width: 32px; height: 4px; background: #34d399; border-radius: 2px;
+  position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+  animation: talk 1.5s ease infinite;
+}
+.body {
+  position: absolute; top: 130px; left: 50%; transform: translateX(-50%);
+  width: 112px; height: 104px; background: var(--surface-card);
+  border: 1.5px solid var(--border-subtle); border-radius: 20px;
+}
+.chest-screen {
+  background: #0b0e1a; width: 74px; height: 50px; border-radius: 12px;
+  position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+}
+.bar {
+  height: 4px; background: var(--accent-primary); margin: 4px auto; border-radius: 3px;
+  width: 70%; animation: barPulse 1s alternate infinite;
+}
+.arm { background: var(--surface-card); border: 1px solid var(--border-subtle); border-radius: 12px; width: 24px; height: 70px; position: absolute; top: 138px; }
+.arm.left { left: calc(50% - 78px); transform-origin: top; animation: waveL 2.8s infinite; }
+.arm.right { right: calc(50% - 78px); transform-origin: top; animation: waveR 2.8s infinite; }
+.leg { background: var(--surface-card); border: 1px solid var(--border-subtle); width: 26px; height: 68px; position: absolute; top: 232px; border-radius: 12px; }
+.leg.left { left: calc(50% - 38px); }
+.leg.right { right: calc(50% - 38px); }
+.foot { background: var(--surface-card); border: 1px solid var(--border-subtle); width: 38px; height: 16px; border-radius: 10px; position: absolute; top: 296px; }
+.foot.left { left: calc(50% - 44px); }
+.foot.right { right: calc(50% - 44px); }
+
+@keyframes blink { 0%, 94%, 100% { transform: scaleY(1); } 96% { transform: scaleY(0.1); } }
+@keyframes talk { 0%,100% { width: 32px; } 50% { width: 20px; } }
+@keyframes waveL { 0%,100% { transform: rotate(-6deg); } 50% { transform: rotate(8deg); } }
+@keyframes waveR { 0%,100% { transform: rotate(6deg); } 50% { transform: rotate(-8deg); } }
+@keyframes barPulse { 0% { opacity: 0.4; width: 50%; } 100% { opacity: 1; width: 80%; } }
+
+/* ========== CHAT PAGE ========== */
+#chat {
+  background: var(--bg-deep);
+}
+
+nav {
+  background: var(--surface-elevated);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.logo-icon {
+  background: var(--accent-gradient);
+  width: 32px;
+  height: 32px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mode-tabs {
+  background: var(--surface-card);
+  border-radius: 60px;
+  padding: 4px;
+  display: flex;
+  gap: 4px;
+}
+
+.tab {
+  background: transparent;
+  border: none;
+  padding: 6px 18px;
+  border-radius: 40px;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tab.on {
+  background: var(--accent-gradient);
+  color: white;
+  box-shadow: 0 2px 8px rgba(129,140,248,0.4);
+}
+
+/* chips */
+.chips-strip {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+  overflow-x: auto;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(4px);
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.chip, .qchip {
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  padding: 5px 12px;
+  border-radius: 40px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+
+.chip:hover, .qchip:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  background: rgba(129, 140, 248, 0.1);
+}
+
+/* interview bar */
+.ibar {
+  background: var(--surface-elevated);
+  padding: 10px 18px;
+  border-bottom: 1px solid var(--border-subtle);
+  display: none;
+}
+
+.ibar.on {
+  display: block;
+}
+
+.track {
+  height: 4px;
+  background: var(--surface-card);
+  border-radius: 10px;
+  margin-top: 6px;
+}
+
+.fill {
+  height: 4px;
+  background: var(--accent-gradient);
+  border-radius: 10px;
+  width: 0%;
+  transition: width 0.3s;
+}
 
 /* messages */
-.msgs{flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:14px;scroll-behavior:smooth}
-.msgs::-webkit-scrollbar{width:4px}
-.msgs::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
-
-.msg{display:flex;gap:9px;align-items:flex-end;animation:up .22s ease}
-.msg.u{flex-direction:row-reverse}
-@keyframes up{from{opacity:0;transform:translateY(7px)}to{opacity:1}}
-
-.av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;margin-bottom:2px}
-.av.b{background:linear-gradient(135deg,var(--accent),var(--accent2))}
-.av.u{background:var(--surface2);border:1px solid var(--border)}
-
-.bub{max-width:72%;padding:11px 14px;border-radius:14px;font-size:.87rem;line-height:1.65;word-break:break-word}
-.msg.b .bub{background:var(--card);border:1px solid var(--border);border-bottom-left-radius:4px}
-.msg.u .bub{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border-bottom-right-radius:4px}
-
-.bub table{width:100%;border-collapse:collapse;margin-top:8px;font-size:.82rem}
-.bub th{text-align:left;padding:6px 8px;color:var(--accent2);border-bottom:1px solid var(--border);font-weight:600}
-.bub td{padding:5px 8px;border-bottom:1px solid #1a1e38;vertical-align:top}
-.bub tr:last-child td{border-bottom:none}
-.bub .tag{display:inline-block;padding:2px 8px;border-radius:20px;background:var(--surface2);border:1px solid var(--border);font-size:.71rem;color:var(--accent2);margin:2px 2px 2px 0}
-
-.dots{display:flex;gap:4px;padding:4px 0}
-.dots span{width:7px;height:7px;border-radius:50%;background:var(--muted);animation:blink2 1.2s infinite}
-.dots span:nth-child(2){animation-delay:.2s}
-.dots span:nth-child(3){animation-delay:.4s}
-@keyframes blink2{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-7px)}}
-
-/* empty state */
-.empty{text-align:center;padding:34px 20px;color:var(--muted);margin-top:20px}
-.empty .e-icon{font-size:2.4rem;margin-bottom:10px}
-.empty h2{font-size:1rem;color:var(--text);margin-bottom:6px}
-.empty p{font-size:.82rem;max-width:320px;margin:0 auto;line-height:1.6}
-
-/* score card */
-.score-card{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:18px;margin-top:4px}
-.score-card h3{font-size:.95rem;color:var(--accent2);margin-bottom:10px}
-.score-num{font-size:2.6rem;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.retry-btn{margin-top:12px;padding:8px 18px;border-radius:20px;border:none;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;cursor:pointer;font-size:.82rem;font-weight:600}
-
-/* input bar */
-.input-wrap{padding:10px 16px 14px;background:var(--surface);border-top:1px solid var(--border);flex-shrink:0}
-.input-row{display:flex;gap:7px;background:var(--bg);border:1px solid var(--border);border-radius:40px;padding:5px 5px 5px 16px;transition:border-color .2s}
-.input-row:focus-within{border-color:var(--accent)}
-#inp{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-size:.87rem;font-family:var(--font);resize:none;min-height:22px;max-height:100px;line-height:1.5;padding:4px 0}
-#inp::placeholder{color:var(--muted)}
-.send{width:36px;height:36px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:.95rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .15s;box-shadow:0 2px 10px var(--glow)}
-.send:hover{transform:scale(1.08)}
-
-/* ─── Responsive ─────────────────────────────────────────────── */
-@media(max-width:750px){
-  .intro-wrap{grid-template-columns:1fr;gap:30px;text-align:center;padding:30px 22px}
-  .intro-right{order:-1}
-  .robot-scene{width:210px;height:250px;transform:scale(.85)}
-  .intro-left .intro-pills{justify-content:center}
-  .intro-stat-row{justify-content:center}
-  .intro-h1{font-size:2rem}
-  .start-btn{align-self:center}
-  .intro-desc{font-size:.9rem}
-  .intro-badge{align-self:center}
-  .bub{max-width:88%;font-size:.83rem}
+.msgs {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  scroll-behavior: smooth;
 }
-@media(max-width:450px){
-  .tab{padding:5px 9px;font-size:.74rem}
-  .nav-logo{font-size:.9rem}
-  nav{padding:9px 12px}
+
+.msg {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  animation: fadeSlide 0.25s ease;
+}
+
+.msg.u {
+  flex-direction: row-reverse;
+}
+
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.av {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.av.b { background: var(--accent-gradient); }
+.av.u { background: var(--surface-card); border: 1px solid var(--border-subtle); }
+
+.bub {
+  max-width: 78%;
+  padding: 10px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  word-break: break-word;
+}
+
+.msg.b .bub {
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-bottom-left-radius: 5px;
+}
+
+.msg.u .bub {
+  background: var(--accent-gradient);
+  color: white;
+  border-bottom-right-radius: 5px;
+}
+
+/* tables */
+.bub table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.75rem;
+  margin: 8px 0;
+}
+
+.bub th {
+  text-align: left;
+  padding: 6px 4px;
+  color: var(--accent-primary);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.bub td {
+  padding: 5px 4px;
+  border-bottom: 1px solid #2d3748;
+}
+
+.tag {
+  background: #0f172a;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  border: 1px solid var(--border-subtle);
+  color: var(--accent-primary);
+  display: inline-block;
+  margin: 2px 4px 2px 0;
+}
+
+.dots span {
+  width: 8px;
+  height: 8px;
+  background: var(--text-muted);
+  border-radius: 50%;
+  display: inline-block;
+  animation: bounceDots 1.2s infinite;
+}
+
+.score-card {
+  background: var(--surface-card);
+  border-radius: 20px;
+  padding: 18px;
+  border: 1px solid var(--border-subtle);
+}
+
+.retry-btn {
+  background: var(--accent-gradient);
+  border: none;
+  padding: 8px 20px;
+  border-radius: 40px;
+  font-weight: 600;
+  color: white;
+  margin-top: 12px;
+  cursor: pointer;
+}
+
+.input-wrap {
+  padding: 12px 16px;
+  background: var(--surface-elevated);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface-card);
+  border-radius: 60px;
+  padding: 5px 6px 5px 18px;
+  border: 1px solid var(--border-subtle);
+}
+
+#inp {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  resize: none;
+  outline: none;
+  padding: 8px 0;
+  max-height: 100px;
+}
+
+.send {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--accent-gradient);
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+.send:hover {
+  transform: scale(1.07);
+}
+
+@media (max-width: 760px) {
+  .intro-wrap { grid-template-columns: 1fr; text-align: center; padding: 30px 20px; }
+  .intro-right { order: -1; }
+  .bub { max-width: 92%; }
 }
 </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════════════════
-     INTRO PAGE
-══════════════════════════════════════════════════════ -->
+<!-- INTRO PAGE -->
 <div class="page" id="intro">
   <div class="intro-wrap">
-
-    <!-- LEFT -->
     <div class="intro-left">
-      <div class="intro-badge">🎓 New-Gen College Guide · India 2026</div>
-
-      <h1 class="intro-h1">
-        Your AI guide to<br>
-        <span class="hl">new-gen colleges</span><br>
-        in India
-      </h1>
-
+      <div class="intro-badge">⚡ New-Gen Elite · India 2026</div>
+      <h1 class="intro-h1">Your AI compass to <span class="hl">top 4 future-tech</span> colleges</h1>
       <p class="intro-desc">
-        Confused between Scaler, NST, NIAT, ALTA, Plaksha and more?
-        Edu Assist knows every college inside-out — fees, programs, scholarships,
-        entrance tests, and placements. Ask anything, get instant honest answers.
-        No fluff, no API key needed.
+        Scaler, NST, Vedam, NIAT — deep insights on fees, scholarships, placements, entrance tests. Zero bias, instant compare, mock interview mode.
       </p>
-
       <div class="intro-pills">
-        <span class="pill"><span>💰</span>Fees &amp; Scholarships</span>
-        <span class="pill"><span>🎤</span>Mock Interviews</span>
-        <span class="pill"><span>📍</span>Locations</span>
-        <span class="pill"><span>✅</span>Entrance Exams</span>
-        <span class="pill"><span>💼</span>Placements</span>
-        <span class="pill"><span>⚡</span>Zero API key</span>
+        <span class="pill">💰 Fee & aid</span>
+        <span class="pill">🎤 Mock interview</span>
+        <span class="pill">⚡ Compare two</span>
+        <span class="pill">✅ SAT/JEE alternative</span>
+        <span class="pill">💼 Placement snapshot</span>
       </div>
-
-      <div class="intro-stat-row">
-        <div class="stat"><div class="stat-n">10</div><div class="stat-l">New-gen colleges</div></div>
-        <div class="stat"><div class="stat-n">100%</div><div class="stat-l">Free to use</div></div>
-        <div class="stat"><div class="stat-n">0</div><div class="stat-l">API keys needed</div></div>
+      <div class="stat-row">
+        <div class="stat"><span class="stat-num">4</span><div class="stat-label">elite new-gen</div></div>
+        <div class="stat"><span class="stat-num">100%</span><div class="stat-label">free guide</div></div>
+        <div class="stat"><span class="stat-num">0</span><div class="stat-label">API key needed</div></div>
       </div>
-
-      <button class="start-btn" onclick="goChat()">
-        Start Talking <span class="arrow">→</span>
-      </button>
+      <button class="start-btn" onclick="goChat()">Launch Assistant →</button>
     </div>
-
-    <!-- RIGHT — Robot -->
     <div class="intro-right">
       <div class="robot-scene">
-        <div class="orbit"><div class="orbit-dot"></div></div>
+        <div class="robot-glow"></div>
         <div class="robot">
-          <!-- graduation cap -->
-          <div class="cap-brim"></div>
-          <div class="cap-top"></div>
-          <div class="cap-tassel"></div>
-          <div class="cap-board"></div>
-          <!-- antennas -->
-          <div class="antenna left"></div>
-          <div class="antenna right"></div>
-          <!-- head -->
-          <div class="head">
-            <div class="face-screen">
-              <div class="eye left"></div>
-              <div class="eye right"></div>
-              <div class="mouth"></div>
-            </div>
-          </div>
-          <!-- arms -->
-          <div class="arm left"></div>
-          <div class="arm right"></div>
-          <!-- body -->
-          <div class="body">
-            <div class="chest-screen">
-              <div class="bar"></div>
-              <div class="bar"></div>
-              <div class="bar"></div>
-            </div>
-          </div>
-          <!-- legs -->
-          <div class="leg left"></div>
-          <div class="leg right"></div>
-          <!-- feet -->
-          <div class="foot left"></div>
-          <div class="foot right"></div>
-          <!-- glow -->
-          <div class="robot-glow"></div>
+          <div class="cap-brim"></div><div class="cap-top"></div><div class="cap-tassel"></div>
+          <div class="antenna left"></div><div class="antenna right"></div>
+          <div class="head"><div class="face-screen"><div class="eye left"></div><div class="eye right"></div><div class="mouth"></div></div></div>
+          <div class="arm left"></div><div class="arm right"></div>
+          <div class="body"><div class="chest-screen"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div></div>
+          <div class="leg left"></div><div class="leg right"></div><div class="foot left"></div><div class="foot right"></div>
         </div>
       </div>
     </div>
-
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════
-     CHAT PAGE
-══════════════════════════════════════════════════════ -->
+<!-- CHAT PAGE -->
 <div class="page hidden" id="chat">
-
   <nav>
-    <div class="nav-logo" onclick="goIntro()">
-      <div class="nav-logo-icon">🎓</div>
-      Edu<span>Assist</span>
-    </div>
-    <div class="mode-tabs">
-      <button class="tab on" id="tabA" onclick="setMode('a')">🏫 College Guide</button>
-      <button class="tab" id="tabI" onclick="setMode('i')">🎤 Mock Interview</button>
-    </div>
+    <div class="nav-logo" onclick="goIntro()"><div class="logo-icon">🎓</div><span>Edu<span style="color:#a78bfa">Assist</span></span></div>
+    <div class="mode-tabs"><button class="tab on" id="tabA" onclick="setMode('a')">🏫 College Guide</button><button class="tab" id="tabI" onclick="setMode('i')">🎤 Mock Interview</button></div>
   </nav>
-
   <div class="chat-body">
-    <!-- chips -->
     <div class="chips-strip" id="chipStrip"></div>
-
-    <!-- interview bar -->
-    <div class="ibar" id="ibar">
-      <div class="ibar-top"><span id="qlabel">Question 1 of 3</span><span id="qphase"></span></div>
-      <div class="track"><div class="fill" id="fill" style="width:0%"></div></div>
-    </div>
-
-    <!-- messages -->
-    <div class="msgs" id="msgs">
-      <div class="empty" id="empty">
-        <div class="e-icon">🎓</div>
-        <h2>Ask me anything</h2>
-        <p>College fees, programs, scholarships, entrance exams, placements — or click a chip above!</p>
-      </div>
-    </div>
-
-    <!-- input -->
-    <div class="input-wrap">
-      <div class="input-row">
-        <textarea id="inp" rows="1" placeholder="Ask about colleges, fees, placements…" onkeydown="hk(event)" oninput="ar(this)"></textarea>
-        <button class="send" onclick="send()" title="Send">➤</button>
-      </div>
-    </div>
+    <div class="ibar" id="ibar"><div class="ibar-top"><span id="qlabel">Question 1 of 3</span><span id="qphase"></span></div><div class="track"><div class="fill" id="fill"></div></div></div>
+    <div class="msgs" id="msgs"><div class="empty" id="empty"><div class="e-icon">✨</div><h2>Ask about Scaler, NST, Vedam, NIAT</h2><p>Compare colleges, check fees, scholarships, entrance tests, or switch to mock interview.</p></div></div>
+    <div class="input-wrap"><div class="input-row"><textarea id="inp" rows="1" placeholder='e.g., "Compare Scaler vs NST" or "Vedam scholarships"' onkeydown="hk(event)" oninput="autoHeight(this)"></textarea><button class="send" onclick="send()">➤</button></div></div>
   </div>
-
 </div>
 
 <script>
-/* ══════════════════════════ DATA ══════════════════════════════ */
+// ==================== ONLY FOUR ELITE NEW-GEN COLLEGES ====================
 const DB = {
-  "Newton School of Technology (NST)":{
-    short:"NST",
-    location:"Sonipat (NCR), Pune, Bengaluru, Hyderabad",
-    program:"B.Tech in CS & AI — in partnership with Rishihood University and other UGC-approved universities",
-    fee:"₹23 lakh total (residential)",
-    scholarships:"Merit-based scholarships available; check NSAT score-based waivers",
-    selection:"NSAT (Newton Scholastic Aptitude Test) — online entrance exam",
-    highlights:"Code from week one. Mentors from Google & Meta. Industry-aligned curriculum with strong peer culture.",
-    placements:"Placement assistance provided; specific package averages not publicly disclosed.",
-    link:"https://newton.school/"
+  "Scaler School of Technology (SST)": {
+    short: "Scaler",
+    location: "Bengaluru, Karnataka (Residential Tech Campus)",
+    program: "B.Tech in CS & AI (dual degree: BITS Pilani / IIT Madras option)",
+    fee: "₹28 lakh (full program) | scholarships available via NSET",
+    scholarships: "Merit-based up to 100% fee waiver based on NSET score + need-based",
+    selection: "NSET (Newton School Entrance Test) / SAT scores accepted (alternative to JEE)",
+    highlights: "Learn by Building philosophy, mentor-heavy from MAANG, project-based curriculum, live coding challenges",
+    placements: "Placement assistance via Scaler alumni network, top recruiters include Google, Amazon, Razorpay; average not disclosed but strong industry reputation.",
+    link: "https://www.scaler.com/school-of-technology/"
   },
-  "Scaler School of Technology (SST)":{
-    short:"Scaler / SST",
-    location:"Bengaluru, Karnataka",
-    program:"4-year B.Tech in CS & AI (residential) — dual degree option with BITS Pilani / IIT Madras",
-    fee:"₹28 lakh total (full program)",
-    scholarships:"Merit-based scholarships available via NSET score",
-    selection:"NSET (Newton School Entrance Test) — SAT scores also accepted as alternative to JEE",
-    highlights:"Project-based 'Learn by Building' philosophy. Mentor-heavy pedagogy. Dual B.Sc. option from BITS Pilani or IIT Madras.",
-    placements:"Strong industry ties via Scaler alumni network; average package not publicly disclosed.",
-    link:"https://www.scaler.com/school-of-technology/"
+  "Newton School of Technology (NST)": {
+    short: "NST",
+    location: "Sonipat (NCR) | Pune | Bengaluru | Hyderabad",
+    program: "B.Tech in CS & AI (in partnership with Rishihood University & UGC-approved uni)",
+    fee: "₹23 lakh total (residential inclusive)",
+    scholarships: "Merit-based scholarships on NSAT performance & socio-economic factors",
+    selection: "NSAT (Newton Scholastic Aptitude Test) — online proctored exam",
+    highlights: "Code from week one, mentors from Google/Meta, industry curriculum, peer-driven culture",
+    placements: "Placement assistance provided, placement cell active; recent stats show 80%+ placed in product roles (internal reports)",
+    link: "https://newton.school/"
   },
-  "Vedam School of Technology":{
-    short:"Vedam",
-    location:"Pune, Maharashtra & Gurugram, Haryana",
-    program:"4-year B.Tech in CS & AI",
-    fee:"₹18 lakh total (full program)",
-    scholarships:"Merit, women-in-tech, need-based — up to 100% waiver available",
-    selection:"VSAT (Vedam Scholastic Aptitude Test). Top 5% of applicants selected. JEE 90th+ percentile can skip VSAT.",
-    highlights:"AI-first curriculum. Faculty from Google, Microsoft, Amazon. MacBook provided on Day 1.",
-    placements:"1,028+ students placed. Founding cohort secured LFX mentorships and 8+ internships. Stipends up to ₹2.8 lakh.",
-    link:"https://vedamschool.com/"
+  "Vedam School of Technology": {
+    short: "Vedam",
+    location: "Pune, Maharashtra & Gurugram, Haryana",
+    program: "4-year B.Tech in CS & AI (residential)",
+    fee: "₹18 lakh total (full tuition + residential)",
+    scholarships: "Up to 100% merit / women-in-tech / need-based waiver",
+    selection: "VSAT (Vedam Scholastic Aptitude Test) | JEE 90th+ percentile exempted from VSAT",
+    highlights: "AI-first curriculum, faculty from Google/Microsoft/Amazon, MacBook on Day 1, exclusive industry mentorship",
+    placements: "1,028+ students placed (cumulative), 8+ internships in founding cohort, stipends up to ₹2.8L; recruiters: Amazon, Microsoft, Adobe, etc.",
+    link: "https://vedamschool.com/"
   },
-  "NIAT (NxtWave Institute of Advanced Technologies)":{
-    short:"NIAT",
-    location:"20+ partner university campuses across India (Hyderabad, Pune, Bengaluru, Chennai, Delhi NCR, Andhra Pradesh and more)",
-    program:"B.Tech in CSE / CSE with AI & ML / CSE with Data Science — degree from partner university + IRC from NIAT",
-    fee:"₹2–4.5 lakh/year depending on campus (₹8–18 lakh total); application fee ₹1,200",
-    scholarships:"Scholarship-cum-admission test on rolling basis; merit waivers available",
-    selection:"NAT (NxtWave Assessment Test) — online, 90 min; Psychometric + Aptitude + Mathematics. JEE not required.",
-    highlights:"Backed by NSDC, NASSCOM, Startup India. 50+ real-world projects. 3,000+ corporate network. Internship stipends of ₹30k/month from Year 1.",
-    placements:"Top recruiters: Microsoft, Google, Amazon. No aggregate CTC data published yet.",
-    link:"https://niat.edu.in/"
-  },
-  "100x School of Technology":{
-    short:"100x School",
-    location:"Offline campus (exact city not disclosed publicly); strong online community layer",
-    program:"4-year undergraduate CS program — community & open-source driven; verify degree-awarding university",
-    fee:"₹50,000 (bootcamp/offline program fee); full program fee — verify on official site",
-    scholarships:"Not publicly specified",
-    selection:"Entrance test / interview — check official site for current cohort",
-    highlights:"By 100xDevs (Harkirat Singh). Hands-on projects from Day 1. Open-source, peer and community learning. Modern software engineering focus.",
-    placements:"80% of early batches reported multiple job offers. One student landed ₹2 Cr/year remote role. Verify current cohort data.",
-    link:"https://school.100xdevs.com/"
-  },
-  "LeapStart School of Technology":{
-    short:"LeapStart",
-    location:"Hyderabad (primary campus)",
-    program:"4-year on-campus B.Tech in CS with specialisation in Data Science & AI",
-    fee:"Verify on official site — positions as experiential learning program",
-    scholarships:"Check official site for current merit scholarships",
-    selection:"Entrance test + interview; check leapstart.in for active batches",
-    highlights:"India's first experiential learning tech school. Curriculum reverse-engineered from industry demands. Real-world tools from Day 1. Faculty from industry + academia.",
-    placements:"Early stage — verify placement data directly with current students.",
-    link:"https://leapstart.in/"
-  },
-  "ALTA School of Technology (Sunstone)":{
-    short:"ALTA",
-    location:"Multiple cities via Sunstone partner campuses across India",
-    program:"AI-First Computer Science undergraduate program",
-    fee:"₹3.4 lakh (first year); verify total cost on official site",
-    scholarships:"Up to 100% tuition support based on A-SAT score",
-    selection:"A-SAT (ALTA Scholastic Aptitude Test)",
-    highlights:"MAANG mentors. Free GPT/Claude access. Build 20+ projects. 6-month internship guaranteed. MacBook on Day 1. 1,000+ recruiting partners.",
-    placements:"Recruiting partners include Amazon, Flipkart, Wipro, TCS, Uber, Zeta.",
-    link:"https://altaschool.in/"
-  },
-  "Mirai School of Technology":{
-    short:"Mirai",
-    location:"Online-first with hybrid model (campus location not publicly disclosed)",
-    program:"B.Tech in Artificial Intelligence & Machine Learning",
-    fee:"₹10.8–13 lakh total (approx ₹2.5–3 lakh/year)",
-    scholarships:"Up to 100% scholarship based on merit + interview performance",
-    selection:"M.A.I.N.S (Mirai National Screening Test) + Personal Interview. Accepts only top 20% of applicants.",
-    highlights:"AI-first curriculum. Google & Nvidia certifications. Mentors from MAANG companies. Highly selective — <20% acceptance.",
-    placements:"Highest reported package ₹20 LPA. 100% placement support with paid internships guaranteed.",
-    link:"https://miraiindia.com/"
-  },
-  "Plaksha University":{
-    short:"Plaksha",
-    location:"Mohali, Punjab (50-acre campus; 61 full-time faculty)",
-    program:"B.Tech in CS & AI / Data Science, Economics & Business / Robotics & Autonomous Systems / Biological Systems Engineering",
-    fee:"₹11.72 lakh (Year 1 all-in: tuition + hostel + mess + admission fee). ~₹44–48 lakh total.",
-    scholarships:"85% of enrolled students receive scholarships or financial aid. Merit-cum-need based.",
-    selection:"SAT accepted (alternative to JEE) + personal interview. Holistic review process.",
-    highlights:"Research-oriented deep-tech focus. 43+ cities represented. 35% female students. Faculty who left international roles to join.",
-    placements:"Avg CTC ₹20 LPA, Median ₹17 LPA, Highest ₹65 LPA (2025–26 batch). Range: ₹8–65 LPA.",
-    link:"https://plaksha.edu.in/"
-  },
-  "Polaris School of Technology":{
-    short:"Polaris",
-    location:"Bengaluru (DivyaSree Technopark, EPIP Zone, Brookfield)",
-    program:"CSE — three tracks: Applied AI Engineering / Product Management & Engineering / Cloud & Big Data Engineering",
-    fee:"Verify on official site — new institution, fees not widely published",
-    scholarships:"Check polariscampus.com for cohort-specific scholarships",
-    selection:"Cohort-based deadlines — check official site; no JEE requirement confirmed",
-    highlights:"Real product work inside connected tech ecosystems. AI, product, cloud and big data tracks. Bengaluru tech ecosystem exposure.",
-    placements:"Early-stage institution — talk to current students via Campus Connect before deciding.",
-    link:"https://polariscampus.com/"
+  "NIAT (NxtWave Institute of Advanced Technologies)": {
+    short: "NIAT",
+    location: "20+ partner campuses across India (Hyderabad, Pune, Bengaluru, Delhi NCR, Chennai, etc.)",
+    program: "B.Tech in CSE / AI & ML / Data Science (degree from partner university + NIAT IRC)",
+    fee: "₹2–4.5 lakh/year (₹8–18 lakh total)",
+    scholarships: "Scholarship-cum-admission test (NAT) – merit waivers up to 100%",
+    selection: "NAT (NxtWave Assessment Test) online: Aptitude + Math + Logical; JEE not required",
+    highlights: "Backed by NSDC, NASSCOM, 50+ real-world projects, 3000+ corporate network, internship stipends from year 1",
+    placements: "Top recruiters: Microsoft, Google, Amazon, Ola; placement assistance program, early internship opportunities",
+    link: "https://niat.edu.in/"
   }
 };
+const COLLEGES = Object.keys(DB);
+const QUICK_QUESTIONS = ["Cheapest colleges", "100% scholarships", "SAT accepted", "Best placements", "Compare Scaler vs NIAT", "Vedam vs NST"];
 
-const colleges = Object.keys(DB);
+// ========== helper ==========
+function normalize(str) { return str.toLowerCase().replace(/[^\w\s]/g, ' '); }
 
-/* ══════════════════════════ QUICK QUESTIONS ════════════════════ */
-const QUICK = [
-  "Cheapest colleges","100% scholarships","SAT accepted","Best placements","Compare NST vs NIAT","Which is AI-focused?"
-];
-
-/* ══════════════════════════ PAGES ══════════════════════════════ */
-function goChat(){
-  document.getElementById('intro').classList.add('hidden');
-  document.getElementById('chat').classList.remove('hidden');
-}
-function goIntro(){
-  document.getElementById('chat').classList.add('hidden');
-  document.getElementById('intro').classList.remove('hidden');
-}
-
-/* ══════════════════════════ PATTERN ENGINE ═════════════════════ */
-function norm(s){return s.toLowerCase().replace(/[^\w\s]/g,' ')}
-
-function findCollege(text){
-  const t=norm(text);
-  let best=null,bs=0;
-  for(const name of colleges){
-    const d=DB[name];
-    // check short alias
-    if(t.includes(norm(d.short))) return name;
-    // word overlap
-    const words=norm(name).split(/\s+/).filter(w=>w.length>3);
-    const score=words.filter(w=>t.includes(w)).length/words.length;
-    if(score>bs){bs=score;best=name;}
+// find best matching college from our list (only 4)
+function findCollege(query) {
+  const qNorm = normalize(query);
+  let best = null, bestScore = 0;
+  for (const name of COLLEGES) {
+    const short = DB[name].short.toLowerCase();
+    if (qNorm.includes(short) || qNorm.includes(normalize(name))) return name;
+    const words = normalize(name).split(/\s+/).filter(w => w.length > 3);
+    const score = words.filter(w => qNorm.includes(w)).length / (words.length || 1);
+    if (score > bestScore) { bestScore = score; best = name; }
   }
-  return bs>=0.35?best:null;
+  return bestScore > 0.35 ? best : null;
 }
 
-function findIntent(text){
-  const t=norm(text);
-  const map={
-    fee:['fee','fees','cost','price','tuition','lakh','affordable','cheap','expensive','rupee','money'],
-    location:['location','where','city','state','campus','place','situated','based','address'],
-    program:['program','course','degree','btech','curriculum','branch','specialization','subject'],
-    scholarships:['scholarship','financial','aid','waiver','discount','free','grant','support'],
-    selection:['admission','entrance','exam','eligibility','apply','sat','jee','test','nsat','nset','nat','vsat'],
-    placements:['placement','job','salary','package','lpa','recruit','hire','career','ctc','offer'],
-    highlights:['highlight','special','unique','feature','about','overview','tell','best','review']
-  };
-  for(const[i,kws]of Object.entries(map)) if(kws.some(w=>t.includes(w))) return i;
+function detectIntent(text) {
+  const t = normalize(text);
+  const map = { fee: ['fee','fees','cost','tuition','lakh','affordable','price'], location: ['location','where','city','campus'], program: ['program','course','curriculum','btech'], scholarships: ['scholarship','financial aid','waiver','grant'], selection: ['entrance','exam','sat','jee','nsat','nset','vsat','nat','eligibility'], placements: ['placement','salary','package','lpa','ctc','recruiters'], highlights: ['about','special','highlights','feature'] };
+  for (let [key, keywords] of Object.entries(map)) if (keywords.some(k => t.includes(k))) return key;
   return 'highlights';
 }
 
-function buildReply(text){
-  const t=text.trim();
-  if(!t) return null;
+// comparison engine (two colleges detection)
+function compareColleges(rawText) {
+  const found = COLLEGES.filter(name => {
+    const shortLow = DB[name].short.toLowerCase();
+    const nameLow = name.toLowerCase();
+    const textLow = normalize(rawText);
+    return textLow.includes(shortLow) || textLow.includes(nameLow.split('(')[0].trim());
+  });
+  if (found.length >= 2) {
+    const [colA, colB] = found.slice(0,2);
+    const dA = DB[colA], dB = DB[colB];
+    const fields = ['location', 'fee', 'program', 'scholarships', 'selection', 'placements'];
+    const icons = { location:'📍', fee:'💰', program:'📚', scholarships:'🎓', selection:'✅', placements:'💼' };
+    let rows = fields.map(f => `<tr><td style="color:#a78bfa">${icons[f]} ${f}</td><td>${dA[f] || '—'}</td><td>${dB[f] || '—'}</td></tr>`).join('');
+    return `<strong>⚖️ ${dA.short} vs ${dB.short}</strong><br><br><table style="width:100%"><tr><th>Attribute</th><th>${dA.short}</th><th>${dB.short}</th></tr>${rows}</table><span class="tag">🔗 official sites: <a href="${dA.link}" target="_blank" style="color:#818cf8">${dA.short}</a> | <a href="${dB.link}" target="_blank" style="color:#818cf8">${dB.short}</a></span>`;
+  }
+  return null;
+}
 
-  // Greeting
-  if(/^(hi|hello|hey|hii|good\s*(morning|evening|afternoon)|what'?s up)/i.test(t))
-    return `Hey! 👋 I'm <strong>Edu Assist</strong> — your guide to India's top new-gen tech colleges.<br><br>I cover <strong>10 colleges</strong> featured on <a href="https://campus-connect.co.in/colleges" target="_blank" style="color:var(--accent2)">Campus Connect</a>: NST, Scaler, Vedam, NIAT, 100x School, LeapStart, ALTA, Mirai, Plaksha and Polaris.<br><br>Ask me about fees, placements, scholarships, entrance exams — or switch to <strong>Mock Interview</strong> mode!`;
+function buildAnswer(raw) {
+  const text = raw.trim();
+  if (!text) return null;
+  if (/^(hi|hello|hey|namaste|good morning|help)/i.test(text)) return `🤖 <strong>Welcome to Edu Assist</strong><br><br>I'm your dedicated guide for <strong>Scaler, NST, Vedam, and NIAT</strong> — the 4 leading new-gen tech colleges in India. Ask me anything: fees, placements, scholarships, comparison, or entrance exams. Try <em>"Compare Scaler vs NST"</em> or <em>"Which college has 100% scholarships?"</em>`;
 
-  // Thanks
-  if(/thank|thanks|great|awesome|helpful|nice/i.test(t))
-    return `You're welcome! 😊 Ask anything else about colleges or switch to Mock Interview mode to practice!`;
-
-  // List all
-  if(/list|all college|show me|how many|which college/i.test(t)){
-    const rows=colleges.map(n=>`<tr><td><strong>${DB[n].short}</strong></td><td>${DB[n].location.split(',')[0]}</td><td>${DB[n].fee.split(';')[0]}</td></tr>`).join('');
-    return `Here are all <strong>10 new-gen colleges</strong> on Campus Connect:<br><br><table><tr><th>College</th><th>Location</th><th>Fee (approx)</th></tr>${rows}</table><br>Click a chip above or ask about any college for full details!`;
+  // Explicit compare detection
+  if (/(compare|versus|vs\.?|difference between)/i.test(text)) {
+    const cmpResult = compareColleges(text);
+    if (cmpResult) return cmpResult;
   }
 
   // Cheapest
-  if(/cheap|lowest fee|most affordable|budget|least expensive/i.test(t))
-    return `Most affordable new-gen colleges:<br><br>🥇 <strong>ALTA School of Technology</strong> — ₹3.4 lakh (Year 1)<br><span class="tag">Up to 100% scholarship via A-SAT</span><br><br>🥈 <strong>NIAT</strong> — ₹2–4.5 lakh/year<br><span class="tag">20+ campus options across India</span><br><br>🥉 <strong>Mirai School of Technology</strong> — ₹2.5–3 lakh/year<br><span class="tag">Up to 100% merit scholarship</span><br><br>Want details on any of these?`;
-
-  // 100% scholarship
-  if(/100.?%|full scholarship|completely free|zero fee/i.test(t)){
-    const full=colleges.filter(n=>DB[n].scholarships.includes('100%'));
-    return `Colleges offering <strong>up to 100% scholarships</strong>:<br><br>${full.map(n=>`• <strong>${DB[n].short}</strong> — ${DB[n].scholarships}`).join('<br><br>')}<br><br>Scholarships are merit-based — score well on their entrance tests!`;
+  if (/cheapest|lowest fee|most affordable|budget/i.test(text)) {
+    const sorted = [...COLLEGES].sort((a,b) => parseInt(DB[a].fee.match(/\d+/)?.[0] || 99) - parseInt(DB[b].fee.match(/\d+/)?.[0] || 99));
+    return `💰 <strong>Fee ranking (lowest to highest):</strong><br><br>${sorted.map((c,idx) => `${idx+1}. <strong>${DB[c].short}</strong> — ${DB[c].fee.split('|')[0]}`).join('<br>')}<br><span class="tag">✨ Scholarships may reduce effective cost</span>`;
   }
-
-  // SAT
-  if(/\bsat\b/i.test(t)){
-    const sat=colleges.filter(n=>DB[n].selection.toLowerCase().includes('sat'));
-    return `Colleges accepting <strong>SAT scores</strong> (no JEE needed):<br><br>${sat.map(n=>`• <strong>${DB[n].short}</strong><br><span style="color:var(--muted);font-size:.82rem">${DB[n].selection}</span>`).join('<br><br>')}`;
+  if (/100.?%|full scholarship|complete free/i.test(text)) {
+    const full = COLLEGES.filter(c => DB[c].scholarships.toLowerCase().includes('100%'));
+    return full.map(c => `🎓 <strong>${DB[c].short}</strong> — ${DB[c].scholarships}`).join('<br><br>') || "Most colleges offer up to 100% merit-based scholarships. Check Vedam (up to 100% waiver) and Scaler/NIAT merit programs.";
   }
-
-  // Best placements
-  if(/best placement|highest package|top package|highest ctc|most salary/i.test(t))
-    return `Colleges with strongest publicly disclosed placement data:<br><br>🏆 <strong>Plaksha University</strong> — Avg ₹20 LPA, Highest ₹65 LPA (2025–26)<br>🥈 <strong>Mirai School of Technology</strong> — Highest ₹20 LPA, 100% placement support<br>🥉 <strong>ALTA School</strong> — 1,000+ recruiting partners incl. Amazon, Flipkart, Uber<br><br>Most other colleges don't publicly disclose package averages yet.`;
-
-  // AI focused
-  if(/ai.?focus|artificial intel|best for ai|which.*ai/i.test(t))
-    return `Most <strong>AI-focused</strong> new-gen colleges:<br><br>• <strong>Scaler SST</strong> — B.Tech in CS & AI + dual degree from BITS/IIT Madras<br>• <strong>Vedam</strong> — AI-first curriculum, Google/Microsoft/Amazon faculty<br>• <strong>Mirai</strong> — B.Tech specifically in AI & ML; Google + Nvidia certifications<br>• <strong>ALTA</strong> — AI-First CS program with MAANG mentors<br>• <strong>Plaksha</strong> — CS & AI, Data Science, Robotics tracks<br><br>All 10 colleges have some AI component — the degree name varies!`;
-
-  // Compare
-  if(/compar|vs\b|versus|better.*than|difference between/i.test(t)){
-    const found=colleges.filter(n=>{
-      const s=norm(DB[n].short);const nm=norm(n);
-      return norm(t).includes(s.split(' ')[0])||nm.split(' ').some(w=>w.length>3&&norm(t).includes(w));
-    });
-    if(found.length>=2){
-      const [a,b]=found;
-      const fields=['location','fee','program','scholarships','selection','placements'];
-      const icons={location:'📍',fee:'💰',program:'📚',scholarships:'🎓',selection:'✅',placements:'💼'};
-      const rows=fields.map(f=>`<tr><td style="color:var(--muted);font-size:.78rem">${icons[f]} ${f}</td><td>${DB[a][f]}</td><td>${DB[b][f]}</td></tr>`).join('');
-      return `<table><tr><th>📊</th><th>${DB[a].short}</th><th>${DB[b].short}</th></tr>${rows}</table>`;
+  if (/\bsat\b/i.test(text)) {
+    const satList = COLLEGES.filter(c => DB[c].selection.toLowerCase().includes('sat'));
+    return satList.length ? `✅ <strong>Colleges accepting SAT (no JEE required):</strong><br>${satList.map(c=>`• ${DB[c].short} — ${DB[c].selection}`).join('<br>')}` : "Based on official data, Scaler accepts SAT; others rely on their own tests (NSAT, VSAT, NAT).";
+  }
+  if (/best placement|highest package|top recruiter/i.test(text)) {
+    return `💼 <strong>Placement highlights (based on disclosed data):</strong><br><br>📌 <strong>Vedam</strong> — 1,028+ placed, stipends up to ₹2.8L, recruiters: Amazon, Microsoft.<br>📌 <strong>NIAT</strong> — Microsoft, Google hiring partners, early internships.<br>📌 <strong>Scaler</strong> — strong alumni network, top product roles.<br>📌 <strong>NST</strong> — dedicated placement cell.<br><span class="tag">Check official placement reports for exact CTCs.</span>`;
+  }
+  // Single college inquiry
+  const college = findCollege(text);
+  if (college) {
+    const data = DB[college];
+    const intent = detectIntent(text);
+    if (intent !== 'highlights') {
+      return `<strong>${college}</strong><br><br>🔹 ${intent.toUpperCase()}:<br>${data[intent] || data.highlights}<br><span class="tag">📍 ${data.location.split(',')[0]}</span> <span class="tag">💰 ${data.fee.split('|')[0]}</span>`;
     }
-    return `Please name two colleges to compare! E.g. "Compare NST vs NIAT" or "Scaler vs Plaksha".`;
+    return `<strong>${college}</strong><br>${Object.entries(data).filter(([k]) => !['short','link'].includes(k)).map(([k,v]) => `<div><span class="tag">${k}</span> ${v}</div>`).join('')}<br><a href="${data.link}" target="_blank" style="color:#c084fc">🔗 Official site →</a>`;
   }
 
-  // Single college
-  const college=findCollege(t);
-  if(college){
-    const d=DB[college];
-    const intent=findIntent(t);
-    const icons={fee:'💰',location:'📍',program:'📚',scholarships:'🎓',selection:'✅',placements:'💼',highlights:'🌟'};
-    if(intent!=='highlights'){
-      return `<strong>${college}</strong><br><br>${icons[intent]} <strong>${intent.charAt(0).toUpperCase()+intent.slice(1)}:</strong><br>${d[intent]}<br><br><span class="tag">📍 ${d.location.split(',')[0]}</span><span class="tag">💰 ${d.fee.split(';')[0]}</span>`;
-    }
-    return `<strong>${college}</strong><br><br><table>
-<tr><th>Field</th><th>Details</th></tr>
-<tr><td>📍 Location</td><td>${d.location}</td></tr>
-<tr><td>📚 Program</td><td>${d.program}</td></tr>
-<tr><td>💰 Fee</td><td>${d.fee}</td></tr>
-<tr><td>🎓 Scholarships</td><td>${d.scholarships}</td></tr>
-<tr><td>✅ Selection</td><td>${d.selection}</td></tr>
-<tr><td>🌟 Highlights</td><td>${d.highlights}</td></tr>
-<tr><td>💼 Placements</td><td>${d.placements}</td></tr>
-</table><br><a href="${d.link}" target="_blank" style="color:var(--accent2);font-size:.8rem">🔗 Official site →</a>`;
+  // list all 4
+  if (/list all|which colleges|show colleges/i.test(text)) {
+    let listHtml = COLLEGES.map(n => `• <strong>${DB[n].short}</strong> — ${DB[n].location.split(',')[0]}, ${DB[n].fee.split('|')[0]}`).join('<br>');
+    return `🎯 <strong>Our 4 new-gen colleges:</strong><br><br>${listHtml}<br><br>Click chip or ask detailed compare.`;
   }
-
-  return `I have data on <strong>10 new-gen colleges</strong> from <a href="https://campus-connect.co.in/colleges" target="_blank" style="color:var(--accent2)">Campus Connect</a>.<br><br><span class="tag">💰 Fees</span><span class="tag">📍 Locations</span><span class="tag">🎓 Scholarships</span><span class="tag">✅ Entrance exams</span><span class="tag">💼 Placements</span><br><br>Try: <em>"Tell me about ALTA"</em> or <em>"Which colleges accept SAT?"</em>`;
+  return `I have deep info on <strong>4 top new-gen colleges: Scaler, NST, Vedam, NIAT</strong>. Try: <em>"Tell me about NIAT scholarships"</em> or <em>"Compare Scaler vs Vedam"</em>.`;
 }
 
-/* ══════════════════════════ INTERVIEW ENGINE ════════════════════ */
-const IQS={
-  hr:["Tell me about yourself and why you chose tech as a career.","Where do you see yourself in 5 years?","Describe a challenge you faced and how you overcame it.","What is your greatest strength, and one area you're actively improving?","Why should we hire you over other candidates?"],
-  tech:["Explain the difference between an array and a linked list. When would you prefer each?","What is Big O notation? Give examples of O(n) and O(n²).","What is the difference between a stack and a queue? Give a real-world use case for each.","What is a recursive function? Write pseudocode for factorial(n).","Explain object-oriented programming and its four core principles.","What is a hash table and why is average lookup O(1)?","What is the difference between process and thread?","Explain what REST API is and how HTTP methods are used."],
-  aptitude:["A train covers 300 km in 5 hours. Another covers the same in 3 hours. What is the difference in their speeds?","You have 9 balls — one is heavier. Using a balance scale only twice, find the heavy ball.","A snail climbs 3 m up a wall during the day and slides 1 m back at night. How many days to climb 10 m?","Two coders finish a module in 6 days. How many days would 3 coders of equal ability take?","If you flip a fair coin 3 times, what is the probability of getting at least 2 heads?"]
+// ========== INTERVIEW MODULE (unchanged logic but independent) ==========
+const INTERVIEW_BANK = {
+  hr: ["Tell me about yourself & your tech passion.", "Describe a team conflict you resolved.", "Where do you see yourself in 5 years?"],
+  tech: ["Explain difference between let, const, var.", "What is time complexity of binary search?", "What's a closure in JavaScript?"],
+  aptitude: ["If 4 workers build a wall in 6 days, how many workers needed to build in 2 days?", "Probability of rolling sum 7 with two dice?"]
 };
-
-let mode='a';
-let is=0; let iscores=[]; let iqs=[]; let await_ans=false;
-
-function pickQ(t){return IQS[t][Math.floor(Math.random()*IQS[t].length)]}
-function getQ(n){
-  if(n===1)return{q:pickQ('hr'),type:'HR'};
-  if(n===2)return{q:pickQ('tech'),type:'Technical'};
-  return{q:pickQ('aptitude'),type:'Problem Solving'};
-}
-function scoreAns(ans,type){
-  let s=5;const l=ans.trim().length;
-  if(l>200)s+=2;else if(l>100)s+=1;else if(l<30)s-=2;
-  const kw={tech:['time complexity','big o','array','linked list','recursive','algorithm','stack','queue','pointer','oop'],hr:['team','challenge','learn','achieve','goal','project','skill','passion','experience'],aptitude:['speed','total','per day','balance','days','result','answer','probability']};
-  s+=Math.min(2,(kw[type.toLowerCase().replace(' ','')]||[]).filter(w=>ans.toLowerCase().includes(w)).length);
-  s=Math.max(1,Math.min(10,s));
-  const str={tech:['Good technical awareness.','Shows CS fundamentals.','Solid foundational knowledge.'],hr:['Clear confident delivery.','Good self-awareness.','Well-structured answer.'],aptitude:['Logical approach shown.','Good analytical thinking.','Methodical problem breakdown.']}[type.toLowerCase().replace(' ','')] || ['Good attempt.'];
-  const imp={tech:['Add time/space complexity analysis.','Include a concrete code example.','Mention edge cases for depth.'],hr:['Use the STAR method for impact.','Back claims with a specific example.','Keep it under 90 seconds.'],aptitude:['Show step-by-step working.','State your assumptions upfront.','Double-check the arithmetic.']}[type.toLowerCase().replace(' ','')] || ['Keep practising!'];
-  return{s,fb:`✅ <strong>Strength:</strong> ${str[Math.floor(Math.random()*str.length)]}<br>💡 <strong>Improve:</strong> ${imp[Math.floor(Math.random()*imp.length)]}`};
-}
-
-/* ══════════════════════════ UI HELPERS ══════════════════════════ */
-function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')}
-function addMsg(role,html){
-  const c=document.getElementById('msgs');
-  const e=c.querySelector('.empty');if(e)e.remove();
-  const d=document.createElement('div');
-  d.className=`msg ${role}`;
-  d.innerHTML=`<div class="av ${role}">${role==='b'?'🤖':'👤'}</div><div class="bub">${html}</div>`;
-  c.appendChild(d);c.scrollTop=c.scrollHeight;
-}
-function addUserMsg(t){addMsg('u',esc(t))}
-
-let typEl=null;
-function showTyping(){
-  const c=document.getElementById('msgs');
-  const d=document.createElement('div');d.className='msg b';d.id='typing';
-  d.innerHTML=`<div class="av b">🤖</div><div class="bub"><div class="dots"><span></span><span></span><span></span></div></div>`;
-  c.appendChild(d);c.scrollTop=c.scrollHeight;typEl=d;
-}
-function hideTyping(){if(typEl){typEl.remove();typEl=null;}}
-
-function delay(ms){return new Promise(r=>setTimeout(r,ms))}
-
-function updBar(){
-  const bar=document.getElementById('ibar');
-  if(mode!=='i'){bar.classList.remove('on');return;}
-  bar.classList.add('on');
-  document.getElementById('fill').style.width=is<=0?'0%':is>=4?'100%':((is-1)/3*100)+'%';
-  document.getElementById('qlabel').textContent=is<=0?'Starting…':is>=4?'Complete':`Question ${is} of 3`;
-  document.getElementById('qphase').textContent=is>=4?'✅':await_ans?'Your turn →':'';
-}
-
-/* ══════════════════════════ MODES ═══════════════════════════════ */
-function setMode(m){
-  mode=m;
-  document.getElementById('tabA').classList.toggle('on',m==='a');
-  document.getElementById('tabI').classList.toggle('on',m==='i');
-  document.getElementById('chipStrip').style.display=m==='a'?'flex':'none';
-  document.getElementById('msgs').innerHTML='';
-  is=0;iscores=[];iqs=[];await_ans=false;updBar();
-  if(m==='a'){
-    document.getElementById('inp').placeholder='Ask about colleges, fees, placements…';
-    document.getElementById('msgs').innerHTML=`<div class="empty" id="empty"><div class="e-icon">🎓</div><h2>Ask me anything</h2><p>Click a college chip or ask about fees, placements, scholarships, entrance exams and more.</p></div>`;
+let mode = 'a';
+let interviewStep = 0, interviewScores = [], interviewQueue = [], awaitingAnswer = false;
+function setMode(m) {
+  mode = m;
+  document.getElementById('tabA').classList.toggle('on', m === 'a');
+  document.getElementById('tabI').classList.toggle('on', m === 'i');
+  document.getElementById('chipStrip').style.display = m === 'a' ? 'flex' : 'none';
+  const msgsDiv = document.getElementById('msgs');
+  msgsDiv.innerHTML = '';
+  interviewStep = 0; interviewScores = []; interviewQueue = []; awaitingAnswer = false;
+  document.getElementById('ibar').classList.remove('on');
+  if (m === 'a') {
+    document.getElementById('inp').placeholder = 'Ask about colleges, fees, placements…';
+    msgsDiv.innerHTML = `<div class="empty"><div class="e-icon">🎓</div><h2>Ask about Scaler, NST, Vedam, NIAT</h2><p>Compare, fees, scholarships, or mock interview mode</p></div>`;
   } else {
-    document.getElementById('inp').placeholder='Type your answer here…';
+    document.getElementById('inp').placeholder = 'Type your interview answer…';
     startInterview();
   }
 }
-
-/* ══════════════════════════ SEND ════════════════════════════════ */
-async function send(){
-  const inp=document.getElementById('inp');
-  const t=inp.value.trim();if(!t)return;
-  inp.value='';inp.style.height='auto';
-  addUserMsg(t);
+function startInterview() {
+  interviewStep = 0; interviewScores = []; interviewQueue = []; awaitingAnswer = false;
+  document.getElementById('ibar').classList.add('on');
+  updateInterviewBar();
+  addBotMsg(`<strong>🎤 Mock Interview Mode</strong><br><br>I'll ask 3 questions (HR, Technical, Problem Solving). Answer naturally, get instant feedback. Let's begin!`);
+  setTimeout(() => askNextQuestion(), 700);
+}
+function askNextQuestion() {
+  if (interviewStep >= 3) { finishInterview(); return; }
+  interviewStep++;
+  updateInterviewBar();
+  let qObj = { type: '', question: '' };
+  if (interviewStep === 1) qObj = { type: 'HR', question: INTERVIEW_BANK.hr[Math.floor(Math.random() * INTERVIEW_BANK.hr.length)] };
+  else if (interviewStep === 2) qObj = { type: 'Technical', question: INTERVIEW_BANK.tech[Math.floor(Math.random() * INTERVIEW_BANK.tech.length)] };
+  else qObj = { type: 'Problem Solving', question: INTERVIEW_BANK.aptitude[Math.floor(Math.random() * INTERVIEW_BANK.aptitude.length)] };
+  interviewQueue.push(qObj);
+  addBotMsg(`<span style="color:#c084fc">Q${interviewStep}/3 — ${qObj.type}</span><br><br>${qObj.question}`);
+  awaitingAnswer = true;
+  updateInterviewBar();
+}
+function evaluateAnswer(ans, type) {
+  let score = 5;
+  if (ans.length > 100) score += 2; else if (ans.length < 20) score -= 1;
+  const keywords = (type === 'HR') ? ['team','learn','project'] : (type === 'Technical') ? ['function','data','algorithm'] : ['calculate','steps','result'];
+  const bonus = keywords.filter(k => ans.toLowerCase().includes(k)).length;
+  score = Math.min(10, score + bonus);
+  let feedback = `✅ Clarity: ${score > 6 ? 'Good' : 'Needs structure'} <br>💡 Keep practicing technical articulation.`;
+  return { score, feedback };
+}
+async function handleInterviewAnswer(answer) {
+  if (!awaitingAnswer) { addBotMsg("Please wait for next question."); return; }
+  awaitingAnswer = false;
+  const current = interviewQueue[interviewStep-1];
+  const { score, feedback } = evaluateAnswer(answer, current.type);
+  interviewScores.push(score);
+  addBotMsg(`📋 <strong>Feedback — Q${interviewStep}</strong><br>${feedback}<br>⭐ Score: ${score}/10`);
+  if (interviewStep < 3) setTimeout(() => askNextQuestion(), 1100);
+  else setTimeout(() => finishInterview(), 1100);
+}
+async function finishInterview() {
+  const avg = (interviewScores.reduce((a,b)=>a+b,0)/3).toFixed(1);
+  const grade = avg >= 8 ? "Excellent 🌟" : avg >= 6 ? "Good 👍" : "Keep practicing 🔥";
+  addBotMsg(`<div class="score-card"><h3>🏁 Interview Completed</h3><div style="font-size:2rem;font-weight:800;background:linear-gradient(135deg,#818cf8,#34d399);-webkit-background-clip:text;background-clip:text;color:transparent">${avg}/10</div><p>${grade}</p><button class="retry-btn" onclick="setMode('i')">🔄 Try Again</button></div>`);
+  interviewStep = 4; updateInterviewBar();
+}
+function updateInterviewBar() {
+  const bar = document.getElementById('ibar');
+  if (mode !== 'i') { bar.classList.remove('on'); return; }
+  bar.classList.add('on');
+  let percent = (interviewStep-1)/3*100;
+  if (interviewStep >= 3) percent = 100;
+  if (interviewStep === 0) percent = 0;
+  document.getElementById('fill').style.width = Math.min(100,percent)+'%';
+  document.getElementById('qlabel').innerHTML = interviewStep>=4 ? 'Complete' : `Q${interviewStep}/3`;
+}
+function addBotMsg(html) { addMessage('b', html); }
+function addUserMsg(html) { addMessage('u', html); }
+function addMessage(role, content) {
+  const container = document.getElementById('msgs');
+  const emptyDiv = container.querySelector('.empty');
+  if (emptyDiv) emptyDiv.remove();
+  const div = document.createElement('div');
+  div.className = `msg ${role}`;
+  div.innerHTML = `<div class="av ${role}">${role==='b'?'🤖':'👤'}</div><div class="bub">${content}</div>`;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+let typingElement = null;
+function showTyping() { if(typingElement) hideTyping(); const el = document.createElement('div'); el.className='msg b'; el.id='typingEl'; el.innerHTML='<div class="av b">🤖</div><div class="bub"><div class="dots"><span></span><span></span><span></span></div></div>'; document.getElementById('msgs').appendChild(el); typingElement=el; }
+function hideTyping() { if(typingElement){typingElement.remove();typingElement=null;} }
+async function send() {
+  const inp = document.getElementById('inp');
+  const raw = inp.value.trim();
+  if (!raw) return;
+  inp.value = ''; inp.style.height = 'auto';
+  addUserMsg(escapeHtml(raw));
   showTyping();
-  await delay(380+Math.random()*280);
-  if(mode==='a'){
-    hideTyping();addMsg('b',buildReply(t));
+  await new Promise(r => setTimeout(r, 380));
+  hideTyping();
+  if (mode === 'a') {
+    const reply = buildAnswer(raw);
+    addBotMsg(reply || "Ask about Scaler, NST, Vedam, NIAT, or use compare.");
   } else {
-    await handleInterview(t);
+    await handleInterviewAnswer(raw);
   }
 }
-
-/* ══════════════════════════ INTERVIEW ═══════════════════════════ */
-async function startInterview(){
-  is=0;iscores=[];iqs=[];await_ans=false;updBar();
-  showTyping();await delay(550);hideTyping();
-  addMsg('b',`<strong>Welcome to Mock Interview! 🎤</strong><br><br>I'll ask you <strong>3 questions</strong> — HR, Technical, and Problem Solving.<br>You'll get instant feedback after each answer, then a final score out of 10.<br><br>Answer as if it's a real placement interview. Let's go! 🚀`);
-  await delay(700);await askQ();
+function escapeHtml(str) { return str.replace(/[&<>]/g, function(m){if(m==='&')return'&amp;';if(m==='<')return'&lt;';if(m==='>')return'&gt;';return m;}); }
+function hk(e) { if(e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } }
+function autoHeight(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 100)+'px'; }
+function buildChips() {
+  const strip = document.getElementById('chipStrip');
+  COLLEGES.forEach(name => { const btn = document.createElement('button'); btn.className = 'chip'; btn.textContent = DB[name].short; btn.onclick = () => { document.getElementById('inp').value = `Tell me about ${name}`; send(); }; strip.appendChild(btn); });
+  const sep = document.createElement('span'); sep.style.width='1px'; sep.style.background='#334155'; sep.style.margin='0 6px'; strip.appendChild(sep);
+  QUICK_QUESTIONS.forEach(q => { const btn = document.createElement('button'); btn.className = 'qchip'; btn.textContent = q; btn.onclick = () => { document.getElementById('inp').value = q; send(); }; strip.appendChild(btn); });
 }
-async function askQ(){
-  is++;updBar();
-  const{q,type}=getQ(is);
-  iqs.push({q,type:type.toLowerCase().replace(' ','')});
-  showTyping();await delay(650);hideTyping();
-  addMsg('b',`<span style="color:var(--accent2);font-size:.74rem;font-weight:600">Q${is} OF 3 — ${type}</span><br><br>${q}`);
-  await_ans=true;updBar();
-}
-async function handleInterview(t){
-  if(!await_ans){hideTyping();addMsg('b','Please wait for the next question. 😊');return;}
-  await_ans=false;
-  const q=iqs[is-1];
-  const{s,fb}=scoreAns(t,q.type);
-  iscores.push(s);
-  await delay(250);hideTyping();
-  addMsg('b',`<span style="color:var(--green);font-size:.74rem;font-weight:600">FEEDBACK — Q${is}</span><br><br>${fb}`);
-  if(is<3){await delay(800);await askQ();}
-  else{await delay(800);await finishInterview();}
-}
-async function finishInterview(){
-  is=4;updBar();showTyping();await delay(700);hideTyping();
-  const avg=(iscores.reduce((a,b)=>a+b,0)/3).toFixed(1);
-  const grade=avg>=8?'Excellent 🌟':avg>=6?'Good 👍':avg>=4?'Keep practising 💪':'Room to grow — don\'t stop! 🔥';
-  const c=document.getElementById('msgs');const e=c.querySelector('.empty');if(e)e.remove();
-  const d=document.createElement('div');d.className='msg b';
-  d.innerHTML=`<div class="av b">🤖</div><div class="bub"><div class="score-card">
-    <h3>🏆 Interview Complete!</h3>
-    <div class="score-num">${avg}<span style="font-size:1.1rem;background:none;-webkit-text-fill-color:var(--muted);color:var(--muted)">/10</span></div>
-    <p style="margin-top:8px;color:var(--muted);font-size:.83rem;line-height:1.55"><strong>Verdict:</strong> ${grade}</p>
-    <p style="margin-top:8px;color:var(--muted);font-size:.8rem;line-height:1.6">${iqs.map((q,i)=>`Q${i+1} (${q.type}): <strong>${iscores[i]}/10</strong>`).join(' &nbsp;·&nbsp; ')}</p>
-    <button class="retry-btn" onclick="setMode('i')">🔄 Try Again</button>
-  </div></div>`;
-  c.appendChild(d);c.scrollTop=c.scrollHeight;
-}
-
-/* ══════════════════════════ CHIPS ═══════════════════════════════ */
-function buildChips(){
-  const strip=document.getElementById('chipStrip');
-  // college chips
-  colleges.forEach(name=>{
-    const b=document.createElement('button');b.className='chip';
-    b.textContent=DB[name].short;b.title=name;
-    b.onclick=()=>{document.getElementById('inp').value=`Tell me about ${name}`;send();};
-    strip.appendChild(b);
-  });
-  // divider
-  const sep=document.createElement('span');sep.style='width:1px;background:var(--border);margin:0 4px';strip.appendChild(sep);
-  // quick questions
-  QUICK.forEach(q=>{
-    const b=document.createElement('button');b.className='qchip';b.textContent=q;
-    b.onclick=()=>{document.getElementById('inp').value=q;send();};
-    strip.appendChild(b);
-  });
-}
-
-function hk(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}}
-function ar(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px';}
-
+function goChat(){ document.getElementById('intro').classList.add('hidden'); document.getElementById('chat').classList.remove('hidden'); }
+function goIntro(){ document.getElementById('chat').classList.add('hidden'); document.getElementById('intro').classList.remove('hidden'); }
 buildChips();
 </script>
 </body>

@@ -9,20 +9,20 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
   --cream:#FAF7F0;
-  --cream2:#F3EDD8;
-  --cream3:#EDE3C4;
-  --gold:#C9972B;
-  --gold2:#E8B84B;
-  --gold3:#F5D06E;
-  --gold-glow:rgba(201,151,43,0.18);
-  --ink:#1A1208;
-  --ink2:#3D2E10;
-  --ink3:#6B5024;
-  --muted:#A08B65;
+  --cream2:#F2EAD6;
+  --cream3:#E8DBBE;
+  --gold:#8B5E1A;
+  --gold2:#A8722A;
+  --gold3:#C9912E;
+  --gold-glow:rgba(139,94,26,0.18);
+  --ink:#1A0F04;
+  --ink2:#2E1C08;
+  --ink3:#5C3D14;
+  --muted:#8A6A3E;
   --warm-white:#FFFDF7;
   --card:#FFFCF3;
-  --border:rgba(201,151,43,0.22);
-  --border2:rgba(201,151,43,0.12);
+  --border:rgba(139,94,26,0.25);
+  --border2:rgba(139,94,26,0.13);
   --font-display:'Playfair Display',serif;
   --font-body:'DM Sans',sans-serif;
   --font-mono:'DM Mono',monospace;
@@ -53,12 +53,12 @@ html,body{height:100%;overflow:hidden;font-family:var(--font-body);background:va
 }
 #intro::before{
   width:600px;height:600px;
-  background:radial-gradient(circle,rgba(232,184,75,0.18),transparent 70%);
+  background:radial-gradient(circle,rgba(168,114,42,0.18),transparent 70%);
   top:-180px;right:-100px;
 }
 #intro::after{
   width:500px;height:500px;
-  background:radial-gradient(circle,rgba(201,151,43,0.12),transparent 70%);
+  background:radial-gradient(circle,rgba(139,94,26,0.12),transparent 70%);
   bottom:-160px;left:-80px;
   animation-delay:-5s;
 }
@@ -72,7 +72,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font-body);background:va
 /* eyebrow */
 .eyebrow{
   display:inline-flex;align-items:center;gap:8px;
-  background:linear-gradient(135deg,rgba(201,151,43,0.15),rgba(232,184,75,0.08));
+  background:linear-gradient(135deg,rgba(139,94,26,0.15),rgba(168,114,42,0.08));
   border:1px solid var(--border);
   border-radius:100px;padding:6px 18px;
   font-size:0.72rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;
@@ -109,7 +109,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font-body);background:va
   font-size:0.72rem;font-weight:500;color:var(--ink3);
   transition:all 0.2s;cursor:default;
 }
-.pill:hover{background:linear-gradient(135deg,rgba(201,151,43,0.12),rgba(232,184,75,0.06));border-color:var(--gold);color:var(--gold);}
+.pill:hover{background:linear-gradient(135deg,rgba(139,94,26,0.12),rgba(168,114,42,0.06));border-color:var(--gold);color:var(--gold);}
 
 /* CTA button */
 .btn-cta{
@@ -117,7 +117,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font-body);background:va
   background:linear-gradient(135deg,var(--gold),var(--gold2));
   border:none;border-radius:100px;padding:15px 36px;
   font-family:var(--font-body);font-size:1rem;font-weight:600;color:var(--warm-white);
-  cursor:pointer;box-shadow:0 8px 32px rgba(201,151,43,0.35);
+  cursor:pointer;box-shadow:0 8px 32px rgba(139,94,26,0.35);
   transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);
   animation:slideUp 0.8s 0.4s ease both;
   position:relative;overflow:hidden;
@@ -127,7 +127,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font-body);background:va
   background:linear-gradient(135deg,rgba(255,255,255,0.25),transparent);
   transform:translateX(-100%);transition:transform 0.4s ease;
 }
-.btn-cta:hover{transform:translateY(-4px) scale(1.04);box-shadow:0 16px 48px rgba(201,151,43,0.45);}
+.btn-cta:hover{transform:translateY(-4px) scale(1.04);box-shadow:0 16px 48px rgba(139,94,26,0.45);}
 .btn-cta:hover::before{transform:translateX(0);}
 .btn-arrow{font-size:1.2rem;transition:transform 0.3s;}
 .btn-cta:hover .btn-arrow{transform:translateX(6px);}
@@ -144,7 +144,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font-body);background:va
 }
 .robot-aura{
   position:absolute;width:320px;height:320px;border-radius:50%;
-  background:radial-gradient(circle,rgba(201,151,43,0.2) 0%,transparent 70%);
+  background:radial-gradient(circle,rgba(14,165,233,0.18) 0%,rgba(56,189,248,0.08) 40%,transparent 70%);
   animation:auraBreath 4s ease-in-out infinite;
 }
 @keyframes auraBreath{0%,100%{transform:scale(1);opacity:0.6;}50%{transform:scale(1.15);opacity:1;}}
@@ -153,15 +153,15 @@ html,body{height:100%;overflow:hidden;font-family:var(--font-body);background:va
 
 /* orbit rings */
 .orbit{
-  position:absolute;border-radius:50%;border:1px dashed rgba(201,151,43,0.3);
+  position:absolute;border-radius:50%;border:1px dashed rgba(56,189,248,0.3);
   top:50%;left:50%;transform:translate(-50%,-50%);
 }
-.orbit1{width:360px;height:360px;animation:spinOrbit 18s linear infinite;}
-.orbit2{width:280px;height:280px;animation:spinOrbit 12s linear infinite reverse;}
+.orbit1{width:380px;height:380px;animation:spinOrbit 18s linear infinite;}
+.orbit2{width:290px;height:290px;animation:spinOrbit 12s linear infinite reverse;}
 @keyframes spinOrbit{0%{transform:translate(-50%,-50%) rotate(0deg);}100%{transform:translate(-50%,-50%) rotate(360deg);}}
 .orbit-dot{
-  position:absolute;width:8px;height:8px;border-radius:50%;background:var(--gold3);
-  box-shadow:0 0 8px var(--gold);
+  position:absolute;width:8px;height:8px;border-radius:50%;background:#38BDF8;
+  box-shadow:0 0 10px #38BDF8,0 0 20px rgba(56,189,248,0.5);
 }
 .orbit1 .orbit-dot{top:-4px;left:calc(50% - 4px);}
 .orbit2 .orbit-dot{top:calc(50% - 4px);right:-4px;}
@@ -170,7 +170,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font-body);background:va
 .float-card{
   position:absolute;background:var(--card);border:1px solid var(--border);
   border-radius:14px;padding:10px 16px;font-size:0.75rem;
-  box-shadow:0 8px 24px rgba(201,151,43,0.12);
+  box-shadow:0 8px 24px rgba(139,94,26,0.12);
   display:flex;align-items:center;gap:8px;white-space:nowrap;z-index:5;
 }
 .float-card .dot{width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0;animation:blinkDot 1.5s infinite;}
@@ -184,7 +184,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font-body);background:va
 @keyframes floatCard4{0%,100%{transform:translateY(0);}50%{transform:translateY(7px);}}
 
 /* SVG robot style */
-.robot-svg{filter:drop-shadow(0 12px 32px rgba(201,151,43,0.22));}
+.robot-svg{filter:drop-shadow(0 12px 32px rgba(139,94,26,0.22));}
 
 /* ── ANIMATIONS ── */
 @keyframes slideDown{from{opacity:0;transform:translateY(-16px);}to{opacity:1;transform:translateY(0);}}
@@ -205,7 +205,7 @@ nav{
   width:38px;height:38px;border-radius:12px;
   background:linear-gradient(135deg,var(--gold),var(--gold2));
   display:flex;align-items:center;justify-content:center;
-  font-size:1.1rem;box-shadow:0 4px 12px rgba(201,151,43,0.3);
+  font-size:1.1rem;box-shadow:0 4px 12px rgba(139,94,26,0.3);
   transition:transform 0.2s;
 }
 .logo-mark:hover{transform:rotate(-5deg) scale(1.08);}
@@ -222,7 +222,7 @@ nav{
 .tab.on{
   background:linear-gradient(135deg,var(--gold),var(--gold2));
   color:var(--warm-white);
-  box-shadow:0 2px 12px rgba(201,151,43,0.4);
+  box-shadow:0 2px 12px rgba(139,94,26,0.4);
 }
 
 /* ════════════════════════════
@@ -243,7 +243,7 @@ nav{
   padding:6px 14px;border-radius:100px;font-size:0.7rem;font-weight:500;
   color:var(--ink3);cursor:pointer;white-space:nowrap;transition:all 0.2s;flex-shrink:0;
 }
-.chip:hover,.qchip:hover{background:linear-gradient(135deg,rgba(201,151,43,0.12),rgba(232,184,75,0.06));border-color:var(--gold);color:var(--gold);}
+.chip:hover,.qchip:hover{background:linear-gradient(135deg,rgba(139,94,26,0.12),rgba(168,114,42,0.06));border-color:var(--gold);color:var(--gold);}
 
 /* interview bar */
 .ibar{
@@ -271,7 +271,7 @@ nav{
   width:64px;height:64px;border-radius:20px;
   background:linear-gradient(135deg,var(--gold),var(--gold2));
   display:flex;align-items:center;justify-content:center;font-size:2rem;
-  box-shadow:0 8px 24px rgba(201,151,43,0.3);
+  box-shadow:0 8px 24px rgba(139,94,26,0.3);
   animation:auraBreath 3s ease-in-out infinite;
 }
 .welcome h2{font-family:var(--font-display);font-size:1.6rem;color:var(--ink);}
@@ -286,7 +286,7 @@ nav{
   width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
   flex-shrink:0;font-size:0.9rem;font-weight:600;
 }
-.av.bot{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--warm-white);box-shadow:0 4px 12px rgba(201,151,43,0.3);}
+.av.bot{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--warm-white);box-shadow:0 4px 12px rgba(139,94,26,0.3);}
 .av.user{background:var(--cream2);border:1px solid var(--border);color:var(--ink2);}
 
 .bubble{
@@ -305,7 +305,7 @@ nav{
 .bubble th{text-align:left;color:var(--gold);border-bottom:1px solid var(--border);padding:4px 0;}
 .bubble td{padding:3px 0;border-bottom:1px solid var(--border2);vertical-align:top;}
 .tag{
-  display:inline-block;background:rgba(201,151,43,0.1);
+  display:inline-block;background:rgba(139,94,26,0.1);
   border:1px solid var(--border);padding:2px 10px;border-radius:100px;
   font-size:0.68rem;color:var(--gold);margin:2px 2px 0 0;
 }
@@ -319,10 +319,10 @@ nav{
   border:none;border-radius:100px;padding:8px 24px;
   font-family:var(--font-body);font-weight:600;font-size:0.85rem;
   color:var(--warm-white);cursor:pointer;margin-top:12px;
-  box-shadow:0 4px 12px rgba(201,151,43,0.3);
+  box-shadow:0 4px 12px rgba(139,94,26,0.3);
   transition:all 0.2s;
 }
-.retry-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(201,151,43,0.4);}
+.retry-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(139,94,26,0.4);}
 
 /* typing dots */
 .dots span{
@@ -355,10 +355,10 @@ nav{
 }
 .sugg-card::before{
   content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(201,151,43,0.1),rgba(232,184,75,0.05));
+  background:linear-gradient(135deg,rgba(139,94,26,0.1),rgba(168,114,42,0.05));
   opacity:0;transition:opacity 0.2s;
 }
-.sugg-card:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 8px 24px rgba(201,151,43,0.15);}
+.sugg-card:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 8px 24px rgba(139,94,26,0.15);}
 .sugg-card:hover::before{opacity:1;}
 .sugg-card:hover .sugg-arrow{transform:translateX(4px);color:var(--gold);}
 .sugg-card:active{transform:scale(0.97);}
@@ -378,9 +378,9 @@ nav{
   display:flex;align-items:center;gap:10px;
   background:var(--card);border:1.5px solid var(--border);
   border-radius:100px;padding:4px 4px 4px 20px;
-  transition:all 0.2s;box-shadow:0 2px 12px rgba(201,151,43,0.08);
+  transition:all 0.2s;box-shadow:0 2px 12px rgba(139,94,26,0.08);
 }
-.input-row:focus-within{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,151,43,0.12);}
+.input-row:focus-within{border-color:var(--gold);box-shadow:0 0 0 3px rgba(139,94,26,0.12);}
 #inp{
   flex:1;background:transparent;border:none;outline:none;
   font-family:var(--font-body);font-size:0.9rem;color:var(--ink);
@@ -392,10 +392,10 @@ nav{
   background:linear-gradient(135deg,var(--gold),var(--gold2));
   color:var(--warm-white);font-size:1rem;cursor:pointer;
   display:flex;align-items:center;justify-content:center;
-  box-shadow:0 4px 12px rgba(201,151,43,0.3);
+  box-shadow:0 4px 12px rgba(139,94,26,0.3);
   transition:all 0.2s cubic-bezier(0.34,1.56,0.64,1);flex-shrink:0;
 }
-.send:hover{transform:scale(1.1);box-shadow:0 8px 20px rgba(201,151,43,0.45);}
+.send:hover{transform:scale(1.1);box-shadow:0 8px 20px rgba(139,94,26,0.45);}
 
 /* ── RESPONSIVE ── */
 @media(max-width:760px){
@@ -458,71 +458,164 @@ nav{
         <div class="float-card fc4"><div class="dot"></div><span>4 colleges compared</span></div>
 
         <div class="robot-wrap">
-          <svg class="robot-svg" width="200" height="260" viewBox="0 0 200 260" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- graduation cap -->
-            <rect x="55" y="18" width="90" height="10" rx="5" fill="#C9972B"/>
-            <rect x="70" y="6" width="60" height="22" rx="6" fill="#E8B84B"/>
-            <rect x="95" y="28" width="4" height="14" fill="#C9972B"/>
-            <circle cx="97" cy="44" r="5" fill="#F5D06E"/>
+          <svg class="robot-svg" width="260" height="340" viewBox="0 0 260 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <filter id="glow"><feGaussianBlur stdDeviation="3.5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              <filter id="glow2"><feGaussianBlur stdDeviation="6" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              <radialGradient id="eyeGrad" cx="50%" cy="40%" r="50%"><stop offset="0%" stop-color="#FFFFFF"/><stop offset="40%" stop-color="#7DD3FC"/><stop offset="100%" stop-color="#0EA5E9"/></radialGradient>
+              <radialGradient id="eyeGlow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#38BDF8" stop-opacity="0.9"/><stop offset="100%" stop-color="#0369A1" stop-opacity="0"/></radialGradient>
+            </defs>
 
-            <!-- head -->
-            <rect x="58" y="44" width="84" height="76" rx="20" fill="#FAF7F0" stroke="#C9972B" stroke-width="1.5"/>
+            <!-- ── GRAD CAP ── -->
+            <!-- brim -->
+            <polygon points="130,18 195,42 130,58 65,42" fill="none" stroke="#38BDF8" stroke-width="1" opacity="0.9"/>
+            <!-- top face -->
+            <polygon points="130,18 195,42 130,42" fill="#0C4A6E" opacity="0.5" stroke="#38BDF8" stroke-width="0.5"/>
+            <polygon points="130,18 65,42 130,42" fill="#075985" opacity="0.4" stroke="#38BDF8" stroke-width="0.5"/>
+            <!-- left brim poly mesh -->
+            <line x1="130" y1="18" x2="65" y2="42" stroke="#7DD3FC" stroke-width="0.4" opacity="0.5"/>
+            <line x1="130" y1="18" x2="195" y2="42" stroke="#7DD3FC" stroke-width="0.4" opacity="0.5"/>
+            <line x1="65" y1="42" x2="130" y2="58" stroke="#38BDF8" stroke-width="0.5" opacity="0.6"/>
+            <line x1="195" y1="42" x2="130" y2="58" stroke="#38BDF8" stroke-width="0.5" opacity="0.6"/>
+            <!-- tassel cord -->
+            <line x1="195" y1="42" x2="195" y2="72" stroke="#7DD3FC" stroke-width="1" opacity="0.7"/>
+            <circle cx="195" cy="74" r="4" fill="#38BDF8" opacity="0.9" filter="url(#glow)"/>
+            <!-- internal mesh lines on cap -->
+            <line x1="100" y1="30" x2="130" y2="58" stroke="#38BDF8" stroke-width="0.4" opacity="0.3"/>
+            <line x1="160" y1="30" x2="130" y2="58" stroke="#38BDF8" stroke-width="0.4" opacity="0.3"/>
 
-            <!-- face screen -->
-            <rect x="72" y="56" width="56" height="38" rx="12" fill="#FDF3D8" stroke="#E8B84B" stroke-width="1"/>
+            <!-- ── HEAD (low-poly hexagonal) ── -->
+            <!-- main head polygon -->
+            <polygon points="100,68 160,68 178,100 170,138 130,152 90,138 82,100" fill="#0C2D4A" opacity="0.85" stroke="#38BDF8" stroke-width="1"/>
+            <!-- inner mesh triangles -->
+            <line x1="100" y1="68" x2="130" y2="152" stroke="#38BDF8" stroke-width="0.4" opacity="0.25"/>
+            <line x1="160" y1="68" x2="130" y2="152" stroke="#38BDF8" stroke-width="0.4" opacity="0.25"/>
+            <line x1="82" y1="100" x2="160" y2="68" stroke="#38BDF8" stroke-width="0.4" opacity="0.2"/>
+            <line x1="178" y1="100" x2="100" y2="68" stroke="#38BDF8" stroke-width="0.4" opacity="0.2"/>
+            <line x1="90" y1="138" x2="160" y2="68" stroke="#38BDF8" stroke-width="0.3" opacity="0.15"/>
+            <line x1="170" y1="138" x2="100" y2="68" stroke="#38BDF8" stroke-width="0.3" opacity="0.15"/>
+            <!-- head edge vertices (glow dots) -->
+            <circle cx="100" cy="68" r="2" fill="#38BDF8" filter="url(#glow)"/>
+            <circle cx="160" cy="68" r="2" fill="#38BDF8" filter="url(#glow)"/>
+            <circle cx="178" cy="100" r="2" fill="#7DD3FC" filter="url(#glow)"/>
+            <circle cx="170" cy="138" r="2" fill="#38BDF8" filter="url(#glow)"/>
+            <circle cx="82" cy="100" r="2" fill="#7DD3FC" filter="url(#glow)"/>
+            <circle cx="90" cy="138" r="2" fill="#38BDF8" filter="url(#glow)"/>
 
-            <!-- eyes -->
-            <circle cx="87" cy="72" r="8" fill="#E8B84B">
-              <animate attributeName="ry" values="8;0.5;8" dur="4s" begin="1s" repeatCount="indefinite"/>
+            <!-- ── EYES (glowing circles) ── -->
+            <!-- left eye glow halo -->
+            <circle cx="112" cy="102" r="16" fill="url(#eyeGlow)" opacity="0.7">
+              <animate attributeName="r" values="14;18;14" dur="2.4s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.5;0.9;0.5" dur="2.4s" repeatCount="indefinite"/>
             </circle>
-            <circle cx="113" cy="72" r="8" fill="#E8B84B">
-              <animate attributeName="ry" values="8;0.5;8" dur="4s" begin="1s" repeatCount="indefinite"/>
+            <!-- right eye glow halo -->
+            <circle cx="148" cy="102" r="16" fill="url(#eyeGlow)" opacity="0.7">
+              <animate attributeName="r" values="14;18;14" dur="2.4s" begin="0.3s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.5;0.9;0.5" dur="2.4s" begin="0.3s" repeatCount="indefinite"/>
             </circle>
-            <circle cx="89" cy="70" r="3" fill="#C9972B"/>
-            <circle cx="115" cy="70" r="3" fill="#C9972B"/>
-            <circle cx="90" cy="69" r="1.2" fill="white"/>
-            <circle cx="116" cy="69" r="1.2" fill="white"/>
+            <!-- left eye -->
+            <circle cx="112" cy="102" r="10" fill="url(#eyeGrad)" filter="url(#glow2)">
+              <animate attributeName="ry" values="10;1;10" dur="4s" begin="2s" repeatCount="indefinite"/>
+            </circle>
+            <!-- right eye -->
+            <circle cx="148" cy="102" r="10" fill="url(#eyeGrad)" filter="url(#glow2)">
+              <animate attributeName="ry" values="10;1;10" dur="4s" begin="2.1s" repeatCount="indefinite"/>
+            </circle>
+            <!-- eye pupils -->
+            <circle cx="114" cy="100" r="3.5" fill="#0C4A6E"/>
+            <circle cx="150" cy="100" r="3.5" fill="#0C4A6E"/>
+            <!-- eye specular -->
+            <circle cx="115" cy="98" r="1.5" fill="white" opacity="0.9"/>
+            <circle cx="151" cy="98" r="1.5" fill="white" opacity="0.9"/>
 
-            <!-- smile -->
-            <path d="M85 85 Q100 94 115 85" stroke="#C9972B" stroke-width="2.5" stroke-linecap="round" fill="none">
-              <animate attributeName="d" values="M85 85 Q100 94 115 85;M85 87 Q100 90 115 87;M85 85 Q100 94 115 85" dur="2s" repeatCount="indefinite"/>
-            </path>
+            <!-- neck poly -->
+            <polygon points="118,152 142,152 146,166 114,166" fill="#0C2D4A" stroke="#38BDF8" stroke-width="0.8" opacity="0.9"/>
+            <line x1="118" y1="152" x2="146" y2="166" stroke="#38BDF8" stroke-width="0.3" opacity="0.3"/>
+            <line x1="142" y1="152" x2="114" y2="166" stroke="#38BDF8" stroke-width="0.3" opacity="0.3"/>
 
-            <!-- neck -->
-            <rect x="92" y="120" width="16" height="10" rx="4" fill="#EDE3C4"/>
+            <!-- ── BODY (diamond-bow low-poly shape) ── -->
+            <polygon points="90,170 170,170 188,210 180,256 130,272 80,256 72,210" fill="#0A2540" opacity="0.9" stroke="#38BDF8" stroke-width="1"/>
+            <!-- body mesh -->
+            <line x1="90" y1="170" x2="130" y2="272" stroke="#38BDF8" stroke-width="0.4" opacity="0.2"/>
+            <line x1="170" y1="170" x2="130" y2="272" stroke="#38BDF8" stroke-width="0.4" opacity="0.2"/>
+            <line x1="72" y1="210" x2="170" y2="170" stroke="#38BDF8" stroke-width="0.3" opacity="0.15"/>
+            <line x1="188" y1="210" x2="90" y2="170" stroke="#38BDF8" stroke-width="0.3" opacity="0.15"/>
+            <line x1="80" y1="256" x2="188" y2="210" stroke="#38BDF8" stroke-width="0.3" opacity="0.15"/>
+            <line x1="180" y1="256" x2="72" y2="210" stroke="#38BDF8" stroke-width="0.3" opacity="0.15"/>
+            <!-- body vertices -->
+            <circle cx="90" cy="170" r="2.5" fill="#38BDF8" filter="url(#glow)"/>
+            <circle cx="170" cy="170" r="2.5" fill="#38BDF8" filter="url(#glow)"/>
+            <circle cx="188" cy="210" r="2" fill="#7DD3FC" filter="url(#glow)"/>
+            <circle cx="72" cy="210" r="2" fill="#7DD3FC" filter="url(#glow)"/>
+            <circle cx="180" cy="256" r="2" fill="#38BDF8" filter="url(#glow)"/>
+            <circle cx="80" cy="256" r="2" fill="#38BDF8" filter="url(#glow)"/>
 
-            <!-- body -->
-            <rect x="48" y="130" width="104" height="90" rx="22" fill="#FAF7F0" stroke="#C9972B" stroke-width="1.5"/>
+            <!-- chest core glow -->
+            <ellipse cx="130" cy="214" rx="22" ry="18" fill="#0EA5E9" opacity="0.12">
+              <animate attributeName="opacity" values="0.08;0.22;0.08" dur="2s" repeatCount="indefinite"/>
+              <animate attributeName="rx" values="22;28;22" dur="2s" repeatCount="indefinite"/>
+            </ellipse>
+            <circle cx="130" cy="214" r="10" fill="#0EA5E9" opacity="0.3" filter="url(#glow2)">
+              <animate attributeName="opacity" values="0.2;0.5;0.2" dur="2s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="130" cy="214" r="5" fill="#7DD3FC" filter="url(#glow2)"/>
 
-            <!-- chest screen -->
-            <rect x="64" y="144" width="72" height="50" rx="12" fill="#FDF3D8" stroke="#E8B84B" stroke-width="1"/>
-            <!-- animated bars -->
-            <rect x="72" y="154" height="5" rx="2" fill="#C9972B">
-              <animate attributeName="width" values="40;55;35;50;40" dur="1.4s" repeatCount="indefinite"/>
-            </rect>
-            <rect x="72" y="164" height="5" rx="2" fill="#E8B84B">
-              <animate attributeName="width" values="50;38;56;42;50" dur="1.8s" repeatCount="indefinite"/>
-            </rect>
-            <rect x="72" y="174" height="5" rx="2" fill="#F5D06E">
-              <animate attributeName="width" values="35;52;40;58;35" dur="1.2s" repeatCount="indefinite"/>
-            </rect>
+            <!-- ── LEFT ARM ── -->
+            <g>
+              <animateTransform attributeName="transform" type="rotate" values="-8 72 185;6 72 185;-8 72 185" dur="3s" repeatCount="indefinite" additive="sum"/>
+              <polygon points="56,185 78,185 74,240 52,240" fill="#0C2D4A" stroke="#38BDF8" stroke-width="0.8" opacity="0.9"/>
+              <line x1="56" y1="185" x2="74" y2="240" stroke="#38BDF8" stroke-width="0.3" opacity="0.3"/>
+              <line x1="78" y1="185" x2="52" y2="240" stroke="#38BDF8" stroke-width="0.3" opacity="0.3"/>
+              <circle cx="56" cy="185" r="2" fill="#38BDF8" filter="url(#glow)"/>
+              <circle cx="78" cy="185" r="2" fill="#38BDF8" filter="url(#glow)"/>
+              <circle cx="52" cy="240" r="2" fill="#7DD3FC" filter="url(#glow)"/>
+              <circle cx="74" cy="240" r="2" fill="#7DD3FC" filter="url(#glow)"/>
+            </g>
 
-            <!-- left arm -->
-            <rect x="22" y="134" width="22" height="62" rx="12" fill="#FAF7F0" stroke="#C9972B" stroke-width="1.5">
-              <animateTransform attributeName="transform" type="rotate" values="-6 33 134;8 33 134;-6 33 134" dur="2.8s" repeatCount="indefinite"/>
-            </rect>
-            <!-- right arm -->
-            <rect x="156" y="134" width="22" height="62" rx="12" fill="#FAF7F0" stroke="#C9972B" stroke-width="1.5">
-              <animateTransform attributeName="transform" type="rotate" values="6 167 134;-8 167 134;6 167 134" dur="2.8s" repeatCount="indefinite"/>
-            </rect>
+            <!-- ── RIGHT ARM ── -->
+            <g>
+              <animateTransform attributeName="transform" type="rotate" values="8 188 185;-6 188 185;8 188 185" dur="3s" repeatCount="indefinite" additive="sum"/>
+              <polygon points="182,185 204,185 208,240 186,240" fill="#0C2D4A" stroke="#38BDF8" stroke-width="0.8" opacity="0.9"/>
+              <line x1="182" y1="185" x2="208" y2="240" stroke="#38BDF8" stroke-width="0.3" opacity="0.3"/>
+              <line x1="204" y1="185" x2="186" y2="240" stroke="#38BDF8" stroke-width="0.3" opacity="0.3"/>
+              <circle cx="182" cy="185" r="2" fill="#38BDF8" filter="url(#glow)"/>
+              <circle cx="204" cy="185" r="2" fill="#38BDF8" filter="url(#glow)"/>
+              <circle cx="186" cy="240" r="2" fill="#7DD3FC" filter="url(#glow)"/>
+              <circle cx="208" cy="240" r="2" fill="#7DD3FC" filter="url(#glow)"/>
+            </g>
 
-            <!-- legs -->
-            <rect x="74" y="220" width="22" height="34" rx="10" fill="#FAF7F0" stroke="#C9972B" stroke-width="1.5"/>
-            <rect x="104" y="220" width="22" height="34" rx="10" fill="#FAF7F0" stroke="#C9972B" stroke-width="1.5"/>
+            <!-- ── OPEN BOOK at bottom ── -->
+            <!-- book left page -->
+            <polygon points="40,300 130,288 130,326 40,334" fill="#082040" opacity="0.85" stroke="#38BDF8" stroke-width="0.8"/>
+            <line x1="40" y1="300" x2="130" y2="326" stroke="#38BDF8" stroke-width="0.3" opacity="0.3"/>
+            <line x1="130" y1="288" x2="40" y2="334" stroke="#38BDF8" stroke-width="0.3" opacity="0.3"/>
+            <line x1="70" y1="295" x2="90" y2="332" stroke="#38BDF8" stroke-width="0.3" opacity="0.2"/>
+            <line x1="100" y1="290" x2="115" y2="330" stroke="#38BDF8" stroke-width="0.3" opacity="0.2"/>
+            <!-- book right page -->
+            <polygon points="130,288 220,300 220,334 130,326" fill="#082040" opacity="0.85" stroke="#38BDF8" stroke-width="0.8"/>
+            <line x1="130" y1="288" x2="220" y2="334" stroke="#38BDF8" stroke-width="0.3" opacity="0.3"/>
+            <line x1="220" y1="300" x2="130" y2="326" stroke="#38BDF8" stroke-width="0.3" opacity="0.3"/>
+            <line x1="150" y1="290" x2="165" y2="330" stroke="#38BDF8" stroke-width="0.3" opacity="0.2"/>
+            <line x1="180" y1="295" x2="192" y2="332" stroke="#38BDF8" stroke-width="0.3" opacity="0.2"/>
+            <!-- book spine glow -->
+            <line x1="130" y1="284" x2="130" y2="330" stroke="#38BDF8" stroke-width="1.5" opacity="0.9" filter="url(#glow)"/>
+            <circle cx="130" cy="284" r="3" fill="#7DD3FC" filter="url(#glow2)"/>
 
-            <!-- feet -->
-            <rect x="64" y="250" width="36" height="12" rx="7" fill="#E8B84B"/>
-            <rect x="100" y="250" width="36" height="12" rx="7" fill="#E8B84B"/>
+            <!-- floating particles around robot -->
+            <circle cx="50" cy="130" r="1.5" fill="#38BDF8" opacity="0.8">
+              <animate attributeName="cy" values="130;118;130" dur="3s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.8;0.2;0.8" dur="3s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="210" cy="150" r="1.5" fill="#7DD3FC" opacity="0.7">
+              <animate attributeName="cy" values="150;138;150" dur="2.5s" begin="0.8s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.7;0.2;0.7" dur="2.5s" begin="0.8s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="40" cy="220" r="1" fill="#38BDF8" opacity="0.6">
+              <animate attributeName="cy" values="220;208;220" dur="3.5s" begin="1.2s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="218" cy="240" r="1.2" fill="#7DD3FC" opacity="0.6">
+              <animate attributeName="cy" values="240;228;240" dur="2.8s" begin="0.4s" repeatCount="indefinite"/>
+            </circle>
           </svg>
         </div>
       </div>
@@ -610,7 +703,7 @@ nav{
       r:Math.random()*2.5+0.5,
       vx:(Math.random()-0.5)*0.3,vy:(Math.random()-0.5)*0.3,
       a:Math.random()*0.6+0.2,
-      col:Math.random()<0.6?'rgba(201,151,43,':'rgba(232,184,75,'
+      col:Math.random()<0.6?'rgba(139,94,26,':'rgba(168,114,42,'
     };
   }
   for(let i=0;i<90;i++) particles.push(mkP());
@@ -630,7 +723,7 @@ nav{
         let d=Math.sqrt(dx*dx+dy*dy);
         if(d<90){
           ctx.beginPath();
-          ctx.strokeStyle='rgba(201,151,43,'+(0.06*(1-d/90))+')';
+          ctx.strokeStyle='rgba(139,94,26,'+(0.06*(1-d/90))+')';
           ctx.lineWidth=0.5;
           ctx.moveTo(particles[i].x,particles[i].y);
           ctx.lineTo(particles[j].x,particles[j].y);
@@ -701,9 +794,54 @@ function answerQuery(raw){
   let college=findCollege(t);
   if(college){
     let d=DATA[college];
-    let intent=/fee|cost/i.test(t)?'fee':(/scholarship/i.test(t)?'scholarships':(/placement/i.test(t)?'placements':/(exam|selection|entrance)/i.test(t)?'selection':'highlights'));
-    let val=d[intent]||d.highlights;
-    return `<strong>${college}</strong><br><br>✨ <strong>${intent.charAt(0).toUpperCase()+intent.slice(1)}:</strong> ${val}<br><br><span class="tag">📍 ${d.location}</span> <span class="tag">💰 ${d.fee}</span>`;
+    return `
+<div style="background:var(--cream2);border:1px solid var(--border);border-radius:18px;overflow:hidden;">
+  <!-- header -->
+  <div style="background:linear-gradient(135deg,rgba(139,94,26,0.15),rgba(168,114,42,0.08));padding:14px 18px;border-bottom:1px solid var(--border2);display:flex;align-items:center;gap:12px;">
+    <div style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;">🎓</div>
+    <div>
+      <div style="font-weight:700;font-size:0.95rem;color:var(--ink);">${college}</div>
+      <div style="font-size:0.72rem;color:var(--muted);">📍 ${d.location}</div>
+    </div>
+  </div>
+  <!-- body -->
+  <div style="padding:14px 18px;display:flex;flex-direction:column;gap:10px;">
+    <!-- program -->
+    <div style="display:flex;gap:10px;align-items:flex-start;">
+      <span style="font-size:1rem;flex-shrink:0;">📚</span>
+      <div><div style="font-size:0.7rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;">Programme</div><div style="font-size:0.82rem;color:var(--ink);margin-top:2px;">${d.program}</div></div>
+    </div>
+    <!-- fee -->
+    <div style="display:flex;gap:10px;align-items:flex-start;">
+      <span style="font-size:1rem;flex-shrink:0;">💰</span>
+      <div><div style="font-size:0.7rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;">Total Fee</div><div style="font-size:0.82rem;color:var(--ink);margin-top:2px;">${d.fee}</div></div>
+    </div>
+    <!-- scholarships -->
+    <div style="display:flex;gap:10px;align-items:flex-start;">
+      <span style="font-size:1rem;flex-shrink:0;">🏅</span>
+      <div><div style="font-size:0.7rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;">Scholarships</div><div style="font-size:0.82rem;color:var(--ink);margin-top:2px;">${d.scholarships}</div></div>
+    </div>
+    <!-- selection -->
+    <div style="display:flex;gap:10px;align-items:flex-start;">
+      <span style="font-size:1rem;flex-shrink:0;">✅</span>
+      <div><div style="font-size:0.7rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;">Selection / Entrance</div><div style="font-size:0.82rem;color:var(--ink);margin-top:2px;">${d.selection}</div></div>
+    </div>
+    <!-- highlights -->
+    <div style="display:flex;gap:10px;align-items:flex-start;">
+      <span style="font-size:1rem;flex-shrink:0;">⚡</span>
+      <div><div style="font-size:0.7rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;">Key Highlights</div><div style="font-size:0.82rem;color:var(--ink);margin-top:2px;">${d.highlights}</div></div>
+    </div>
+    <!-- placements -->
+    <div style="display:flex;gap:10px;align-items:flex-start;">
+      <span style="font-size:1rem;flex-shrink:0;">💼</span>
+      <div><div style="font-size:0.7rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;">Placements</div><div style="font-size:0.82rem;color:var(--ink);margin-top:2px;">${d.placements}</div></div>
+    </div>
+  </div>
+  <!-- footer tag -->
+  <div style="padding:8px 18px 12px;">
+    <span class="tag">🔍 Verify fees & cutoffs on official site</span>
+  </div>
+</div>`;
   }
   return `I specialise in <strong>Scaler, NST, Vedam, NIAT</strong>.<br>Try: <em>"Tell me about Vedam scholarships"</em> or <em>"Compare NIAT vs NST"</em>`;
 }
@@ -829,7 +967,7 @@ function buildChips(){
     b.onclick=()=>{document.getElementById('inp').value=`Tell me about ${n}`;send();};
     bar.appendChild(b);
   });
-  let sep=document.createElement('span');sep.style.cssText='width:1px;background:rgba(201,151,43,0.2);flex-shrink:0;';bar.appendChild(sep);
+  let sep=document.createElement('span');sep.style.cssText='width:1px;background:rgba(139,94,26,0.2);flex-shrink:0;';bar.appendChild(sep);
   QUICK.forEach(q=>{
     let b=document.createElement('button');b.className='qchip';b.innerText=q;
     b.onclick=()=>{document.getElementById('inp').value=q;send();};

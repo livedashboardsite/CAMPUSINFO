@@ -3,571 +3,189 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Edu Assist | Premium College AI</title>
-<style>
-/* ---------- RESET & PREMIUM THEME (LUXURY DARK / GOLD ACCENTS) ---------- */
-* {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
-}
-:root {
---bg-primary: #0B0C10;
---bg-elevated: #13161F;
---bg-card: #1A1E2A;
---bg-glass: rgba(26, 30, 42, 0.65);
---accent-gold: #E4B363;
---accent-gold-glow: rgba(228, 179, 99, 0.2);
---accent-teal: #3B9E9C;
---text-primary: #F0F3F8;
---text-secondary: #A0A6B5;
---border-light: #2A2F3F;
---gradient-premium: linear-gradient(135deg, #E4B363, #C48B36);
---gradient-chat: linear-gradient(135deg, #252C3C, #1A1E2A);
---shadow-soft: 0 12px 28px rgba(0, 0, 0, 0.4);
---font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', 'Poppins', sans-serif;
-}
-body {
-background: var(--bg-primary);
-font-family: var(--font-sans);
-color: var(--text-primary);
-height: 100vh;
-overflow: hidden;
-line-height: 1.5;
-}
-.page {
-position: absolute;
-inset: 0;
-display: flex;
-flex-direction: column;
-transition: opacity 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1), visibility 0.4s;
-}
-.page.hidden {
-opacity: 0;
-visibility: hidden;
-pointer-events: none;
-}
-/* INTRO PAGE */
-#intro {
-background: radial-gradient(ellipse at 30% 40%, #11141E, #07090E);
-justify-content: center;
-align-items: center;
-overflow-y: auto;
-padding: 24px;
-}
-.intro-wrap {
-display: grid;
-grid-template-columns: 1fr 0.9fr;
-max-width: 1280px;
-width: 100%;
-gap: 48px;
-align-items: center;
-backdrop-filter: blur(2px);
-}
-.intro-left {
-display: flex;
-flex-direction: column;
-gap: 20px;
-}
-.badge-premium {
-display: inline-flex;
-align-items: center;
-gap: 8px;
-background: rgba(228, 179, 99, 0.12);
-border: 1px solid rgba(228, 179, 99, 0.35);
-border-radius: 60px;
-padding: 6px 18px;
-width: fit-content;
-font-size: 0.75rem;
-font-weight: 600;
-letter-spacing: 0.4px;
-color: var(--accent-gold);
-}
-.intro-h1 {
-font-size: clamp(2rem, 4.5vw, 3.5rem);
-font-weight: 800;
-line-height: 1.2;
-letter-spacing: -0.02em;
-}
-.gold-text {
-background: linear-gradient(125deg, #F2C94C, #E4B363);
--webkit-background-clip: text;
-background-clip: text;
-color: transparent;
-}
-.intro-desc {
-color: var(--text-secondary);
-font-size: 1rem;
-max-width: 520px;
-line-height: 1.6;
-}
-.pill-group {
-display: flex;
-flex-wrap: wrap;
-gap: 10px;
-margin: 8px 0;
-}
-.pill-premium {
-background: rgba(26, 30, 42, 0.8);
-backdrop-filter: blur(4px);
-border: 1px solid var(--border-light);
-padding: 5px 14px;
-border-radius: 40px;
-font-size: 0.75rem;
-font-weight: 500;
-color: var(--text-secondary);
-}
-.btn-gold {
-background: var(--gradient-premium);
-border: none;
-border-radius: 60px;
-padding: 14px 34px;
-width: fit-content;
-font-weight: 700;
-font-size: 1rem;
-color: #0B0C10;
-display: flex;
-align-items: center;
-gap: 10px;
-cursor: pointer;
-box-shadow: 0 10px 20px -5px rgba(228, 179, 99, 0.3);
-transition: transform 0.2s, box-shadow 0.2s;
-margin-top: 8px;
-}
-.btn-gold:hover {
-transform: translateY(-3px);
-box-shadow: 0 18px 30px -6px rgba(228, 179, 99, 0.4);
-}
-.stat-row-premium {
-display: flex;
-gap: 36px;
-margin-top: 12px;
-}
-.stat .stat-number {
-font-size: 1.8rem;
-font-weight: 800;
-color: var(--accent-gold);
-}
-.robot-premium {
-position: relative;
-width: 280px;
-height: 340px;
-margin: 0 auto;
-animation: floatRobot 3.6s ease-in-out infinite;
-}
-@keyframes floatRobot {
-0%, 100% { transform: translateY(0px); }
-50% { transform: translateY(-12px); }
-}
-.robot-glow {
-position: absolute;
-width: 260px;
-height: 260px;
-background: radial-gradient(circle, rgba(228,179,99,0.25) 0%, transparent 70%);
-border-radius: 50%;
-left: 50%;
-top: 50%;
-transform: translate(-50%, -50%);
-animation: pulsePremium 3s infinite;
-}
-@keyframes pulsePremium {
-0%,100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
-50% { opacity: 0.9; transform: translate(-50%, -50%) scale(1.08); }
-}
-.cap-brim { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); width: 110px; height: 10px; background: var(--gradient-premium); border-radius: 6px; }
-.cap-top { position: absolute; top: -4px; left: 50%; transform: translateX(-50%); width: 80px; height: 28px; background: linear-gradient(135deg, #D4AF37, #B8860B); border-radius: 10px 10px 0 0; }
-.head { position: absolute; top: 38px; left: 50%; transform: translateX(-50%); width: 100px; height: 94px; background: var(--bg-card); border: 1.5px solid #3A3F55; border-radius: 24px; box-shadow: 0 6px 18px rgba(0,0,0,0.3); }
-.face-screen { background: #0E111B; width: 72px; height: 48px; border-radius: 16px; position: absolute; top: 18px; left: 50%; transform: translateX(-50%); border: 1px solid var(--accent-gold); box-shadow: inset 0 0 8px #E4B36330; }
-.eye { width: 12px; height: 12px; background: var(--accent-gold); border-radius: 50%; position: absolute; top: 12px; animation: blink 4s infinite; }
-.eye.left { left: 14px; } .eye.right { right: 14px; }
-.mouth { width: 32px; height: 3px; background: #3B9E9C; border-radius: 2px; position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); animation: talk 1.6s infinite; }
-.body { position: absolute; top: 128px; left: 50%; transform: translateX(-50%); width: 110px; height: 100px; background: var(--bg-card); border: 1.5px solid var(--border-light); border-radius: 22px; }
-.chest-screen { background: #0C0F18; width: 76px; height: 48px; border-radius: 12px; position: absolute; top: 12px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; justify-content: center; gap: 4px; }
-.bar-premium { height: 4px; background: var(--accent-gold); width: 70%; margin: 0 auto; border-radius: 4px; opacity: 0.7; }
-.arm { background: var(--bg-card); border: 1px solid var(--border-light); width: 22px; height: 68px; position: absolute; top: 138px; border-radius: 14px; }
-.arm.left { left: calc(50% - 76px); transform-origin: top; animation: waveL 2.8s infinite; }
-.arm.right { right: calc(50% - 76px); transform-origin: top; animation: waveR 2.8s infinite; }
-.leg { background: var(--bg-card); border: 1px solid var(--border-light); width: 26px; height: 66px; position: absolute; top: 226px; border-radius: 14px; }
-.leg.left { left: calc(50% - 38px); } .leg.right { right: calc(50% - 38px); }
-.foot { background: var(--bg-card); border: 1px solid var(--border-light); width: 38px; height: 16px; border-radius: 12px; position: absolute; top: 290px; }
-.foot.left { left: calc(50% - 44px); } .foot.right { right: calc(50% - 44px); }
-@keyframes blink { 0%,94%,100% { transform: scaleY(1); } 96% { transform: scaleY(0.1); } }
-@keyframes talk { 0%,100% { width: 28px; } 50% { width: 16px; } }
-@keyframes waveL { 0%,100% { transform: rotate(-5deg); } 50% { transform: rotate(9deg); } }
-@keyframes waveR { 0%,100% { transform: rotate(5deg); } 50% { transform: rotate(-9deg); } }
+<title>EduAssist · Neo | AI College Guide</title>
 
-/* CHAT PAGE */
-#chat {
-background: var(--bg-primary);
-height: 100%;
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ===================== RESET ===================== */
+*{margin:0;padding:0;box-sizing:border-box;cursor:none;}
+html,body{height:100%;overflow:hidden;font-family:'DM Sans',sans-serif;background:#FAF7F0;color:#170E03;}
+
+/* ===================== CURSOR ===================== */
+#cur{position:fixed;width:12px;height:12px;border-radius:50%;background:#9A6428;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
+#cur2{position:fixed;width:36px;height:36px;border-radius:50%;border:1.5px solid #7B4F1E;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.5;}
+
+/* ===================== LAYOUT ===================== */
+.page{position:fixed;inset:0;display:flex;flex-direction:column;transition:.5s;z-index:2;}
+.page.hidden{opacity:0;pointer-events:none;transform:translateY(16px);}
+
+/* ===================== INTRO ===================== */
+#intro{display:flex;align-items:center;justify-content:center;padding:30px;}
+.intro-inner{display:grid;grid-template-columns:1fr 1fr;gap:40px;max-width:1100px;align-items:center;}
+
+.intro-h1{font-family:'Playfair Display',serif;font-size:3rem;font-weight:900;}
+.shimmer-text{color:#7B4F1E;}
+
+.btn-cta{
+background:linear-gradient(135deg,#7B4F1E,#9A6428);
+border:none;color:white;padding:14px 30px;border-radius:50px;
+font-weight:600;cursor:pointer;
 }
-nav {
-background: var(--bg-elevated);
-border-bottom: 1px solid var(--border-light);
-padding: 12px 24px;
-display: flex;
-justify-content: space-between;
-align-items: center;
-flex-shrink: 0;
-}
-.logo-premium {
-display: flex;
-align-items: center;
-gap: 10px;
-font-weight: 700;
-cursor: pointer;
-}
-.logo-icon {
-background: var(--gradient-premium);
-width: 36px;
-height: 36px;
-border-radius: 14px;
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 1.2rem;
-}
-.mode-tabs-premium {
-background: #10131D;
-border-radius: 48px;
-padding: 4px;
-display: flex;
-gap: 6px;
-}
-.tab-premium {
-background: transparent;
-border: none;
-padding: 6px 20px;
-border-radius: 48px;
-color: var(--text-secondary);
-font-weight: 600;
-font-size: 0.8rem;
-cursor: pointer;
-transition: all 0.2s;
-}
-.tab-premium.on {
-background: var(--gradient-premium);
-color: #0B0C10;
-box-shadow: 0 2px 8px rgba(228,179,99,0.3);
-}
-.chat-body {
-flex: 1;
-display: flex;
-flex-direction: column;
-min-height: 0;
-overflow: hidden;
-}
-.chips-strip {
-display: flex;
-gap: 8px;
-padding: 12px 20px;
-overflow-x: auto;
-background: rgba(19, 22, 31, 0.8);
-backdrop-filter: blur(8px);
-border-bottom: 1px solid var(--border-light);
-flex-shrink: 0;
-scrollbar-width: thin;
-}
-.chip, .qchip {
-background: var(--bg-card);
-border: 1px solid var(--border-light);
-padding: 6px 14px;
-border-radius: 40px;
-font-size: 0.7rem;
-font-weight: 500;
-color: var(--text-secondary);
-cursor: pointer;
-white-space: nowrap;
-transition: all 0.2s;
-}
-.chip:hover, .qchip:hover {
-border-color: var(--accent-gold);
-color: var(--accent-gold);
-background: rgba(228, 179, 99, 0.08);
-}
-.ibar {
-background: var(--bg-elevated);
-padding: 10px 20px;
-border-bottom: 1px solid var(--border-light);
-display: none;
-flex-shrink: 0;
-}
-.ibar.on {
-display: block;
-}
-.track {
-height: 5px;
-background: #252C3C;
-border-radius: 10px;
-margin-top: 6px;
-}
-.fill {
-height: 5px;
-background: var(--gradient-premium);
-border-radius: 10px;
-width: 0%;
-transition: width 0.3s ease;
-}
-.msgs {
-flex: 1;
-overflow-y: auto;
-padding: 20px 20px;
-display: flex;
-flex-direction: column;
-gap: 18px;
-scroll-behavior: smooth;
-}
-.msgs::-webkit-scrollbar {
-width: 5px;
-}
-.msgs::-webkit-scrollbar-track {
-background: var(--bg-elevated);
-}
-.msgs::-webkit-scrollbar-thumb {
-background: var(--accent-gold);
-border-radius: 10px;
-}
-.msg {
-display: flex;
-gap: 12px;
-align-items: flex-start;
-animation: fadeIn 0.25s ease;
-}
-.msg.user {
-flex-direction: row-reverse;
-}
-@keyframes fadeIn {
-from { opacity: 0; transform: translateY(6px); }
-to { opacity: 1; transform: translateY(0); }
-}
-.avatar {
-width: 36px;
-height: 36px;
-border-radius: 50%;
-display: flex;
-align-items: center;
-justify-content: center;
-flex-shrink: 0;
-font-size: 1rem;
-}
-.avatar.bot { background: var(--gradient-premium); color: #0B0C10; }
-.avatar.user { background: var(--bg-card); border: 1px solid var(--border-light); }
-.bubble {
-max-width: 78%;
-padding: 12px 18px;
-border-radius: 24px;
-font-size: 0.85rem;
-line-height: 1.55;
-word-break: break-word;
-backdrop-filter: blur(2px);
-}
-.msg.bot .bubble {
-background: var(--bg-card);
-border: 1px solid var(--border-light);
-border-bottom-left-radius: 6px;
-}
-.msg.user .bubble {
-background: var(--gradient-premium);
-color: #0B0C10;
-border-bottom-right-radius: 6px;
-font-weight: 500;
-}
-.bubble table { width: 100%; border-collapse: collapse; font-size: 0.74rem; margin: 8px 0; }
-.bubble th { text-align: left; color: var(--accent-gold); padding: 4px 2px; border-bottom: 1px solid #2E3440; }
-.tag { background: #10131D; display: inline-block; padding: 2px 10px; border-radius: 30px; font-size: 0.7rem; border: 1px solid var(--border-light); color: var(--accent-gold); }
-.score-card { background: var(--bg-elevated); border-radius: 24px; padding: 20px; border: 1px solid var(--border-light); }
-.retry-btn { background: var(--gradient-premium); border: none; padding: 8px 18px; border-radius: 40px; font-weight: 600; cursor: pointer; margin-top: 12px; color: #0B0C10; }
-.dots span { width: 8px; height: 8px; background: var(--accent-gold); border-radius: 50%; display: inline-block; animation: dotBounce 1.2s infinite; }
-@keyframes dotBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-.input-wrap { padding: 12px 20px 20px; background: var(--bg-elevated); border-top: 1px solid var(--border-light); flex-shrink: 0; }
-.input-row { display: flex; align-items: center; gap: 10px; background: var(--bg-primary); border-radius: 60px; padding: 4px 6px 4px 20px; border: 1px solid var(--border-light); transition: border 0.2s; }
-.input-row:focus-within { border-color: var(--accent-gold); }
-#inp { flex: 1; background: transparent; border: none; color: var(--text-primary); font-family: var(--font-sans); font-size: 0.9rem; resize: none; outline: none; padding: 10px 0; max-height: 100px; }
-.send-btn { width: 42px; height: 42px; border-radius: 50%; background: var(--gradient-premium); border: none; color: #0B0C10; font-weight: bold; cursor: pointer; transition: transform 0.15s; }
-@media (max-width: 780px) {
-.intro-wrap { grid-template-columns: 1fr; text-align: center; gap: 32px; padding: 20px; }
-.intro-right { order: -1; }
-.btn-gold { align-self: center; }
-.pill-group { justify-content: center; }
-.bubble { max-width: 92%; }
-.robot-premium { transform: scale(0.9); }
-nav { padding: 10px 16px; }
-}
-@media (max-width: 480px) {
-.tab-premium { padding: 5px 12px; font-size: 0.7rem; }
-.logo-premium span { font-size: 0.9rem; }
-}
+
+/* ===================== CHAT ===================== */
+nav{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:#fff;}
+.tabs button{border:none;padding:8px 16px;border-radius:50px;cursor:pointer;background:#eee;}
+.tabs .on{background:#7B4F1E;color:#fff;}
+
+.chat-shell{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.msgs{flex:1;overflow-y:auto;padding:15px;}
+
+.msg{display:flex;gap:10px;margin:10px 0;}
+.msg.user{flex-direction:row-reverse;}
+.bubble{padding:10px 14px;border-radius:16px;max-width:75%;}
+.msg.user .bubble{background:#7B4F1E;color:#fff;}
+.msg.bot .bubble{background:#fff;border:1px solid #ddd;}
+
+.input-wrap{padding:10px;background:#fff;}
+textarea{width:100%;padding:10px;border-radius:20px;border:1px solid #ccc;resize:none;}
+
+.send{margin-top:8px;width:100%;padding:10px;border:none;background:#7B4F1E;color:#fff;border-radius:20px;cursor:pointer;}
 </style>
 </head>
+
 <body>
 
-<!-- INTRO PAGE -->
+<div id="cur"></div>
+<div id="cur2"></div>
+
+<!-- INTRO -->
 <div class="page" id="intro">
-<div class="intro-wrap">
-<div class="intro-left">
-<div class="badge-premium">India's Elite 4 · New-Gen</div>
-<h1 class="intro-h1">Your AI guide to<br><span class="gold-text">Scaler · NST · Vedam · NIAT</span></h1>
-<p class="intro-desc">Compare fees, scholarships, placements & entrance. Zero fluff, instant comparisons, mock interviews — built for future tech leaders.</p>
-<div class="pill-group">
-<span class="pill-premium">4 elite colleges</span>
-<span class="pill-premium">Mock interview</span>
-<span class="pill-premium">SAT accepted</span>
-<span class="pill-premium">Placements</span>
-</div>
-<div class="stat-row-premium">
-<div class="stat"><div class="stat-number">4</div><div class="stat-label">elite colleges</div></div>
-<div class="stat"><div class="stat-number">100%</div><div class="stat-label">free + secure</div></div>
-</div>
-<button class="btn-gold" onclick="goChat()">Launch Assistant →</button>
-</div>
-<div class="intro-right">
-<div class="robot-premium">
-<div class="robot-glow"></div>
-<div class="cap-brim"></div><div class="cap-top"></div>
-<div class="head"><div class="face-screen"><div class="eye left"></div><div class="eye right"></div><div class="mouth"></div></div></div>
-<div class="arm left"></div><div class="arm right"></div>
-<div class="body"><div class="chest-screen"><div class="bar-premium"></div><div class="bar-premium"></div></div></div>
-<div class="leg left"></div><div class="leg right"></div>
-<div class="foot left"></div><div class="foot right"></div>
-</div>
-</div>
-</div>
+  <div class="intro-inner">
+    <div>
+      <h1 class="intro-h1">AI Guide for<br><span class="shimmer-text">Scaler · NST · Vedam · NIAT</span></h1>
+      <button class="btn-cta" onclick="goChat()">Launch</button>
+    </div>
+  </div>
 </div>
 
-<!-- CHAT PAGE -->
+<!-- CHAT -->
 <div class="page hidden" id="chat">
+
 <nav>
-<div class="logo-premium" onclick="goIntro()"><div class="logo-icon">🎓</div><span>Edu<span style="color:#E4B363">Assist</span></span></div>
-<div class="mode-tabs-premium">
-<button class="tab-premium on" id="tabA" onclick="setMode('a')">College Guide</button>
-<button class="tab-premium" id="tabI" onclick="setMode('i')">Mock Interview</button>
-</div>
+  <div><b>EduAssist</b></div>
+  <div class="tabs">
+    <button class="on" id="tabA" onclick="setMode('a')">Guide</button>
+    <button id="tabI" onclick="setMode('i')">Interview</button>
+  </div>
 </nav>
-<div class="chat-body">
-<div class="chips-strip" id="chipStrip"></div>
-<div class="ibar" id="ibar">
-<div><span id="qlabel">Question 1/3</span> <span id="qphase"></span></div>
-<div class="track"><div class="fill" id="fill"></div></div>
+
+<div class="chat-shell">
+  <div class="msgs" id="msgs"></div>
+
+  <div class="input-wrap">
+    <textarea id="inp" placeholder="Ask anything..." onkeydown="hk(event)"></textarea>
+    <button class="send" onclick="send()">Send</button>
+  </div>
 </div>
-<div class="msgs" id="msgs">
-<div class="empty"><div class="e-icon">💬</div><h2>Ask about top 4 new-gen colleges</h2><p>Compare Scaler, NST, Vedam, NIAT — fees, scholarships, entrance tests & more.</p></div>
-</div>
-<div class="input-wrap">
-<div class="input-row">
-<textarea id="inp" rows="1" placeholder='Try: "Compare Scaler vs Vedam" or "NIAT scholarships"' onkeydown="hk(event)" oninput="autoHeight(this)"></textarea>
-<button class="send-btn" onclick="send()">➤</button>
-</div>
-</div>
-</div>
+
 </div>
 
 <script>
-// ----------------------------- BACKEND CONNECTION ---------------------------------
-const BACKEND_URL = "https://edu-assist-backend-bpt0.onrender.com";   // ✅ your live Render backend
 
-// ----------------------------- LOCAL COLLEGE DATA (for quick info, but AI will answer) -----------------------------
-const COLLEGE_DATA = {
-  "Scaler School of Technology (SST)": { short: "Scaler", location: "Bengaluru, Karnataka", program: "B.Tech in CS & AI + dual degree from BITS Pilani/IIT Madras", fee: "₹28 lakh (full) | scholarships based on NSET", scholarships: "Merit up to 100% waiver (NSET score)", selection: "NSET / SAT accepted (alternative to JEE)", highlights: "Learn by Building, MAANG mentors, project-based", placements: "Top recruiters: Google, Amazon, Razorpay; strong alumni network", link: "#" },
-  "Newton School of Technology (NST)": { short: "NST", location: "Sonipat, Pune, Bengaluru, Hyderabad", program: "B.Tech in CS & AI (UGC recognised)", fee: "₹23 lakh total (residential)", scholarships: "Merit-based on NSAT", selection: "NSAT (Newton Aptitude Test)", highlights: "Code from week 1, mentors from Google/Meta", placements: "Placement assistance, product role focus", link: "#" },
-  "Vedam School of Technology": { short: "Vedam", location: "Pune & Gurugram", program: "B.Tech in CS & AI (Residential)", fee: "₹18 lakh total", scholarships: "Up to 100% merit / women-in-tech", selection: "VSAT / JEE 90%+ exempt", highlights: "AI-first, MacBook on Day1, industry faculty", placements: "1,028+ placed, stipends up to ₹2.8L, recruiters: Amazon, Adobe", link: "#" },
-  "NIAT (NxtWave Institute)": { short: "NIAT", location: "20+ campuses across India", program: "B.Tech CSE / AI & ML", fee: "₹2-4.5 lakh/year", scholarships: "NAT merit waivers up to 100%", selection: "NAT online exam (no JEE)", highlights: "NSDC backed, real-world projects, internship stipends from Year1", placements: "Microsoft, Google, Amazon hiring partners", link: "#" }
+/* ===================== CURSOR ===================== */
+const cur=document.getElementById('cur'),cur2=document.getElementById('cur2');
+let mx=0,my=0,cx=0,cy=0;
+
+document.addEventListener('mousemove',e=>{
+mx=e.clientX;my=e.clientY;
+cur.style.left=mx+'px';cur.style.top=my+'px';
+});
+
+(function anim(){
+cx+=(mx-cx)*0.15;
+cy+=(my-cy)*0.15;
+cur2.style.left=cx+'px';
+cur2.style.top=cy+'px';
+requestAnimationFrame(anim);
+})();
+
+/* ===================== DATA ===================== */
+const DATA={
+"Scaler":{fee:28,short:"Scaler"},
+"NST":{fee:23,short:"NST"},
+"Vedam":{fee:18,short:"Vedam"},
+"NIAT":{fee:4,short:"NIAT"}
 };
-const COLLEGES = Object.keys(COLLEGE_DATA);
-const QUICK_SET = ["Cheapest colleges", "100% scholarships", "SAT accepted", "Best placements", "Compare Scaler vs NIAT", "Vedam vs NST"];
 
-// ----------------------------- MOCK INTERVIEW MODULE (local, unchanged) -----------------------------
-let mode = 'a';   // 'a' = college guide (AI backend), 'i' = mock interview (local)
-let iStep = 0, iScores = [], iQs = [], awaiting = false;
-const qBank = { hr: ["Tell us about yourself and why tech?", "Describe a challenging project you solved."], tech: ["Difference between array and linked list?", "What is Big O? give example"], aptitude: ["If 5 workers complete in 10 days, how days for 10 workers?", "Probability of rolling a 6 twice?"] };
-function updateInterviewBar() {
-  let bar = document.getElementById('ibar');
-  if (mode != 'i') { bar.classList.remove('on'); return; }
-  bar.classList.add('on');
-  let percent = iStep == 0 ? 0 : (iStep-1)/3*100;
-  if (iStep >= 3) percent = 100;
-  document.getElementById('fill').style.width = percent+'%';
-  document.getElementById('qlabel').innerText = iStep >= 3 ? "Complete" : `Question ${iStep}/3`;
-}
-async function startInterview() { iStep = 0; iScores = []; iQs = []; awaiting = false; updateInterviewBar(); addBotMsg('<strong>Mock interview — premium simulation</strong><br><br>I\'ll ask 3 questions (HR, Tech, Problem Solving). Answer naturally.'); await delay(600); askNext(); }
-function askNext() { if (iStep >= 3) { finishInterview(); return; } iStep++; updateInterviewBar(); let type = iStep == 1 ? 'HR' : (iStep == 2 ? 'Technical' : 'Problem Solving'); let bank = iStep == 1 ? qBank.hr : (iStep == 2 ? qBank.tech : qBank.aptitude); let question = bank[Math.floor(Math.random() * bank.length)]; iQs.push({ type, question }); addBotMsg(`<span style="color:#E4B363">Q${iStep}/3 · ${type}</span><br><br>${question}`); awaiting = true; }
-function evaluate(ans, type) { let score = 5 + (ans.length > 100 ? 2 : ans.length < 25 ? -1 : 0); let kw = type === 'HR' ? ['team','learn','project'] : (type === 'Technical' ? ['data','complexity','function'] : ['calculate','steps','result']); score += kw.filter(k => ans.toLowerCase().includes(k)).length; score = Math.min(10, Math.max(1, score)); return { score, feedback: `✨ Feedback: ${score >= 7 ? "Great articulation!" : "Good attempt - focus on clarity."} Score: ${score}/10` }; }
-async function handleInterviewAnswer(txt) { if (!awaiting) { addBotMsg("Please wait for next question."); return; } awaiting = false; let curr = iQs[iStep-1]; let { score, feedback } = evaluate(txt, curr.type); iScores.push(score); addBotMsg(`<strong>Feedback Q${iStep}</strong><br>${feedback}`); if (iStep < 3) { await delay(1000); askNext(); } else { await delay(1000); finishInterview(); } }
-async function finishInterview() { let avg = (iScores.reduce((a,b)=>a+b,0)/3).toFixed(1); let grade = avg >= 8 ? "🎓 Elite" : avg >= 6 ? "📘 Solid" : "📚 Keep practicing"; addBotMsg(`<div class="score-card"><h3>Interview Complete</h3><div style="font-size:2.2rem;font-weight:800;color:#E4B363">${avg}/10</div><p>${grade}</p><button class="retry-btn" onclick="setMode('i')">Try Again</button></div>`); iStep = 4; updateInterviewBar(); }
+const COLLEGES=Object.keys(DATA);
 
-// ----------------------------- UI HELPERS (typing, messages) -----------------------------
-let typingDiv = null;
-function showTyping() { if(typingDiv) hideTyping(); let el = document.createElement('div'); el.className = 'msg bot'; el.id = 'typingMsg'; el.innerHTML = `<div class="avatar bot">🤖</div><div class="bubble"><div class="dots"><span></span><span></span><span></span></div></div>`; document.getElementById('msgs').appendChild(el); typingDiv = el; document.getElementById('msgs').scrollTop = document.getElementById('msgs').scrollHeight; }
-function hideTyping() { if(typingDiv) { typingDiv.remove(); typingDiv = null; } }
-function addBotMsg(html) { addMsg('bot', html); }
-function addUserMsg(html) { addMsg('user', html); }
-function addMsg(role, content) { let container = document.getElementById('msgs'); let empty = container.querySelector('.empty'); if(empty) empty.remove(); let div = document.createElement('div'); div.className = `msg ${role}`; div.innerHTML = `<div class="avatar ${role === 'bot' ? 'bot' : 'user'}">${role === 'bot' ? '🤖' : '👤'}</div><div class="bubble">${content}</div>`; container.appendChild(div); container.scrollTop = container.scrollHeight; }
-function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+/* ===================== FIXED DETECTION ===================== */
+function norm(s){return s.toLowerCase();}
 
-// ----------------------------- CORE SEND FUNCTION (calls backend for College Guide mode) -----------------------------
-async function send() {
-  let inp = document.getElementById('inp');
-  let txt = inp.value.trim();
-  if(!txt) return;
-  inp.value = '';
-  inp.style.height = 'auto';
-  addUserMsg(escapeHtml(txt));
-  
-  if (mode === 'i') {
-    // Mock interview mode – use local logic
-    showTyping();
-    await delay(400);
-    hideTyping();
-    await handleInterviewAnswer(txt);
-  } else {
-    // College Guide mode – call real AI backend
-    showTyping();
-    try {
-      const response = await fetch(BACKEND_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: txt })
-      });
-      hideTyping();
-      if (!response.ok) throw new Error(`Server replied with ${response.status}`);
-      const data = await response.json();
-      const aiReply = data.response || data.message || "I'm sorry, I couldn't generate a response.";
-      addBotMsg(aiReply);
-    } catch (err) {
-      hideTyping();
-      console.error("Backend error:", err);
-      addBotMsg("⚠️ The AI server is waking up (free tier cold start). Please wait 30 seconds and send your message again. After that, responses will be instant.");
-    }
-  }
+function findCollege(q){
+q=norm(q);
+return COLLEGES.find(c=>q.includes(norm(c)) || q.includes(DATA[c].short.toLowerCase())) || null;
 }
 
-// ----------------------------- MODE SWITCH -----------------------------
-function setMode(m) {
-  mode = m;
-  document.getElementById('tabA').classList.toggle('on', m === 'a');
-  document.getElementById('tabI').classList.toggle('on', m === 'i');
-  document.getElementById('chipStrip').style.display = m === 'a' ? 'flex' : 'none';
-  document.getElementById('msgs').innerHTML = '';
-  if(m === 'a') {
-    document.getElementById('msgs').innerHTML = '<div class="empty"><div class="e-icon">💬</div><h2>College Guide Mode</h2><p>Ask anything about Scaler, NST, Vedam, NIAT — fees, scholarships, placements, comparisons.</p></div>';
-  } else {
-    startInterview();
-  }
+/* ===================== ANSWER ENGINE ===================== */
+function answerQuery(q){
+
+if(/hello|hi|hey/i.test(q))
+return "Ask about Scaler, NST, Vedam, NIAT.";
+
+if(/compare|vs/i.test(q)){
+let found=COLLEGES.filter(c=>q.includes(norm(c)));
+if(found.length>=2){
+return `${found[0]} vs ${found[1]} comparison requested.`;
+}
 }
 
-// ----------------------------- UTILITIES -----------------------------
-function escapeHtml(str) { return str.replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
-function hk(e) { if(e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } }
-function autoHeight(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 100)+'px'; }
-function buildChips() {
-  let strip = document.getElementById('chipStrip');
-  COLLEGES.forEach(n => { let btn = document.createElement('button'); btn.className='chip'; btn.innerText=COLLEGE_DATA[n].short; btn.onclick=()=>{ document.getElementById('inp').value=`Tell me about ${n}`; send(); }; strip.appendChild(btn); });
-  let sep = document.createElement('span'); sep.style.width='1px'; sep.style.background='#2A2F3F'; sep.style.margin='0 6px'; strip.appendChild(sep);
-  QUICK_SET.forEach(q => { let btn = document.createElement('button'); btn.className='qchip'; btn.innerText=q; btn.onclick=()=>{ document.getElementById('inp').value=q; send(); }; strip.appendChild(btn); });
+if(/cheapest|fee/i.test(q)){
+return COLLEGES.sort((a,b)=>DATA[a].fee-DATA[b].fee)
+.map(c=>`${c}: ₹${DATA[c].fee}L`).join("<br>");
 }
-function goChat() { document.getElementById('intro').classList.add('hidden'); document.getElementById('chat').classList.remove('hidden'); }
-function goIntro() { document.getElementById('chat').classList.add('hidden'); document.getElementById('intro').classList.remove('hidden'); }
 
-buildChips();
+if(/placement/i.test(q)){
+return "Placements info available for all colleges.";
+}
+
+let c=findCollege(q);
+if(c)return `${c} selected: fee ₹${DATA[c].fee}L`;
+
+return "Ask about Scaler, NST, Vedam, NIAT.";
+}
+
+/* ===================== UI ===================== */
+function addMsg(role,text){
+const d=document.createElement('div');
+d.className='msg '+role;
+d.innerHTML=`<div class="bubble">${text}</div>`;
+document.getElementById('msgs').appendChild(d);
+}
+
+function send(){
+const inp=document.getElementById('inp');
+const t=inp.value.trim();
+if(!t)return;
+inp.value="";
+addMsg("user",t);
+setTimeout(()=>addMsg("bot",answerQuery(t)),300);
+}
+
+function hk(e){if(e.key==="Enter"){e.preventDefault();send();}}
+
+function setMode(m){
+document.getElementById('tabA').classList.toggle('on',m==='a');
+document.getElementById('tabI').classList.toggle('on',m==='i');
+}
+
+function goChat(){
+document.getElementById('intro').classList.add('hidden');
+document.getElementById('chat').classList.remove('hidden');
+}
+
 </script>
+
 </body>
 </html>

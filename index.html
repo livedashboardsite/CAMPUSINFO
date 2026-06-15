@@ -4,8 +4,534 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Edu Assist | Premium College AI</title>
-  <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=cEK0RSPtVNxG4IScRFTiKIyQHv0DuHNr29aFyOtAIvtqnQtltGnvLjtTgh3Zplzsl9Lt6RgftBuwkm5AOJhrAjMBQdC1VsDUjVJxZ4ybTjs" charset="UTF-8"></script>
-  <link rel="stylesheet" href="style.css">
+  <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=cEK0RSPtVNxG4IScRFTiKIyQHv0DuHNr29aFyOtAIvtqnQtltGnvLjtTgh3Zplzsl9Lt6RgftBuwkm5AOJhrAjMBQdC1VsDUjVJxZ4ybTjs" charset="UTF-8"></script><style>
+    /* ---------- RESET & PREMIUM THEME (LUXURY DARK / GOLD ACCENTS) ---------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-primary: #0B0C10;
+      --bg-elevated: #13161F;
+      --bg-card: #1A1E2A;
+      --bg-glass: rgba(26, 30, 42, 0.65);
+      --accent-gold: #E4B363;
+      --accent-gold-glow: rgba(228, 179, 99, 0.2);
+      --accent-teal: #3B9E9C;
+      --text-primary: #F0F3F8;
+      --text-secondary: #A0A6B5;
+      --border-light: #2A2F3F;
+      --gradient-premium: linear-gradient(135deg, #E4B363, #C48B36);
+      --gradient-chat: linear-gradient(135deg, #252C3C, #1A1E2A);
+      --shadow-soft: 0 12px 28px rgba(0, 0, 0, 0.4);
+      --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', 'Poppins', sans-serif;
+    }
+
+    body {
+      background: var(--bg-primary);
+      font-family: var(--font-sans);
+      color: var(--text-primary);
+      height: 100vh;
+      overflow: hidden;
+      line-height: 1.5;
+    }
+
+    /* page transitions */
+    .page {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      transition: opacity 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1), visibility 0.4s;
+    }
+
+    .page.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    /* ========== INTRO PAGE – PREMIUM LANDING ========== */
+    #intro {
+      background: radial-gradient(ellipse at 30% 40%, #11141E, #07090E);
+      justify-content: center;
+      align-items: center;
+      overflow-y: auto;
+      padding: 24px;
+    }
+
+    .intro-wrap {
+      display: grid;
+      grid-template-columns: 1fr 0.9fr;
+      max-width: 1280px;
+      width: 100%;
+      gap: 48px;
+      align-items: center;
+      backdrop-filter: blur(2px);
+    }
+
+    .intro-left {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .badge-premium {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(228, 179, 99, 0.12);
+      border: 1px solid rgba(228, 179, 99, 0.35);
+      border-radius: 60px;
+      padding: 6px 18px;
+      width: fit-content;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+      color: var(--accent-gold);
+    }
+
+    .intro-h1 {
+      font-size: clamp(2rem, 4.5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    .gold-text {
+      background: linear-gradient(125deg, #F2C94C, #E4B363);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .intro-desc {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      max-width: 520px;
+      line-height: 1.6;
+    }
+
+    .pill-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 8px 0;
+    }
+
+    .pill-premium {
+      background: rgba(26, 30, 42, 0.8);
+      backdrop-filter: blur(4px);
+      border: 1px solid var(--border-light);
+      padding: 5px 14px;
+      border-radius: 40px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .btn-gold {
+      background: var(--gradient-premium);
+      border: none;
+      border-radius: 60px;
+      padding: 14px 34px;
+      width: fit-content;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #0B0C10;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      box-shadow: 0 10px 20px -5px rgba(228, 179, 99, 0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+      margin-top: 8px;
+    }
+
+    .btn-gold:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 18px 30px -6px rgba(228, 179, 99, 0.4);
+    }
+
+    .stat-row-premium {
+      display: flex;
+      gap: 36px;
+      margin-top: 12px;
+    }
+
+    .stat .stat-number {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--accent-gold);
+    }
+
+    /* robot illustration – refined */
+    .robot-premium {
+      position: relative;
+      width: 280px;
+      height: 340px;
+      margin: 0 auto;
+      animation: floatRobot 3.6s ease-in-out infinite;
+    }
+
+    @keyframes floatRobot {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+    }
+
+    .robot-glow {
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      background: radial-gradient(circle, rgba(228,179,99,0.25) 0%, transparent 70%);
+      border-radius: 50%;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      animation: pulsePremium 3s infinite;
+    }
+
+    @keyframes pulsePremium {
+      0%,100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+      50% { opacity: 0.9; transform: translate(-50%, -50%) scale(1.08); }
+    }
+
+    .cap-brim { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); width: 110px; height: 10px; background: var(--gradient-premium); border-radius: 6px; }
+    .cap-top { position: absolute; top: -4px; left: 50%; transform: translateX(-50%); width: 80px; height: 28px; background: linear-gradient(135deg, #D4AF37, #B8860B); border-radius: 10px 10px 0 0; }
+    .head { position: absolute; top: 38px; left: 50%; transform: translateX(-50%); width: 100px; height: 94px; background: var(--bg-card); border: 1.5px solid #3A3F55; border-radius: 24px; box-shadow: 0 6px 18px rgba(0,0,0,0.3); }
+    .face-screen { background: #0E111B; width: 72px; height: 48px; border-radius: 16px; position: absolute; top: 18px; left: 50%; transform: translateX(-50%); border: 1px solid var(--accent-gold); box-shadow: inset 0 0 8px #E4B36330; }
+    .eye { width: 12px; height: 12px; background: var(--accent-gold); border-radius: 50%; position: absolute; top: 12px; animation: blink 4s infinite; }
+    .eye.left { left: 14px; } .eye.right { right: 14px; }
+    .mouth { width: 32px; height: 3px; background: #3B9E9C; border-radius: 2px; position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); animation: talk 1.6s infinite; }
+    .body { position: absolute; top: 128px; left: 50%; transform: translateX(-50%); width: 110px; height: 100px; background: var(--bg-card); border: 1.5px solid var(--border-light); border-radius: 22px; }
+    .chest-screen { background: #0C0F18; width: 76px; height: 48px; border-radius: 12px; position: absolute; top: 12px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; justify-content: center; gap: 4px; }
+    .bar-premium { height: 4px; background: var(--accent-gold); width: 70%; margin: 0 auto; border-radius: 4px; opacity: 0.7; }
+    .arm { background: var(--bg-card); border: 1px solid var(--border-light); width: 22px; height: 68px; position: absolute; top: 138px; border-radius: 14px; }
+    .arm.left { left: calc(50% - 76px); transform-origin: top; animation: waveL 2.8s infinite; }
+    .arm.right { right: calc(50% - 76px); transform-origin: top; animation: waveR 2.8s infinite; }
+    .leg { background: var(--bg-card); border: 1px solid var(--border-light); width: 26px; height: 66px; position: absolute; top: 226px; border-radius: 14px; }
+    .leg.left { left: calc(50% - 38px); } .leg.right { right: calc(50% - 38px); }
+    .foot { background: var(--bg-card); border: 1px solid var(--border-light); width: 38px; height: 16px; border-radius: 12px; position: absolute; top: 290px; }
+    .foot.left { left: calc(50% - 44px); } .foot.right { right: calc(50% - 44px); }
+
+    @keyframes blink { 0%,94%,100% { transform: scaleY(1); } 96% { transform: scaleY(0.1); } }
+    @keyframes talk { 0%,100% { width: 28px; } 50% { width: 16px; } }
+    @keyframes waveL { 0%,100% { transform: rotate(-5deg); } 50% { transform: rotate(9deg); } }
+    @keyframes waveR { 0%,100% { transform: rotate(5deg); } 50% { transform: rotate(-9deg); } }
+
+    /* ========== CHAT PAGE – SCROLLABLE & PREMIUM ========== */
+    #chat {
+      background: var(--bg-primary);
+      height: 100%;
+    }
+
+    nav {
+      background: var(--bg-elevated);
+      border-bottom: 1px solid var(--border-light);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .logo-premium {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .logo-icon {
+      background: var(--gradient-premium);
+      width: 36px;
+      height: 36px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .mode-tabs-premium {
+      background: #10131D;
+      border-radius: 48px;
+      padding: 4px;
+      display: flex;
+      gap: 6px;
+    }
+
+    .tab-premium {
+      background: transparent;
+      border: none;
+      padding: 6px 20px;
+      border-radius: 48px;
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tab-premium.on {
+      background: var(--gradient-premium);
+      color: #0B0C10;
+      box-shadow: 0 2px 8px rgba(228,179,99,0.3);
+    }
+
+    /* CHAT STRUCTURE : perfect scroll */
+    .chat-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .chips-strip {
+      display: flex;
+      gap: 8px;
+      padding: 12px 20px;
+      overflow-x: auto;
+      background: rgba(19, 22, 31, 0.8);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border-light);
+      flex-shrink: 0;
+      scrollbar-width: thin;
+    }
+
+    .chip, .qchip {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      padding: 6px 14px;
+      border-radius: 40px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .chip:hover, .qchip:hover {
+      border-color: var(--accent-gold);
+      color: var(--accent-gold);
+      background: rgba(228, 179, 99, 0.08);
+    }
+
+    .ibar {
+      background: var(--bg-elevated);
+      padding: 10px 20px;
+      border-bottom: 1px solid var(--border-light);
+      display: none;
+      flex-shrink: 0;
+    }
+
+    .ibar.on {
+      display: block;
+    }
+
+    .track {
+      height: 5px;
+      background: #252C3C;
+      border-radius: 10px;
+      margin-top: 6px;
+    }
+
+    .fill {
+      height: 5px;
+      background: var(--gradient-premium);
+      border-radius: 10px;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    /* Messages container — SCROLLABLE */
+    .msgs {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      scroll-behavior: smooth;
+    }
+
+    .msgs::-webkit-scrollbar {
+      width: 5px;
+    }
+    .msgs::-webkit-scrollbar-track {
+      background: var(--bg-elevated);
+    }
+    .msgs::-webkit-scrollbar-thumb {
+      background: var(--accent-gold);
+      border-radius: 10px;
+    }
+
+    .msg {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .msg.u {
+      flex-direction: row-reverse;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 1rem;
+    }
+    .avatar.bot { background: var(--gradient-premium); color: #0B0C10; }
+    .avatar.user { background: var(--bg-card); border: 1px solid var(--border-light); }
+
+    .bubble {
+      max-width: 78%;
+      padding: 12px 18px;
+      border-radius: 24px;
+      font-size: 0.85rem;
+      line-height: 1.55;
+      word-break: break-word;
+      backdrop-filter: blur(2px);
+    }
+
+    .msg.bot .bubble {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-bottom-left-radius: 6px;
+    }
+
+    .msg.user .bubble {
+      background: var(--gradient-premium);
+      color: #0B0C10;
+      border-bottom-right-radius: 6px;
+      font-weight: 500;
+    }
+
+    .bubble table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.74rem;
+      margin: 8px 0;
+    }
+    .bubble th {
+      text-align: left;
+      color: var(--accent-gold);
+      padding: 4px 2px;
+      border-bottom: 1px solid #2E3440;
+    }
+    .tag {
+      background: #10131D;
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 30px;
+      font-size: 0.7rem;
+      border: 1px solid var(--border-light);
+      color: var(--accent-gold);
+    }
+
+    .score-card {
+      background: var(--bg-elevated);
+      border-radius: 24px;
+      padding: 20px;
+      border: 1px solid var(--border-light);
+    }
+    .retry-btn {
+      background: var(--gradient-premium);
+      border: none;
+      padding: 8px 18px;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 12px;
+      color: #0B0C10;
+    }
+
+    .dots span {
+      width: 8px;
+      height: 8px;
+      background: var(--accent-gold);
+      border-radius: 50%;
+      display: inline-block;
+      animation: dotBounce 1.2s infinite;
+    }
+
+    .input-wrap {
+      padding: 12px 20px 20px;
+      background: var(--bg-elevated);
+      border-top: 1px solid var(--border-light);
+      flex-shrink: 0;
+    }
+
+    .input-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-primary);
+      border-radius: 60px;
+      padding: 4px 6px 4px 20px;
+      border: 1px solid var(--border-light);
+      transition: border 0.2s;
+    }
+    .input-row:focus-within {
+      border-color: var(--accent-gold);
+    }
+
+    #inp {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      resize: none;
+      outline: none;
+      padding: 10px 0;
+      max-height: 100px;
+    }
+
+    .send-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--gradient-premium);
+      border: none;
+      color: #0B0C10;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+
+    /* responsive */
+    @media (max-width: 780px) {
+      .intro-wrap { grid-template-columns: 1fr; text-align: center; gap: 32px; padding: 20px; }
+      .intro-right { order: -1; }
+      .btn-gold { align-self: center; }
+      .pill-group { justify-content: center; }
+      .bubble { max-width: 92%; }
+      .robot-premium { transform: scale(0.9); }
+      nav { padding: 10px 16px; }
+    }
+    @media (max-width: 480px) {
+      .tab-premium { padding: 5px 12px; font-size: 0.7rem; }
+      .logo-premium span { font-size: 0.9rem; }
+    }
+  </style>
 </head>
 <body>
 
@@ -58,7 +584,7 @@
       <div class="track"><div class="fill" id="fill"></div></div>
     </div>
     <div class="msgs" id="msgs">
-      <div class="empty" id="empty"><div class="e-icon">✨</div><h2>Ask about top 4 new-gen colleges</h2><p>Compare Scaler, NST, Vedam, NIAT — fees, scholarships, entrance tests and more.</p></div>
+      <div class="empty" id="empty"><div class="e-icon">✨</div><h2>Ask about top 4 new-gen colleges</h2><p>Compare Scaler, NST, Vedam, NIAT — fees, scholarships, entrance tests & more.</p></div>
     </div>
     <div class="input-wrap">
       <div class="input-row">
@@ -69,6 +595,194 @@
   </div>
 </div>
 
-<script src="script.js"></script>
+<script>
+  // ---------- DATABASE: ONLY 4 COLLEGES ----------
+  const COLLEGE_DATA = {
+    "Scaler School of Technology (SST)": {
+      short: "Scaler", location: "Bengaluru, Karnataka", program: "B.Tech in CS & AI + dual degree from BITS Pilani/IIT Madras",
+      fee: "₹28 lakh (full) | scholarships based on NSET", scholarships: "Merit up to 100% waiver (NSET score)",
+      selection: "NSET / SAT accepted (alternative to JEE)", highlights: "Learn by Building, MAANG mentors, project-based",
+      placements: "Top recruiters: Google, Amazon, Razorpay; strong alumni network", link: "#"
+    },
+    "Newton School of Technology (NST)": {
+      short: "NST", location: "Sonipat, Pune, Bengaluru, Hyderabad", program: "B.Tech in CS & AI (UGC recognised)",
+      fee: "₹23 lakh total (residential)", scholarships: "Merit-based on NSAT", selection: "NSAT (Newton Aptitude Test)",
+      highlights: "Code from week 1, mentors from Google/Meta", placements: "Placement assistance, product role focus", link: "#"
+    },
+    "Vedam School of Technology": {
+      short: "Vedam", location: "Pune & Gurugram", program: "B.Tech in CS & AI (Residential)",
+      fee: "₹18 lakh total", scholarships: "Up to 100% merit / women-in-tech", selection: "VSAT / JEE 90%+ exempt",
+      highlights: "AI-first, MacBook on Day1, industry faculty", placements: "1,028+ placed, stipends up to ₹2.8L, recruiters: Amazon, Adobe", link: "#"
+    },
+    "NIAT (NxtWave Institute)": {
+      short: "NIAT", location: "20+ campuses across India", program: "B.Tech CSE / AI & ML",
+      fee: "₹2–4.5 lakh/year", scholarships: "NAT merit waivers up to 100%", selection: "NAT online exam (no JEE)",
+      highlights: "NSDC backed, real-world projects, internship stipends from Year1", placements: "Microsoft, Google, Amazon hiring partners", link: "#"
+    }
+  };
+  const COLLEGES = Object.keys(COLLEGE_DATA);
+  const QUICK_SET = ["Cheapest colleges", "100% scholarships", "SAT accepted", "Best placements", "Compare Scaler vs NIAT", "Vedam vs NST"];
+
+  // helpers
+  function normalize(s) { return s.toLowerCase().replace(/[^\w\s]/g,' '); }
+  function findCollege(query) {
+    let best = null, bestScore = 0;
+    for (let name of COLLEGES) {
+      let short = COLLEGE_DATA[name].short.toLowerCase();
+      if (normalize(query).includes(short)) return name;
+      let words = normalize(name).split(/\s+/).filter(w=>w.length>3);
+      let score = words.filter(w=>normalize(query).includes(w)).length / (words.length||1);
+      if (score > bestScore) { bestScore = score; best = name; }
+    }
+    return bestScore > 0.3 ? best : null;
+  }
+
+  function compareTwo(text) {
+    let found = COLLEGES.filter(c => {
+      let s = COLLEGE_DATA[c].short.toLowerCase();
+      let nameLower = c.toLowerCase();
+      let t = normalize(text);
+      return t.includes(s) || t.includes(nameLower.split('(')[0].trim());
+    });
+    if (found.length >= 2) {
+      let [a,b] = found;
+      let dA = COLLEGE_DATA[a], dB = COLLEGE_DATA[b];
+      let rows = ['location','fee','scholarships','selection','placements'].map(f => `<tr><td style="color:#E4B363">${f}</td><td>${dA[f]}</td><td>${dB[f]}</td></tr>`).join('');
+      return `<strong>⚖️ ${dA.short} vs ${dB.short}</strong><table style="width:100%;margin-top:10px;"><tr><th>Attribute</th><th>${dA.short}</th><th>${dB.short}</th></tr>${rows}</table><span class="tag">🔍 official details vary — check recent data</span>`;
+    }
+    return null;
+  }
+
+  function answerQuery(raw) {
+    let t = raw.trim();
+    if (!t) return null;
+    if (/^(hi|hello|hey|help|start)/i.test(t)) return `🤖 <strong>Premium Guide active</strong><br><br>I cover <strong>Scaler, NST, Vedam, NIAT</strong>. Ask about comparisons, fees, scholarships, placements or mock interview mode.`;
+    if (/(compare|versus|vs\.?|difference between)/i.test(t)) { let cmp = compareTwo(t); if(cmp) return cmp; }
+    if (/cheapest|lowest fee|budget/i.test(t)) {
+      let sorted = [...COLLEGES].sort((a,b)=> parseInt(COLLEGE_DATA[a].fee.match(/\d+/)?.[0]||99) - parseInt(COLLEGE_DATA[b].fee.match(/\d+/)?.[0]||99));
+      return `💰 <strong>Fee ranking (low to high):</strong><br>${sorted.map((c,i)=>`${i+1}. ${COLLEGE_DATA[c].short} — ${COLLEGE_DATA[c].fee}`).join('<br>')}<br><span class="tag">Scholarships reduce cost further</span>`;
+    }
+    if (/100.?%|full scholarship/i.test(t)) {
+      let eligible = COLLEGES.filter(c=>COLLEGE_DATA[c].scholarships.toLowerCase().includes('100%'));
+      return eligible.map(c=>`🎓 ${COLLEGE_DATA[c].short}: ${COLLEGE_DATA[c].scholarships}`).join('<br><br>') || "All 4 colleges offer merit-based scholarships up to 100% based on entrance scores.";
+    }
+    if (/\bsat\b/i.test(t)) {
+      let satList = COLLEGES.filter(c=>COLLEGE_DATA[c].selection.toLowerCase().includes('sat'));
+      return satList.length ? `✅ Colleges accepting SAT: ${satList.map(c=>COLLEGE_DATA[c].short).join(', ')} — no JEE required.` : "Scaler accepts SAT, others have own tests (NSAT, VSAT, NAT).";
+    }
+    if (/best placement|highest package|top recruiter/i.test(t)) {
+      return `💼 <strong>Placement highlights</strong><br>• Vedam: 1,028+ placed, Amazon/Microsoft/Adobe<br>• NIAT: Internship stipends & recruiters like Google<br>• Scaler/NST: dedicated placement support and strong alumni network.<br><span class="tag">Check official reports for exact CTC.</span>`;
+    }
+    let college = findCollege(t);
+    if (college) {
+      let d = COLLEGE_DATA[college];
+      let intent = /fee|cost/i.test(t) ? 'fee' : (/scholarship/i.test(t)?'scholarships':(/placement/i.test(t)?'placements':(/(exam|selection|entrance)/i.test(t)?'selection':'highlights')));
+      let val = d[intent] || d.highlights;
+      return `<strong>${college}</strong><br>✨ <strong>${intent}:</strong> ${val}<br><span class="tag">📍 ${d.location}</span> <span class="tag">💰 ${d.fee.split('|')[0]}</span>`;
+    }
+    return `I specialize in <strong>Scaler, NST, Vedam, NIAT</strong>. Try: "Tell me about Vedam scholarships" or "Compare NIAT vs NST".`;
+  }
+
+  // ---------- INTERVIEW MODULE ----------
+  let mode = 'a';
+  let iStep = 0, iScores = [], iQs = [], awaiting = false;
+  const qBank = { hr: ["Tell us about yourself and why tech?", "Describe a challenging project you solved."], tech: ["Difference between array and linked list?", "What is Big O? give example"], aptitude: ["If 5 workers complete in 10 days, how days for 10 workers?", "Probability of rolling a 6 twice?"] };
+  function updateInterviewBar() {
+    let bar = document.getElementById('ibar');
+    if (mode !== 'i') { bar.classList.remove('on'); return; }
+    bar.classList.add('on');
+    let percent = iStep === 0 ? 0 : (iStep-1)/3*100;
+    if (iStep >= 3) percent = 100;
+    document.getElementById('fill').style.width = percent+'%';
+    document.getElementById('qlabel').innerText = iStep >= 3 ? "Complete" : `Question ${iStep}/3`;
+  }
+  async function startInterview() {
+    iStep = 0; iScores = []; iQs = []; awaiting = false;
+    updateInterviewBar();
+    addBotMsg(`🎤 <strong>Mock interview — premium simulation</strong><br><br>I'll ask 3 questions (HR, Tech, Problem Solving). Answer naturally.`);
+    await delay(600);
+    askNext();
+  }
+  function askNext() {
+    if (iStep >= 3) { finishInterview(); return; }
+    iStep++;
+    updateInterviewBar();
+    let type = iStep === 1 ? 'HR' : (iStep === 2 ? 'Technical' : 'Problem Solving');
+    let bank = iStep === 1 ? qBank.hr : (iStep === 2 ? qBank.tech : qBank.aptitude);
+    let question = bank[Math.floor(Math.random() * bank.length)];
+    iQs.push({ type, question });
+    addBotMsg(`<span style="color:#E4B363">Q${iStep}/3 · ${type}</span><br><br>${question}`);
+    awaiting = true;
+  }
+  function evaluate(ans, type) {
+    let score = 5 + (ans.length > 100 ? 2 : ans.length < 25 ? -1 : 0);
+    let kw = type === 'HR' ? ['team','learn','project'] : (type === 'Technical' ? ['data','complexity','function'] : ['calculate','steps','result']);
+    score += kw.filter(k => ans.toLowerCase().includes(k)).length;
+    score = Math.min(10, Math.max(1, score));
+    return { score, feedback: `💬 ${score >= 7 ? "Great articulation!" : "Good attempt — focus on clarity."} Score: ${score}/10` };
+  }
+  async function handleInterviewAnswer(txt) {
+    if (!awaiting) { addBotMsg("Please wait for next question."); return; }
+    awaiting = false;
+    let curr = iQs[iStep-1];
+    let { score, feedback } = evaluate(txt, curr.type);
+    iScores.push(score);
+    addBotMsg(`📋 <strong>Feedback Q${iStep}</strong><br>${feedback}`);
+    if (iStep < 3) { await delay(1000); askNext(); }
+    else { await delay(1000); finishInterview(); }
+  }
+  async function finishInterview() {
+    let avg = (iScores.reduce((a,b)=>a+b,0)/3).toFixed(1);
+    let grade = avg >= 8 ? "🌟 Elite" : avg >= 6 ? "👍 Solid" : "📈 Keep practicing";
+    addBotMsg(`<div class="score-card"><h3>🏆 Interview Complete</h3><div style="font-size:2.2rem;font-weight:800;color:#E4B363">${avg}/10</div><p>${grade}</p><button class="retry-btn" onclick="setMode('i')">Try Again</button></div>`);
+    iStep = 4; updateInterviewBar();
+  }
+
+  // ui & messaging
+  let typingDiv = null;
+  function showTyping() { if(typingDiv) hideTyping(); let el = document.createElement('div'); el.className = 'msg bot'; el.id='typingMsg'; el.innerHTML='<div class="avatar bot">🤖</div><div class="bubble"><div class="dots"><span></span><span></span><span></span></div></div>'; document.getElementById('msgs').appendChild(el); typingDiv=el; document.getElementById('msgs').scrollTop = document.getElementById('msgs').scrollHeight; }
+  function hideTyping() { if(typingDiv) { typingDiv.remove(); typingDiv=null; } }
+  function addBotMsg(html) { addMsg('bot', html); }
+  function addUserMsg(html) { addMsg('user', html); }
+  function addMsg(role, content) {
+    let container = document.getElementById('msgs');
+    let empty = container.querySelector('.empty'); if(empty) empty.remove();
+    let div = document.createElement('div'); div.className = `msg ${role}`;
+    div.innerHTML = `<div class="avatar ${role === 'bot' ? 'bot' : 'user'}">${role === 'bot' ? '🤖' : '👤'}</div><div class="bubble">${content}</div>`;
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+  }
+  function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+  async function send() {
+    let inp = document.getElementById('inp');
+    let txt = inp.value.trim(); if(!txt) return;
+    inp.value = ''; inp.style.height = 'auto';
+    addUserMsg(escapeHtml(txt));
+    showTyping(); await delay(400); hideTyping();
+    if (mode === 'a') addBotMsg(answerQuery(txt) || "Ask about Scaler, NST, Vedam, NIAT.");
+    else await handleInterviewAnswer(txt);
+  }
+  function setMode(m) {
+    mode = m;
+    document.getElementById('tabA').classList.toggle('on', m==='a');
+    document.getElementById('tabI').classList.toggle('on', m==='i');
+    document.getElementById('chipStrip').style.display = m==='a' ? 'flex' : 'none';
+    document.getElementById('msgs').innerHTML = '';
+    if(m==='a') document.getElementById('msgs').innerHTML = '<div class="empty"><div class="e-icon">🎓</div><h2>College Guide Mode</h2><p>Compare, fee, scholarships, placements for top 4 new-gen colleges.</p></div>';
+    else startInterview();
+  }
+  function escapeHtml(str) { return str.replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+  function hk(e) { if(e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } }
+  function autoHeight(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 100)+'px'; }
+  function buildChips() {
+    let strip = document.getElementById('chipStrip');
+    COLLEGES.forEach(n => { let btn = document.createElement('button'); btn.className='chip'; btn.innerText=COLLEGE_DATA[n].short; btn.onclick=()=>{ document.getElementById('inp').value=`Tell me about ${n}`; send(); }; strip.appendChild(btn); });
+    let sep = document.createElement('span'); sep.style.width='1px'; sep.style.background='#2A2F3F'; sep.style.margin='0 6px'; strip.appendChild(sep);
+    QUICK_SET.forEach(q => { let btn = document.createElement('button'); btn.className='qchip'; btn.innerText=q; btn.onclick=()=>{ document.getElementById('inp').value=q; send(); }; strip.appendChild(btn); });
+  }
+  function goChat() { document.getElementById('intro').classList.add('hidden'); document.getElementById('chat').classList.remove('hidden'); }
+  function goIntro() { document.getElementById('chat').classList.add('hidden'); document.getElementById('intro').classList.remove('hidden'); }
+  buildChips();
+</script>
 </body>
 </html>

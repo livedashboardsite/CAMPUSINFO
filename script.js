@@ -1,4 +1,4 @@
-<script>
+
 /* ══ CUSTOM CURSOR ══ */
 const cur=document.getElementById('cur'),cur2=document.getElementById('cur2');
 let mx=0,my=0,cx=0,cy=0;
@@ -422,4 +422,3 @@ function hk(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}}
 function autoH(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px';}
 
 buildChips();
-</script>

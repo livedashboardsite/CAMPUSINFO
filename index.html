@@ -5,9 +5,266 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>EduAssist · Neo | AI College Guide</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
-<script src="script.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;cursor:none;}
+:root{
+  --cream:#FAF7F0;
+  --cream2:#F0E6CE;
+  --cream3:#E3D4B0;
+  --br:#7B4F1E;
+  --br2:#9A6428;
+  --br3:#B87D35;
+  --ink:#170E03;
+  --ink2:#2A1808;
+  --ink3:#523214;
+  --muted:#7A5A30;
+  --warm-white:#FFFDF7;
+  --card:#FFFCF3;
+  --border:rgba(123,79,30,0.28);
+  --border2:rgba(123,79,30,0.13);
+  --font-display:'Playfair Display',serif;
+  --font-body:'DM Sans',sans-serif;
+}
 
+/* ══ CUSTOM CURSOR ══ */
+#cur{
+  position:fixed;width:12px;height:12px;border-radius:50%;
+  background:var(--br2);pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:transform 0.08s ease,background 0.2s;
+  mix-blend-mode:multiply;
+}
+#cur2{
+  position:fixed;width:36px;height:36px;border-radius:50%;
+  border:1.5px solid var(--br);pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:transform 0.18s ease,width 0.2s,height 0.2s,opacity 0.2s;
+  opacity:0.5;
+}
+body:has(button:hover) #cur2,body:has(a:hover) #cur2{width:52px;height:52px;opacity:0.3;}
+
+html,body{height:100%;overflow:hidden;font-family:var(--font-body);background:var(--cream);color:var(--ink);}
+
+/* bg particle canvas */
+#bgCanvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.45;}
+
+.page{position:fixed;inset:0;display:flex;flex-direction:column;z-index:2;
+  transition:opacity 0.55s cubic-bezier(0.4,0,0.2,1),transform 0.55s cubic-bezier(0.4,0,0.2,1);}
+.page.hidden{opacity:0;pointer-events:none;transform:translateY(16px);}
+
+/* ══════════ INTRO ══════════ */
+#intro{
+  background:var(--cream);
+  overflow-y:auto;align-items:center;justify-content:center;padding:32px 24px;
+}
+#intro::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:1;
+  background:
+    radial-gradient(ellipse 60% 50% at 80% 20%,rgba(123,79,30,0.1),transparent),
+    radial-gradient(ellipse 50% 60% at 10% 80%,rgba(154,100,40,0.07),transparent);
+  animation:ambientShift 12s ease-in-out infinite alternate;
+}
+@keyframes ambientShift{0%{opacity:0.6;transform:scale(1);}100%{opacity:1;transform:scale(1.04);}}
+
+.intro-inner{
+  position:relative;z-index:3;max-width:1200px;width:100%;
+  display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;
+}
+
+/* left copy */
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,rgba(123,79,30,0.12),rgba(154,100,40,0.06));
+  border:1px solid var(--border);border-radius:100px;
+  padding:6px 18px;font-size:0.7rem;font-weight:600;
+  letter-spacing:0.09em;text-transform:uppercase;color:var(--br);
+  margin-bottom:20px;animation:slideUp 0.7s ease both;
+}
+.eyebrow-dot{width:6px;height:6px;background:var(--br);border-radius:50%;animation:bDot 2s infinite;}
+@keyframes bDot{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.3;transform:scale(0.6);}}
+
+.intro-h1{
+  font-family:var(--font-display);font-size:clamp(2.2rem,4.2vw,3.7rem);
+  font-weight:900;line-height:1.13;letter-spacing:-0.02em;color:var(--ink);
+  animation:slideUp 0.8s 0.08s ease both;
+}
+.shimmer-text{
+  background:linear-gradient(110deg,var(--br) 20%,var(--br2) 40%,var(--br3) 55%,var(--br2) 70%,var(--br) 90%);
+  background-size:300%;-webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:shimmer 5s linear infinite;
+}
+@keyframes shimmer{0%{background-position:0%}100%{background-position:300%}}
+
+.intro-sub{font-size:0.97rem;color:var(--muted);line-height:1.72;max-width:490px;margin:18px 0 26px;animation:slideUp 0.8s 0.16s ease both;}
+
+.pill-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;animation:slideUp 0.8s 0.24s ease both;}
+.pill{
+  background:var(--card);border:1px solid var(--border2);
+  padding:5px 15px;border-radius:100px;font-size:0.71rem;
+  font-weight:500;color:var(--ink3);transition:all 0.2s;
+}
+.pill:hover{background:rgba(123,79,30,0.1);border-color:var(--br);color:var(--br);}
+
+.btn-cta{
+  display:inline-flex;align-items:center;gap:12px;
+  background:linear-gradient(135deg,var(--br),var(--br2));
+  border:none;border-radius:100px;padding:15px 36px;
+  font-family:var(--font-body);font-size:1rem;font-weight:600;
+  color:var(--warm-white);box-shadow:0 8px 28px rgba(123,79,30,0.32);
+  transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  animation:slideUp 0.8s 0.3s ease both;position:relative;overflow:hidden;
+}
+.btn-cta::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.22),transparent);
+  transform:translateX(-110%);transition:transform 0.38s ease;
+}
+.btn-cta:hover{transform:translateY(-4px) scale(1.04);box-shadow:0 16px 44px rgba(123,79,30,0.42);}
+.btn-cta:hover::before{transform:translateX(0);}
+.btn-arrow{transition:transform 0.3s;}
+.btn-cta:hover .btn-arrow{transform:translateX(6px);}
+
+.stats-row{display:flex;gap:40px;margin-top:32px;animation:slideUp 0.8s 0.38s ease both;}
+.stat-n{font-family:var(--font-display);font-size:2.1rem;font-weight:700;color:var(--br);line-height:1;}
+.stat-l{font-size:0.76rem;color:var(--muted);margin-top:3px;letter-spacing:0.03em;}
+
+/* ── ABSTRACT CANVAS SCENE ── */
+.abstract-scene{
+  position:relative;display:flex;align-items:center;justify-content:center;
+  height:460px;animation:slideUp 0.9s 0.12s ease both;
+}
+#heroCanvas{
+  position:absolute;inset:0;width:100%;height:100%;border-radius:24px;
+  background:transparent;
+}
+/* floating info cards */
+.float-card{
+  position:absolute;background:var(--card);border:1px solid var(--border);
+  border-radius:14px;padding:9px 15px;font-size:0.73rem;
+  box-shadow:0 6px 20px rgba(123,79,30,0.1);
+  display:flex;align-items:center;gap:8px;white-space:nowrap;z-index:5;
+  backdrop-filter:blur(8px);
+}
+.fdot{width:7px;height:7px;border-radius:50%;background:var(--br2);animation:bDot 1.8s infinite;}
+.fc1{top:28px;right:0;animation:fc1f 4.2s ease-in-out infinite;}
+.fc2{bottom:80px;right:-10px;animation:fc2f 5s ease-in-out infinite;}
+.fc3{bottom:110px;left:-10px;animation:fc3f 4.7s ease-in-out infinite;}
+.fc4{top:90px;left:-10px;animation:fc4f 3.9s ease-in-out infinite;}
+@keyframes fc1f{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
+@keyframes fc2f{0%,100%{transform:translateY(0);}50%{transform:translateY(8px);}}
+@keyframes fc3f{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+@keyframes fc4f{0%,100%{transform:translateY(0);}50%{transform:translateY(7px);}}
+
+@keyframes slideUp{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
+
+/* ══════════ NAV ══════════ */
+nav{
+  background:rgba(250,247,240,0.93);backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border2);padding:12px 28px;
+  display:flex;justify-content:space-between;align-items:center;
+  flex-shrink:0;position:relative;z-index:10;
+}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-mark{
+  width:38px;height:38px;border-radius:12px;
+  background:linear-gradient(135deg,var(--br),var(--br2));
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;
+  box-shadow:0 4px 12px rgba(123,79,30,0.28);transition:transform 0.25s;
+}
+.logo-mark:hover{transform:rotate(-6deg) scale(1.1);}
+.logo-text{font-family:var(--font-display);font-weight:700;font-size:1.1rem;color:var(--ink);}
+.logo-text span{color:var(--br2);}
+.tabs{background:var(--cream2);border:1px solid var(--border);border-radius:100px;padding:4px;display:flex;gap:4px;}
+.tab{
+  background:transparent;border:none;border-radius:100px;
+  padding:7px 22px;font-family:var(--font-body);font-size:0.8rem;
+  font-weight:600;color:var(--muted);transition:all 0.22s;
+}
+.tab.on{background:linear-gradient(135deg,var(--br),var(--br2));color:var(--warm-white);box-shadow:0 2px 10px rgba(123,79,30,0.35);}
+
+/* ══════════ CHAT ══════════ */
+#chat{background:var(--cream);}
+.chat-shell{flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden;}
+
+.chips-bar{display:flex;gap:8px;padding:10px 20px;overflow-x:auto;background:rgba(250,247,240,0.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--border2);flex-shrink:0;}
+.chips-bar::-webkit-scrollbar{display:none;}
+.chip,.qchip{
+  background:var(--card);border:1px solid var(--border);
+  padding:6px 14px;border-radius:100px;font-size:0.7rem;font-weight:500;
+  color:var(--ink3);white-space:nowrap;transition:all 0.2s;flex-shrink:0;
+}
+.chip:hover,.qchip:hover{background:rgba(123,79,30,0.1);border-color:var(--br);color:var(--br);}
+
+.ibar{background:rgba(250,247,240,0.95);padding:10px 24px;border-bottom:1px solid var(--border2);display:none;flex-shrink:0;}
+.ibar.on{display:block;}
+.ibar-label{font-size:0.75rem;font-weight:600;color:var(--muted);margin-bottom:6px;letter-spacing:0.04em;}
+.ibar-track{height:4px;background:var(--cream3);border-radius:100px;}
+.ibar-fill{height:4px;background:linear-gradient(90deg,var(--br),var(--br2));border-radius:100px;width:0%;transition:width 0.6s cubic-bezier(0.4,0,0.2,1);}
+
+.msgs{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:16px;scroll-behavior:smooth;}
+.msgs::-webkit-scrollbar{width:4px;}
+.msgs::-webkit-scrollbar-thumb{background:var(--cream3);border-radius:10px;}
+
+.welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:10px;text-align:center;padding:40px;animation:slideUp 0.6s ease both;}
+.welcome-icon{width:62px;height:62px;border-radius:18px;background:linear-gradient(135deg,var(--br),var(--br2));display:flex;align-items:center;justify-content:center;font-size:1.9rem;box-shadow:0 8px 24px rgba(123,79,30,0.28);animation:pulse 3s ease-in-out infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.06);}}
+.welcome h2{font-family:var(--font-display);font-size:1.6rem;color:var(--ink);}
+.welcome p{color:var(--muted);font-size:0.9rem;}
+
+.msg{display:flex;gap:10px;align-items:flex-start;animation:msgIn 0.3s ease both;}
+.msg.user{flex-direction:row-reverse;}
+@keyframes msgIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:0.85rem;font-weight:700;}
+.av.bot{background:linear-gradient(135deg,var(--br),var(--br2));color:var(--warm-white);box-shadow:0 4px 12px rgba(123,79,30,0.28);}
+.av.user{background:var(--cream2);border:1px solid var(--border);color:var(--ink2);}
+.bubble{max-width:76%;padding:11px 18px;border-radius:20px;font-size:0.85rem;line-height:1.6;word-break:break-word;}
+.msg.bot .bubble{background:var(--card);border:1px solid var(--border2);border-bottom-left-radius:4px;color:var(--ink);}
+.msg.user .bubble{background:linear-gradient(135deg,var(--br),var(--br2));color:var(--warm-white);font-weight:500;border-bottom-right-radius:4px;}
+.bubble table{width:100%;border-collapse:collapse;margin:6px 0;font-size:0.75rem;}
+.bubble th{text-align:left;color:var(--br2);border-bottom:1px solid var(--border);padding:4px 0;}
+.bubble td{padding:3px 4px;border-bottom:1px solid var(--border2);vertical-align:top;}
+.tag{display:inline-block;background:rgba(123,79,30,0.09);border:1px solid var(--border);padding:2px 10px;border-radius:100px;font-size:0.68rem;color:var(--br);margin:2px 2px 0 0;}
+.score-card{background:var(--cream2);border:1px solid var(--border);border-radius:18px;padding:20px;text-align:center;}
+.score-num{font-family:var(--font-display);font-size:3rem;font-weight:700;color:var(--br);}
+.retry-btn{background:linear-gradient(135deg,var(--br),var(--br2));border:none;border-radius:100px;padding:8px 24px;font-family:var(--font-body);font-weight:600;font-size:0.85rem;color:var(--warm-white);margin-top:12px;box-shadow:0 4px 12px rgba(123,79,30,0.28);transition:all 0.2s;}
+.retry-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(123,79,30,0.38);}
+.dots span{width:7px;height:7px;background:var(--br2);border-radius:50%;display:inline-block;margin-right:3px;animation:bounce 1.2s infinite;}
+.dots span:nth-child(2){animation-delay:0.2s;}.dots span:nth-child(3){animation-delay:0.4s;}
+@keyframes bounce{0%,80%,100%{transform:translateY(0);}40%{transform:translateY(-6px);}}
+
+/* suggestion cards */
+.sugg-wrap{display:flex;gap:10px;padding:12px 20px 8px;background:rgba(250,247,240,0.95);backdrop-filter:blur(12px);border-top:1px solid var(--border2);transition:opacity 0.4s,transform 0.4s,max-height 0.5s cubic-bezier(0.4,0,0.2,1);max-height:120px;overflow:hidden;}
+.sugg-wrap.gone{opacity:0;pointer-events:none;max-height:0;padding-top:0;padding-bottom:0;border:none;transform:translateY(10px);}
+.sugg-card{flex:1;min-width:0;display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:11px 14px;transition:all 0.22s cubic-bezier(0.34,1.56,0.64,1);position:relative;overflow:hidden;}
+.sugg-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(123,79,30,0.09),rgba(154,100,40,0.04));opacity:0;transition:opacity 0.2s;}
+.sugg-card:hover{border-color:var(--br);transform:translateY(-3px);box-shadow:0 8px 24px rgba(123,79,30,0.13);}
+.sugg-card:hover::before{opacity:1;}
+.sugg-card:hover .sugg-arrow{transform:translateX(4px);color:var(--br);}
+.sugg-card:active{transform:scale(0.97);}
+.sugg-icon{font-size:1.4rem;flex-shrink:0;line-height:1;}
+.sugg-text{flex:1;min-width:0;}
+.sugg-title{font-size:0.78rem;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sugg-desc{font-size:0.68rem;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sugg-arrow{font-size:0.9rem;color:var(--muted);flex-shrink:0;transition:all 0.2s;}
+
+.input-wrap{padding:12px 20px 20px;background:rgba(250,247,240,0.95);backdrop-filter:blur(12px);border-top:1px solid var(--border2);flex-shrink:0;}
+.input-row{display:flex;align-items:center;gap:10px;background:var(--card);border:1.5px solid var(--border);border-radius:100px;padding:4px 4px 4px 20px;transition:all 0.2s;box-shadow:0 2px 10px rgba(123,79,30,0.07);}
+.input-row:focus-within{border-color:var(--br);box-shadow:0 0 0 3px rgba(123,79,30,0.11);}
+#inp{flex:1;background:transparent;border:none;outline:none;font-family:var(--font-body);font-size:0.9rem;color:var(--ink);resize:none;padding:10px 0;max-height:100px;line-height:1.5;}
+#inp::placeholder{color:var(--muted);}
+.send{width:42px;height:42px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--br),var(--br2));color:var(--warm-white);font-size:1rem;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(123,79,30,0.28);transition:all 0.2s cubic-bezier(0.34,1.56,0.64,1);flex-shrink:0;}
+.send:hover{transform:scale(1.12);box-shadow:0 8px 20px rgba(123,79,30,0.42);}
+
+@media(max-width:760px){
+  .intro-inner{grid-template-columns:1fr;text-align:center;gap:28px;}
+  .abstract-scene{height:280px;}
+  .fc1,.fc4{display:none;}
+  .pill-row,.stats-row{justify-content:center;}
+  .btn-cta{align-self:center;}
+  .bubble{max-width:90%;}
+  .sugg-wrap{flex-direction:column;max-height:260px;}
+}
+</style>
 </head>
 <body>
 
@@ -102,5 +359,431 @@
     </div>
   </div>
 </div>
+
+<script>
+/* ══ CUSTOM CURSOR ══ */
+const cur=document.getElementById('cur'),cur2=document.getElementById('cur2');
+let mx=0,my=0,cx=0,cy=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function animCur(){cx+=(mx-cx)*0.14;cy+=(my-cy)*0.14;cur2.style.left=cx+'px';cur2.style.top=cy+'px';requestAnimationFrame(animCur);})();
+
+/* ══ BG PARTICLE CANVAS ══ */
+(function(){
+  const c=document.getElementById('bgCanvas'),ctx=c.getContext('2d');
+  let W,H,pts=[];
+  function resize(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;}
+  resize();window.addEventListener('resize',resize);
+  for(let i=0;i<80;i++) pts.push({x:Math.random()*1920,y:Math.random()*1080,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,r:Math.random()*2+.5,a:Math.random()*.5+.15});
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(123,79,30,${p.a})`;ctx.fill();
+    });
+    for(let i=0;i<pts.length;i++) for(let j=i+1;j<pts.length;j++){
+      let dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.hypot(dx,dy);
+      if(d<100){ctx.beginPath();ctx.strokeStyle=`rgba(123,79,30,${.05*(1-d/100)})`;ctx.lineWidth=.5;ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.stroke();}
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ══ HERO ABSTRACT ANIMATION ══ */
+(function(){
+  const cv=document.getElementById('heroCanvas');
+  if(!cv) return;
+  const ctx=cv.getContext('2d');
+  let W,H,t=0,mouse={x:0,y:0};
+
+  function resize(){
+    const rect=cv.parentElement.getBoundingClientRect();
+    W=cv.width=rect.width||480;H=cv.height=rect.height||460;
+    mouse.x=W/2;mouse.y=H/2;
+  }
+  resize();
+  window.addEventListener('resize',resize);
+  cv.parentElement.addEventListener('mousemove',e=>{
+    const r=cv.getBoundingClientRect();
+    mouse.x=e.clientX-r.left;mouse.y=e.clientY-r.top;
+  });
+
+  /* ── morphing blob rings ── */
+  function blob(cx,cy,baseR,points,phase,t,color,alpha){
+    ctx.beginPath();
+    for(let i=0;i<=points;i++){
+      const angle=(i/points)*Math.PI*2;
+      const wobble=Math.sin(angle*3+t*0.9+phase)*18+Math.sin(angle*5+t*0.6+phase)*10;
+      const r=baseR+wobble;
+      const x=cx+Math.cos(angle)*r;
+      const y=cy+Math.sin(angle)*r;
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.closePath();
+    ctx.strokeStyle=color;ctx.globalAlpha=alpha;ctx.lineWidth=1.5;ctx.stroke();
+    ctx.globalAlpha=1;
+  }
+
+  /* ── orbiting nodes ── */
+  const nodes=Array.from({length:8},(_,i)=>({
+    angle:(i/8)*Math.PI*2,
+    speed:0.004+Math.random()*0.006,
+    orbitR:90+Math.random()*60,
+    r:4+Math.random()*5,
+    phase:Math.random()*Math.PI*2
+  }));
+
+  /* ── flowing lines ── */
+  const lines=Array.from({length:12},(_,i)=>({
+    angle:(i/12)*Math.PI*2,
+    speed:0.003+Math.random()*0.004,
+    len:60+Math.random()*80,
+    offset:Math.random()*Math.PI*2
+  }));
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    t+=0.016;
+    const cx=W/2+(mouse.x-W/2)*0.06;
+    const cy=H/2+(mouse.y-H/2)*0.06;
+
+    /* outer glow ring */
+    const grad=ctx.createRadialGradient(cx,cy,60,cx,cy,200);
+    grad.addColorStop(0,'rgba(154,100,40,0.12)');
+    grad.addColorStop(0.5,'rgba(123,79,30,0.06)');
+    grad.addColorStop(1,'rgba(123,79,30,0)');
+    ctx.beginPath();ctx.arc(cx,cy,200,0,Math.PI*2);
+    ctx.fillStyle=grad;ctx.fill();
+
+    /* morphing blob rings */
+    blob(cx,cy,130,80,0,t,'rgba(123,79,30,0.55)',0.7);
+    blob(cx,cy,100,80,1.2,t*1.3,'rgba(154,100,40,0.45)',0.6);
+    blob(cx,cy,68,80,2.4,t*0.8,'rgba(184,125,53,0.35)',0.55);
+
+    /* inner pulsing core */
+    const coreR=22+Math.sin(t*2)*5;
+    const coreGrad=ctx.createRadialGradient(cx,cy,0,cx,cy,coreR*2);
+    coreGrad.addColorStop(0,'rgba(184,125,53,0.9)');
+    coreGrad.addColorStop(0.5,'rgba(154,100,40,0.4)');
+    coreGrad.addColorStop(1,'rgba(123,79,30,0)');
+    ctx.beginPath();ctx.arc(cx,cy,coreR*2,0,Math.PI*2);
+    ctx.fillStyle=coreGrad;ctx.fill();
+    ctx.beginPath();ctx.arc(cx,cy,coreR,0,Math.PI*2);
+    ctx.fillStyle='rgba(184,125,53,0.85)';ctx.fill();
+    ctx.beginPath();ctx.arc(cx-coreR*.3,cy-coreR*.3,coreR*.3,0,Math.PI*2);
+    ctx.fillStyle='rgba(255,240,210,0.5)';ctx.fill();
+
+    /* flowing spoke lines */
+    lines.forEach(l=>{
+      l.angle+=l.speed;
+      const x1=cx+Math.cos(l.angle)*40;
+      const y1=cy+Math.sin(l.angle)*40;
+      const x2=cx+Math.cos(l.angle+Math.sin(t*.5+l.offset)*.4)*(40+l.len);
+      const y2=cy+Math.sin(l.angle+Math.sin(t*.5+l.offset)*.4)*(40+l.len);
+      const g=ctx.createLinearGradient(x1,y1,x2,y2);
+      g.addColorStop(0,'rgba(154,100,40,0.6)');
+      g.addColorStop(1,'rgba(154,100,40,0)');
+      ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);
+      ctx.strokeStyle=g;ctx.globalAlpha=0.7;ctx.lineWidth=1;ctx.stroke();
+      ctx.globalAlpha=1;
+    });
+
+    /* orbiting nodes */
+    nodes.forEach(n=>{
+      n.angle+=n.speed;
+      const nx=cx+Math.cos(n.angle)*n.orbitR;
+      const ny=cy+Math.sin(n.angle)*n.orbitR;
+      const pulse=n.r+Math.sin(t*2+n.phase)*2;
+      /* node glow */
+      const ng=ctx.createRadialGradient(nx,ny,0,nx,ny,pulse*3);
+      ng.addColorStop(0,'rgba(184,125,53,0.6)');ng.addColorStop(1,'rgba(184,125,53,0)');
+      ctx.beginPath();ctx.arc(nx,ny,pulse*3,0,Math.PI*2);ctx.fillStyle=ng;ctx.fill();
+      /* node dot */
+      ctx.beginPath();ctx.arc(nx,ny,pulse,0,Math.PI*2);
+      ctx.fillStyle='rgba(154,100,40,0.9)';ctx.fill();
+      /* connector to center */
+      ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(nx,ny);
+      ctx.strokeStyle='rgba(123,79,30,0.12)';ctx.lineWidth=.8;ctx.stroke();
+      /* node-to-node connections */
+      nodes.forEach(n2=>{
+        const nx2=cx+Math.cos(n2.angle)*n2.orbitR;
+        const ny2=cy+Math.sin(n2.angle)*n2.orbitR;
+        const d=Math.hypot(nx-nx2,ny-ny2);
+        if(d<130&&d>10){
+          ctx.beginPath();ctx.moveTo(nx,ny);ctx.lineTo(nx2,ny2);
+          ctx.strokeStyle=`rgba(154,100,40,${.18*(1-d/130)})`;ctx.lineWidth=.7;ctx.stroke();
+        }
+      });
+    });
+
+    /* floating text ring */
+    const labels=['Scaler','NST','Vedam','NIAT'];
+    labels.forEach((l,i)=>{
+      const a=(i/4)*Math.PI*2+t*0.08;
+      const lx=cx+Math.cos(a)*168;
+      const ly=cy+Math.sin(a)*155;
+      ctx.font='bold 11px DM Sans,sans-serif';
+      ctx.fillStyle=`rgba(123,79,30,${0.55+Math.sin(t+i)*0.2})`;
+      ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(l,lx,ly);
+    });
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ══ DATA ══ */
+const DATA={
+  "Scaler School of Technology":{short:"Scaler",location:"Bengaluru, Karnataka",program:"B.Tech CS & AI + dual degree with BITS Pilani / IIT Madras",fee:"₹28 lakh (full programme)",scholarships:"Merit-based up to 100% waiver based on NSET score",selection:"NSET exam or SAT accepted — JEE not required",highlights:"Learn by building · MAANG mentors · real project-based curriculum from Day 1",placements:"Top recruiters: Google, Amazon, Razorpay · strong MAANG alumni network · dedicated placement cell"},
+  "Newton School of Technology":{short:"NST",location:"Sonipat · Pune · Bengaluru · Hyderabad",program:"B.Tech CS & AI — UGC recognised degree",fee:"₹23 lakh total (residential, all-inclusive)",scholarships:"Merit-based scholarships awarded on NSAT performance",selection:"NSAT — Newton School Aptitude Test (own exam, no JEE)",highlights:"Hands-on coding from Week 1 · mentors from Google, Meta, Microsoft · startup culture",placements:"Placement assistance programme · strong focus on product roles · growing recruiter network"},
+  "Vedam School of Technology":{short:"Vedam",location:"Pune & Gurugram",program:"B.Tech CS & AI — Residential programme",fee:"₹18 lakh total (one of the most affordable residential options)",scholarships:"Up to 100% merit scholarships + special women-in-tech waiver",selection:"VSAT exam or direct admission for JEE 90%+ scorers",highlights:"AI-first curriculum · MacBook provided on Day 1 · industry practitioners as faculty",placements:"1,028+ students placed · Amazon, Adobe, Microsoft recruiters · internship stipends up to ₹2.8 LPA"},
+  "NIAT (NxtWave)":{short:"NIAT",location:"20+ campuses across India",program:"B.Tech CSE / AI & ML streams available",fee:"₹2–4.5 lakh per year (most affordable on the list)",scholarships:"NAT merit waivers up to 100% — no JEE cutoff required",selection:"NAT — NxtWave Aptitude Test (online, accessible)",highlights:"NSDC backed · real-world project tracks · internship stipends from Year 1 · pan-India reach",placements:"Microsoft, Google, Amazon as hiring partners · strong placement support across campuses"}
+};
+const COLLEGES=Object.keys(DATA);
+const QUICK=["Cheapest college","100% scholarships","SAT accepted","Best placements","Compare Scaler vs NIAT","Vedam vs NST","Fees overview"];
+
+function norm(s){return s.toLowerCase().replace(/[^\w\s]/g,' ');}
+function findCollege(q){
+  let best=null,bs=0;
+  for(let n of COLLEGES){
+    if(norm(q).includes(DATA[n].short.toLowerCase())) return n;
+    let words=norm(n).split(/\s+/).filter(w=>w.length>3);
+    let sc=words.filter(w=>norm(q).includes(w)).length/(words.length||1);
+    if(sc>bs){bs=sc;best=n;}
+  }
+  return bs>0.3?best:null;
+}
+
+function compareTwo(text){
+  let found=COLLEGES.filter(c=>{
+    let t=norm(text);
+    return t.includes(DATA[c].short.toLowerCase())||t.includes(c.toLowerCase().split('(')[0].trim());
+  });
+  if(found.length>=2){
+    let[a,b]=found,dA=DATA[a],dB=DATA[b];
+    let rows=['location','fee','scholarships','selection','placements'].map(f=>
+      `<tr><td style="color:var(--br2);font-weight:600;padding:4px 6px 4px 0;">${f.charAt(0).toUpperCase()+f.slice(1)}</td><td style="padding:4px 6px;">${dA[f]}</td><td style="padding:4px 6px;">${dB[f]}</td></tr>`
+    ).join('');
+    return `<strong>⚖️ ${dA.short} vs ${dB.short}</strong><br><table style="width:100%;margin-top:8px;font-size:0.75rem;border-collapse:collapse;"><tr style="border-bottom:1px solid var(--border);"><th style="padding:4px 6px 4px 0;color:var(--br);">Attribute</th><th style="padding:4px 6px;color:var(--br);">${dA.short}</th><th style="padding:4px 6px;color:var(--br);">${dB.short}</th></tr>${rows}</table><br><span class="tag">🔍 Verify exact figures on official sites</span>`;
+  }
+  return null;
+}
+
+function collegeCard(name){
+  const d=DATA[name];
+  return `<div style="background:var(--cream2);border:1px solid var(--border);border-radius:18px;overflow:hidden;">
+  <div style="background:linear-gradient(135deg,rgba(123,79,30,0.13),rgba(154,100,40,0.06));padding:14px 18px;border-bottom:1px solid var(--border2);display:flex;align-items:center;gap:12px;">
+    <div style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--br),var(--br2));display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;">🎓</div>
+    <div><div style="font-weight:700;font-size:0.95rem;color:var(--ink);">${name}</div><div style="font-size:0.72rem;color:var(--muted);margin-top:2px;">📍 ${d.location}</div></div>
+  </div>
+  <div style="padding:14px 18px;display:flex;flex-direction:column;gap:11px;">
+    ${[['📚','Programme',d.program],['💰','Total Fee',d.fee],['🏅','Scholarships',d.scholarships],['✅','Selection / Entrance',d.selection],['⚡','Key Highlights',d.highlights],['💼','Placements',d.placements]].map(([icon,label,val])=>`
+    <div style="display:flex;gap:10px;align-items:flex-start;">
+      <span style="font-size:1rem;flex-shrink:0;margin-top:1px;">${icon}</span>
+      <div><div style="font-size:0.68rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;">${label}</div><div style="font-size:0.82rem;color:var(--ink);margin-top:3px;line-height:1.5;">${val}</div></div>
+    </div>`).join('')}
+  </div>
+  <div style="padding:6px 18px 12px;"><span class="tag">🔍 Verify fees & cutoffs on official site</span></div>
+</div>`;
+}
+
+function answerQuery(raw){
+  const t=raw.trim();
+  if(!t) return null;
+
+  /* ── TIME-AWARE GREETING ── */
+  const hr=new Date().getHours();
+  const tg=hr<12?'Good morning ☀️':hr<17?'Good afternoon 🌤️':hr<21?'Good evening 🌇':'Good night 🌙';
+
+  const greets=[
+    [/^(hi+|hii+|helo+|hello+|hey+|hiya|howdy)\b/i,
+      ()=>`👋 <strong>${tg}! Welcome to EduAssist Neo.</strong><br><br>I'm your personal AI guide to India's top 4 new-gen tech colleges — <strong>Scaler, NST, Vedam & NIAT</strong>.<br><br>Here's what I can help with:<br>• 💰 Full fees & scholarship details<br>• ⚖️ Side-by-side college comparison<br>• ✅ Entrance tests & SAT eligibility<br>• 💼 Placement stats & top recruiters<br>• 🎤 Live mock interview (switch tab above)<br><br>What would you like to explore first?`],
+    [/^good\s*(morning|afternoon|evening|night|day)/i,
+      ()=>`${tg} <strong>Great time to plan your future!</strong><br><br>I'm Neo — your AI college advisor for <strong>Scaler · NST · Vedam · NIAT</strong>. Ask me anything about fees, scholarships, placements or entrance tests.`],
+    [/^(sup|what'?s\s*up|wassup|yo\b)/i,
+      ()=>`😄 <strong>Hey! What's up?</strong><br><br>I'm Neo — drop your question about any of the 4 colleges and I'll give you the full picture instantly!`],
+    [/^(namaste|namaskar|jai\s*hind)/i,
+      ()=>`🙏 <strong>Namaste! EduAssist Neo mein aapka swagat hai.</strong><br><br>Main aapko <strong>Scaler, NST, Vedam & NIAT</strong> ke baare mein poori jankari de sakta hoon — fees, scholarships, entrance tests & placements. Kya jaanna chahte ho?`],
+    [/^(how are you|how r u|how do you do|how'?s it|hows it)/i,
+      ()=>`😊 <strong>I'm doing great — always ready to help!</strong><br><br>I'm Neo, your AI advisor for <strong>Scaler, NST, Vedam & NIAT</strong>. What would you like to know today?`],
+    [/^(welcome|greetings)/i,
+      ()=>`🎉 <strong>Welcome to EduAssist!</strong><br><br>You're in the right place. I'll help you compare India's top 4 new-gen tech colleges — fees, scholarships, entrance tests & placement data, all in one place.`],
+    [/^(who are you|what are you|what is neo|tell me about yourself)/i,
+      ()=>`🤖 <strong>I'm Neo — EduAssist's AI brain.</strong><br><br>I'm built to guide students through India's top 4 new-gen colleges: <strong>Scaler, Newton School of Technology, Vedam & NIAT</strong>.<br><br>I can compare fees, explain scholarships, show placement data, and even run a full mock interview. Just ask!`],
+    [/^(start|begin|let'?s go|get started)/i,
+      ()=>`🚀 <strong>Let's go!</strong><br><br>Ask me anything — or try one of these:<br>• <em>"Tell me about Scaler"</em><br>• <em>"Compare Vedam vs NST"</em><br>• <em>"Which college has 100% scholarship?"</em><br>• <em>"SAT accepted where?"</em>`],
+    [/^(thanks?|thank you|thx|ty\b|great|awesome|perfect|nice|cool|wow|helpful)/i,
+      ()=>`😊 <strong>Happy to help!</strong> Feel free to ask anything else about <strong>Scaler, NST, Vedam or NIAT</strong> — or switch to Mock Interview mode anytime!`],
+    [/^(bye|goodbye|see you|cya|tata|take care|ok bye)/i,
+      ()=>`👋 <strong>Goodbye!</strong> Best of luck with your college journey. Come back anytime — Neo's always here for you! 🎓`],
+  ];
+  for(const[re,fn] of greets) if(re.test(t)) return fn();
+
+  /* ── COMPARE ── */
+  if(/(compare|versus|vs\.?|difference)/i.test(t)){const c=compareTwo(t);if(c) return c;}
+
+  /* ── FEE RANKING ── */
+  if(/cheapest|lowest fee|budget|fees overview|all fees/i.test(t)){
+    const sorted=[...COLLEGES].sort((a,b)=>parseInt(DATA[a].fee.match(/\d+/)?.[0]||99)-parseInt(DATA[b].fee.match(/\d+/)?.[0]||99));
+    return `💰 <strong>Fee ranking — low to high</strong><br><br>${sorted.map((c,i)=>`<strong>${i+1}. ${DATA[c].short}</strong> — ${DATA[c].fee}`).join('<br><br>')}<br><br><span class="tag">🏅 Scholarships can reduce any of these to ₹0</span>`;
+  }
+
+  /* ── SCHOLARSHIPS ── */
+  if(/100.?%|full scholarship/i.test(t)){
+    const el=COLLEGES.filter(c=>DATA[c].scholarships.toLowerCase().includes('100%'));
+    return `🏅 <strong>Colleges offering 100% scholarships</strong><br><br>`+el.map(c=>`<strong>${DATA[c].short}:</strong> ${DATA[c].scholarships}`).join('<br><br>');
+  }
+  if(/scholarship/i.test(t)){
+    return COLLEGES.map(c=>`🏅 <strong>${DATA[c].short}:</strong> ${DATA[c].scholarships}`).join('<br><br>');
+  }
+
+  /* ── SAT ── */
+  if(/\bsat\b/i.test(t)){
+    const sl=COLLEGES.filter(c=>DATA[c].selection.toLowerCase().includes('sat'));
+    return `✅ <strong>SAT accepted at:</strong> ${sl.map(c=>DATA[c].short).join(', ')}<br><br>These colleges accept SAT as a valid alternative to JEE — you don't need to appear for JEE at all.`;
+  }
+
+  /* ── PLACEMENTS ── */
+  if(/placement|recruiter|package|salary|hiring/i.test(t)){
+    return `💼 <strong>Placement highlights across all 4</strong><br><br>`+COLLEGES.map(c=>`<strong>${DATA[c].short}:</strong> ${DATA[c].placements}`).join('<br><br>');
+  }
+
+  /* ── SINGLE COLLEGE FULL CARD ── */
+  const college=findCollege(t);
+  if(college) return collegeCard(college);
+
+  return `I specialise in <strong>Scaler, NST, Vedam & NIAT</strong>.<br><br>Try: <em>"Tell me about Vedam"</em> · <em>"Compare NIAT vs NST"</em> · <em>"SAT accepted?"</em>`;
+}
+
+/* ══ INTERVIEW ══ */
+let mode='a',iStep=0,iScores=[],iQs=[],awaiting=false;
+const qBank={
+  hr:["Tell us about yourself and why you chose tech?","Describe a real challenge you overcame and what you learned.","Where do you see yourself in 5 years?"],
+  tech:["What is the difference between an array and a linked list?","Explain Big O notation with a real example.","What is recursion? Give an example."],
+  aptitude:["If 5 workers finish a job in 10 days, how many days for 10 workers?","What's the probability of rolling a 6 twice consecutively on a fair die?","A train travels 300 km at 60 km/h. What's the total time?"]
+};
+function updateBar(){
+  const bar=document.getElementById('ibar');
+  if(mode!=='i'){bar.classList.remove('on');return;}
+  bar.classList.add('on');
+  let pct=iStep===0?0:(iStep-1)/3*100;
+  if(iStep>=3)pct=100;
+  document.getElementById('fill').style.width=pct+'%';
+  document.getElementById('qlabel').innerText=iStep>=3?'Complete ✓':`Question ${iStep} / 3`;
+}
+async function startInterview(){
+  iStep=0;iScores=[];iQs=[];awaiting=false;updateBar();
+  addBot(`🎤 <strong>Mock Interview — Premium Simulation</strong><br><br>3 questions: HR, Technical & Problem Solving. Answer naturally, as you would in a real interview.<br><br>Good luck! 🚀`);
+  await pause(700);askNext();
+}
+function askNext(){
+  if(iStep>=3){finishInterview();return;}
+  iStep++;updateBar();
+  const type=iStep===1?'HR':iStep===2?'Technical':'Problem Solving';
+  const bank=iStep===1?qBank.hr:iStep===2?qBank.tech:qBank.aptitude;
+  const q=bank[Math.floor(Math.random()*bank.length)];
+  iQs.push({type,q});
+  addBot(`<span style="color:var(--br2);font-weight:700;font-size:0.8rem;letter-spacing:0.05em;text-transform:uppercase;">Q${iStep} / 3 · ${type}</span><br><br>${q}`);
+  awaiting=true;
+}
+function evaluate(ans,type){
+  let score=5+(ans.length>120?2:ans.length<30?-1:0);
+  const kw=type==='HR'?['team','learn','project','challenge','growth','experience']:type==='Technical'?['data','complexity','function','memory','time','algorithm','structure']:['calculate','steps','probability','result','formula','rate'];
+  score+=kw.filter(k=>ans.toLowerCase().includes(k)).length;
+  score=Math.min(10,Math.max(1,score));
+  const fb=score>=8?'Outstanding — interview-ready! Very clear and structured.':score>=6?'Good answer. Add specific examples or numbers to make it stronger.':'Solid attempt. Focus on structure: situation → action → result.';
+  return{score,fb};
+}
+async function handleAnswer(txt){
+  if(!awaiting){addBot('Please wait for the next question.');return;}
+  awaiting=false;
+  const curr=iQs[iStep-1];
+  const{score,fb}=evaluate(txt,curr.type);
+  iScores.push(score);
+  addBot(`📋 <strong>Feedback — Q${iStep}</strong><br><br>Score: <strong style="color:var(--br);font-size:1.1rem;">${score}/10</strong><br><br>${fb}`);
+  if(iStep<3){await pause(1000);askNext();}
+  else{await pause(1000);finishInterview();}
+}
+async function finishInterview(){
+  const avg=(iScores.reduce((a,b)=>a+b,0)/3).toFixed(1);
+  const grade=avg>=8?'🌟 Elite — Top candidate!':avg>=6?'👍 Solid — Keep refining answers!':'📈 Keep practising — structure is key!';
+  addBot(`<div class="score-card"><h3 style="font-family:var(--font-display);color:var(--ink);margin-bottom:8px;">Interview Complete</h3><div class="score-num">${avg}<span style="font-size:1.1rem;color:var(--muted);font-family:var(--font-body)">/10</span></div><p style="color:var(--muted);margin:8px 0 4px;">${grade}</p><button class="retry-btn" onclick="setMode('i')">Try Again</button></div>`);
+  iStep=4;updateBar();
+}
+
+/* ══ UI HELPERS ══ */
+let typDiv=null;
+function showTyping(){
+  if(typDiv)hideTyping();
+  const el=document.createElement('div');el.className='msg bot';el.id='typing';
+  el.innerHTML='<div class="av bot">N</div><div class="bubble"><div class="dots"><span></span><span></span><span></span></div></div>';
+  document.getElementById('msgs').appendChild(el);typDiv=el;scroll();
+}
+function hideTyping(){if(typDiv){typDiv.remove();typDiv=null;}}
+function addBot(html){addMsg('bot',html);}
+function addMsg(role,content){
+  const c=document.getElementById('msgs');
+  const w=document.getElementById('welcome');if(w)w.remove();
+  const d=document.createElement('div');d.className=`msg ${role}`;
+  d.innerHTML=`<div class="av ${role==='bot'?'bot':'user'}">${role==='bot'?'N':'U'}</div><div class="bubble">${content}</div>`;
+  c.appendChild(d);scroll();
+}
+function scroll(){const c=document.getElementById('msgs');c.scrollTop=c.scrollHeight;}
+function pause(ms){return new Promise(r=>setTimeout(r,ms));}
+function esc(s){return s.replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));}
+
+function firesugg(card){hideSugg();document.getElementById('inp').value=card.getAttribute('data-q');send();}
+function hideSugg(){const w=document.getElementById('suggWrap');if(w)w.classList.add('gone');}
+
+async function send(){
+  const inp=document.getElementById('inp');
+  const txt=inp.value.trim();if(!txt)return;
+  inp.value='';inp.style.height='auto';
+  hideSugg();
+  addMsg('user',esc(txt));
+  showTyping();await pause(480);hideTyping();
+  if(mode==='a')addBot(answerQuery(txt)||'Ask about Scaler, NST, Vedam, or NIAT.');
+  else await handleAnswer(txt);
+}
+
+function setMode(m){
+  mode=m;
+  document.getElementById('tabA').classList.toggle('on',m==='a');
+  document.getElementById('tabI').classList.toggle('on',m==='i');
+  document.getElementById('chipBar').style.display=m==='a'?'flex':'none';
+  const msgs=document.getElementById('msgs');msgs.innerHTML='';
+  const sw=document.getElementById('suggWrap');
+  if(m==='a'){
+    if(sw)sw.classList.remove('gone');
+    msgs.innerHTML='<div class="welcome" id="welcome"><div class="welcome-icon">✨</div><h2>College Guide Mode</h2><p>Compare Scaler, NST, Vedam, NIAT on fees, scholarships & placements.</p></div>';
+  } else {
+    if(sw)sw.classList.add('gone');
+    startInterview();
+  }
+}
+
+function buildChips(){
+  const bar=document.getElementById('chipBar');
+  COLLEGES.forEach(n=>{
+    const b=document.createElement('button');b.className='chip';b.innerText=DATA[n].short;
+    b.onclick=()=>{document.getElementById('inp').value=`Tell me about ${n}`;send();};bar.appendChild(b);
+  });
+  const sep=document.createElement('span');sep.style.cssText='width:1px;background:var(--border2);flex-shrink:0;margin:0 4px;';bar.appendChild(sep);
+  QUICK.forEach(q=>{
+    const b=document.createElement('button');b.className='qchip';b.innerText=q;
+    b.onclick=()=>{document.getElementById('inp').value=q;send();};bar.appendChild(b);
+  });
+}
+
+function goChat(){document.getElementById('intro').classList.add('hidden');document.getElementById('chat').classList.remove('hidden');}
+function goIntro(){document.getElementById('chat').classList.add('hidden');document.getElementById('intro').classList.remove('hidden');}
+function hk(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}}
+function autoH(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px';}
+
+buildChips();
+</script>
 </body>
 </html>

@@ -1,11 +1,10 @@
 # 🎓 CAMPUS INFO– AI College Guide
 
-EduAssist Neo is an intelligent **AI-style college guidance platform** designed to help students explore, compare, and understand modern tech-focused colleges in India.
+EduAssist Neo is an intelligent **AI-style college guidance platform** designed to help students explore, compare, and understand modern tech-focused coding.
 
 The platform provides structured college insights, smart comparisons, fee analysis, scholarships, and interview preparation through an interactive frontend experience.
 
-Rather than being a static information website, EduAssist Neo simulates an **AI assistant experience** to help students make better educational decisions.
-
+Rather than being a static information website, this is a smart AI companios to answer coding errors and multitasking.
 ---
 
 ## 🚀 Live Demo
